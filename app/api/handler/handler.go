@@ -8,7 +8,6 @@ import (
 
 type Handler interface {
 	Register(router *gin.RouterGroup)
-	DB() *driver.DB
 }
 
 type handler struct {

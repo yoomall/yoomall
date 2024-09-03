@@ -25,6 +25,21 @@ type Dtk struct {
 }
 
 func NewDtkClient(config *DtkConfig) *Dtk {
+	if config == nil {
+		config = &DtkConfig{}
+	}
+
+	if config.AppUrl == "" {
+		panic("app_url is required")
+	}
+
+	if config.AppKey == "" {
+		panic("app_key is required")
+	}
+
+	if config.AppSecret == "" {
+		panic("app_secret is required")
+	}
 	return &Dtk{
 		Config: config,
 	}

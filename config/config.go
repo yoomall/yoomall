@@ -18,12 +18,15 @@ type Config struct {
 	}
 
 	DEBUG bool `default:"false"`
-	HTTP  struct {
+
+	HTTP struct {
 		Host string
 		Port int
 	}
 
 	DTK *dtk.DtkConfig `default:"{}" yaml:"dtk"`
+
+	STORAGT_PATH string `yaml:"storage_path"`
 }
 
 func GetConfig(file string) *Config {

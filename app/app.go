@@ -24,7 +24,7 @@ func NewDefaultApp(engine *gin.Engine, router *gin.RouterGroup, config *config.C
 
 func (d *DefaultApp) Register() {
 	handler.NewDtkHandler(d).Register(d.GetRouter().Group("/dtk"))
-
+	handler.NewUserHandler(d).Register(d.GetRouter().Group("/users"))
 }
 
 func (d *DefaultApp) Migrate() {

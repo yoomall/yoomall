@@ -7,7 +7,6 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/app/model"
 	"lazyfury.github.com/yoomall-server/constants"
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/driver"
@@ -33,14 +32,7 @@ func (d *DtkHandler) DB() *driver.DB {
 }
 
 func (d *DtkHandler) Register(router *gin.RouterGroup) {
-	router.GET("/dtk-users", d.test)
-	router.GET("/tb", d.dtk)
-}
-
-func (d *DtkHandler) test(ctx *gin.Context) {
-	var users []model.User
-	d.DB().Find(&users)
-	ctx.JSON(http.StatusOK, map[string]any{"hello": users})
+	router.GET("", d.dtk)
 }
 
 // 大淘客接口 godoc
