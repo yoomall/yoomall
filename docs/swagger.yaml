@@ -1,0 +1,47 @@
+host: localhost:8900
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Nunu Example API
+  version: 1.0.0
+paths:
+  /dtk/tb:
+    get:
+      consumes:
+      - application/json
+      description: 大淘客接口
+      parameters:
+      - description: keyWords
+        in: query
+        name: keyWords
+        required: true
+        type: string
+      - description: pageSize
+        in: query
+        name: pageSize
+        required: true
+        type: string
+      - description: pageId
+        in: query
+        name: pageId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: 获取大淘客接口数据
+      tags:
+      - /dtk/tb
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
