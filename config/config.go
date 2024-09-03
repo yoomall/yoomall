@@ -20,7 +20,6 @@ type Config struct {
 	DEBUG bool `default:"false"`
 
 	HTTP struct {
-		Host string
 		Port int
 	}
 
@@ -63,12 +62,17 @@ func genConfigFile(path string) {
 
 		DEBUG: false,
 		HTTP: struct {
-			Host string
 			Port int
 		}{
-			Host: "127.0.0.1",
 			Port: 8900,
 		},
+
+		DTK: &dtk.DtkConfig{
+			AppKey:    "app_key",
+			AppSecret: "app_secret",
+			AppUrl:    "https://api.dtkmall.com",
+		},
+		STORAGT_PATH: "./storage",
 	}
 	// 生成配置
 	file, err := os.Create(path)
