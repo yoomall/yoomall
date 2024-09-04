@@ -7,9 +7,9 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/constants"
 	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/driver"
+	"lazyfury.github.com/yoomall-server/core/constants"
+	"lazyfury.github.com/yoomall-server/core/driver"
 	"lazyfury.github.com/yoomall-server/libs/dtk"
 )
 

@@ -3,8 +3,8 @@ package core
 import (
 	"github.com/gin-gonic/gin"
 	"lazyfury.github.com/yoomall-server/config"
-	"lazyfury.github.com/yoomall-server/constants"
-	"lazyfury.github.com/yoomall-server/driver"
+	"lazyfury.github.com/yoomall-server/core/constants"
+	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
 type App interface {

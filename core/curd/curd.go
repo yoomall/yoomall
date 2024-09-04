@@ -6,8 +6,8 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"lazyfury.github.com/yoomall-server/core/driver"
 	"lazyfury.github.com/yoomall-server/core/response"
-	"lazyfury.github.com/yoomall-server/driver"
 )
 
 type CRUD struct {

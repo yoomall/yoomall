@@ -8,7 +8,7 @@ import (
 	"lazyfury.github.com/yoomall-server/app/model"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/utils"
+	"lazyfury.github.com/yoomall-server/core/utils"
 )
 
 type DefaultApp struct {

@@ -2,7 +2,7 @@ package constants
 
 import (
 	"lazyfury.github.com/yoomall-server/config"
-	"lazyfury.github.com/yoomall-server/driver"
+	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
 // db

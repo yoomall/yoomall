@@ -9,10 +9,10 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"lazyfury.github.com/yoomall-server/app"
 	"lazyfury.github.com/yoomall-server/config"
-	"lazyfury.github.com/yoomall-server/constants"
 	"lazyfury.github.com/yoomall-server/core"
+	"lazyfury.github.com/yoomall-server/core/constants"
+	"lazyfury.github.com/yoomall-server/core/driver"
 	"lazyfury.github.com/yoomall-server/docs"
-	"lazyfury.github.com/yoomall-server/driver"
 	"lazyfury.github.com/yoomall-server/modules/post"
 )
 
