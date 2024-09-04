@@ -104,7 +104,14 @@ func mergeParams(params1 map[string]string, params2 map[string]string) map[strin
 }
 
 func (d *Dtk) hashedUrlMethodAndParams(url string, method string, params map[string]string) string {
-	str := fmt.Sprintf("%s%s%s%s", url, method, params["nonce"], params["timer"])
+	paramsJsonStr := ""
+
+	if params != nil {
+		paramsJson, _ := json.Marshal(params)
+		paramsJsonStr = string(paramsJson)
+	}
+
+	str := url + method + paramsJsonStr
 	hash := md5.Sum([]byte(str))
 	return hex.EncodeToString(hash[:])
 }

@@ -11,6 +11,7 @@ var ErrNotFound = ApiError{404, "Not Found"}
 var ErrInternalError = ApiError{500, "Internal Error"}
 var ErrInvalidArgument = ApiError{400, "Invalid Argument"}
 var ErrNotAuthorized = ApiError{401, "Not Authorized"}
+var ErrBadRequest = ApiError{400, "Bad Request"}
 
 // ok
 var ErrOk = ApiError{200, "Ok"}

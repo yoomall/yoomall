@@ -53,8 +53,18 @@ func (d *DtkHandler) Register(router *gin.RouterGroup) {
 func (d *DtkHandler) dtk(ctx *gin.Context) {
 	var query map[string]string = make(map[string]string)
 	ctx.ShouldBindQuery(&query)
+
+	path := query["path"]
+	version := query["version"]
+	if path == "" || version == "" {
+		response.Error(response.ErrBadRequest, "path or version is empty").Done(ctx)
+		return
+	}
+	delete(query, "path")
+	delete(query, "version")
+
 	log.Info("dtk", "query", query, "url", ctx.Request.URL.Query())
-	body, hit := d.dtkClient.RequestWithCache("/tb-service/get-tb-service", http.MethodGet, "v2.1.0", query)
+	body, hit := d.dtkClient.RequestWithCache(path, http.MethodGet, version, query)
 
 	var data map[string]any
 	err := json.Unmarshal(body, &data)
@@ -65,7 +75,5 @@ func (d *DtkHandler) dtk(ctx *gin.Context) {
 
 	response.Success(data).WithExtra(map[string]any{
 		"hit": hit,
-	}).WithExtra(map[string]any{
-		"hello": "world",
-	}).Done(ctx)
+	}).WithExtra(map[string]any{}).Done(ctx)
 }
