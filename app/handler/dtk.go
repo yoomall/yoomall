@@ -60,11 +60,18 @@ func (d *DtkHandler) dtk(ctx *gin.Context) {
 		response.Error(response.ErrBadRequest, "path or version is empty").Done(ctx)
 		return
 	}
+
+	method := query["method"]
+	if method == "" {
+		method = http.MethodGet
+	}
+
+	delete(query, "method")
 	delete(query, "path")
 	delete(query, "version")
 
 	log.Info("dtk", "query", query, "url", ctx.Request.URL.Query())
-	body, hit := d.dtkClient.RequestWithCache(path, http.MethodGet, version, query)
+	body, hit := d.dtkClient.RequestWithCache(path, method, version, query)
 
 	var data map[string]any
 	err := json.Unmarshal(body, &data)

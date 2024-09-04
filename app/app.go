@@ -13,19 +13,21 @@ import (
 
 type DefaultApp struct {
 	*core.AppImpl
-	Config *config.Config
+	Config          *config.Config
+	AuthMiddlewares []gin.HandlerFunc
 }
 
 func NewDefaultApp(engine *gin.Engine, router *gin.RouterGroup, config *config.Config) core.App {
 	return &DefaultApp{
-		Config:  config,
-		AppImpl: core.NewAppImpl("default", router, config),
+		Config:          config,
+		AppImpl:         core.NewAppImpl("default", router, config),
+		AuthMiddlewares: []gin.HandlerFunc{},
 	}
 }
 
 func (d *DefaultApp) Register() {
 	handler.NewDtkHandler(d).Register(d.GetRouter().Group("/dtk"))
-	handler.NewUserHandler(d).Register(d.GetRouter().Group("/users"))
+	handler.NewUserHandler(d).Register(d.GetRouter().Group("/users", d.AuthMiddlewares...))
 }
 
 func (d *DefaultApp) Migrate() {
