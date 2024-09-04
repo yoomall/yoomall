@@ -1,4 +1,4 @@
-package core
+package curd
 
 import (
 	"strconv"
@@ -6,6 +6,7 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
+	"lazyfury.github.com/yoomall-server/core/response"
 	"lazyfury.github.com/yoomall-server/driver"
 )
 
@@ -58,15 +59,17 @@ func (c *CRUD) GetListHandler(list any) func(ctx *gin.Context) {
 		err := query.Limit(limit).Offset((page - 1) * limit).Find(list).Error
 
 		if err != nil {
-			ctx.JSON(200, map[string]any{"error": ""})
+			response.Error(response.ErrInternalError, err.Error()).WithCtx(ctx)
 			return
 		}
 
-		ctx.JSON(200, map[string]any{
+		response.Success(map[string]any{
 			"data":  list,
 			"total": count,
 			"page":  page,
-		})
+			"limit": limit,
+			"pages": count / int64(limit),
+		}).WithCtx(ctx)
 	}
 }
 

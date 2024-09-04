@@ -3,6 +3,7 @@ package utils
 import (
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
+	"lazyfury.github.com/yoomall-server/core/response"
 )
 
 func RecoverHandlerFunc(ctx *gin.Context) {
@@ -13,7 +14,7 @@ func RecoverHandlerFunc(ctx *gin.Context) {
 				msg = e.Error()
 			}
 			log.Error(err)
-			ctx.JSON(500, map[string]any{"error": msg})
+			response.Error(response.ErrInternalError, msg).WithCtx(ctx)
 			ctx.Abort()
 			panic(err)
 		}

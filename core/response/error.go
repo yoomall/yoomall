@@ -1,4 +1,4 @@
-package core
+package response
 
 type ApiError struct {
 	Code    int    `json:"code"`
@@ -12,14 +12,17 @@ var ErrInternalError = ApiError{500, "Internal Error"}
 var ErrInvalidArgument = ApiError{400, "Invalid Argument"}
 var ErrNotAuthorized = ApiError{401, "Not Authorized"}
 
+// ok
+var ErrOk = ApiError{200, "Ok"}
+
 func (e ApiError) Error() string {
 	return e.Message
 }
 
 // is http code
-func (e ApiError) IsHttpCode(code int) bool {
+func (e ApiError) IsHttpCode() bool {
 	for _, v := range httpCodeArray {
-		if v == code {
+		if v == e.Code {
 			return true
 		}
 	}

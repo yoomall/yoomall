@@ -4,11 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"lazyfury.github.com/yoomall-server/app/model"
 	"lazyfury.github.com/yoomall-server/core"
+	"lazyfury.github.com/yoomall-server/core/curd"
 )
 
 type UserHandler struct {
 	*handler
-	CRUD *core.CRUD
+	CRUD *curd.CRUD
 }
 
 func NewUserHandler(app core.App) Handler {
@@ -16,7 +17,7 @@ func NewUserHandler(app core.App) Handler {
 		handler: &handler{
 			App: app,
 		},
-		CRUD: &core.CRUD{
+		CRUD: &curd.CRUD{
 			DB:    app.GetDB(),
 			Model: &model.User{},
 		},
