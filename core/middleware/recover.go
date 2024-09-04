@@ -1,4 +1,4 @@
-package utils
+package coremiddleware
 
 import (
 	"github.com/charmbracelet/log"
@@ -14,7 +14,7 @@ func RecoverHandlerFunc(ctx *gin.Context) {
 				msg = e.Error()
 			}
 			log.Error(err)
-			response.Error(response.ErrInternalError, msg).WithCtx(ctx)
+			response.Error(response.ErrInternalError, msg).Done(ctx)
 			ctx.Abort()
 			panic(err)
 		}

@@ -59,7 +59,7 @@ func (c *CRUD) GetListHandler(list any) func(ctx *gin.Context) {
 		err := query.Limit(limit).Offset((page - 1) * limit).Find(list).Error
 
 		if err != nil {
-			response.Error(response.ErrInternalError, err.Error()).WithCtx(ctx)
+			response.Error(response.ErrInternalError, err.Error()).Done(ctx)
 			return
 		}
 
@@ -69,7 +69,7 @@ func (c *CRUD) GetListHandler(list any) func(ctx *gin.Context) {
 			"page":  page,
 			"limit": limit,
 			"pages": count / int64(limit),
-		}).WithCtx(ctx)
+		}).Done(ctx)
 	}
 }
 

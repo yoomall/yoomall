@@ -2,7 +2,6 @@ package handler
 
 import (
 	"encoding/json"
-	"io"
 	"net/http"
 
 	"github.com/charmbracelet/log"
@@ -10,6 +9,7 @@ import (
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/constants"
 	"lazyfury.github.com/yoomall-server/core/driver"
+	"lazyfury.github.com/yoomall-server/core/response"
 	"lazyfury.github.com/yoomall-server/libs/dtk"
 )
 
@@ -50,28 +50,18 @@ func (d *DtkHandler) dtk(ctx *gin.Context) {
 	var query map[string]string = make(map[string]string)
 	ctx.ShouldBindQuery(&query)
 	log.Info("dtk", "query", query, "url", ctx.Request.URL.Query())
-	resp, err := d.dtkClient.Request("/tb-service/get-tb-service", http.MethodGet, "v2.1.0", query)
-
-	if err != nil {
-		ctx.JSON(http.StatusOK, map[string]any{"error": err})
-		return
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	print(string(body))
-	if err != nil {
-		ctx.JSON(http.StatusOK, map[string]any{"error": err})
-		return
-	}
-
-	defer resp.Body.Close()
+	body, hit := d.dtkClient.RequestWithCache("/tb-service/get-tb-service", http.MethodGet, "v2.1.0", query)
 
 	var data map[string]any
-	err = json.Unmarshal(body, &data)
+	err := json.Unmarshal(body, &data)
 	if err != nil {
-		ctx.JSON(http.StatusOK, map[string]any{"hello": err})
+		response.Error(response.ErrInternalError, err.Error()).Done(ctx)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, map[string]any{"hello": data})
+	response.Success(data).WithExtra(map[string]any{
+		"hit": hit,
+	}).WithExtra(map[string]any{
+		"hello": "world",
+	}).Done(ctx)
 }

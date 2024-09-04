@@ -8,7 +8,7 @@ import (
 	"lazyfury.github.com/yoomall-server/app/model"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/utils"
+	coremiddleware "lazyfury.github.com/yoomall-server/core/middleware"
 )
 
 type DefaultApp struct {
@@ -36,6 +36,6 @@ func (d *DefaultApp) Migrate() {
 func (d *DefaultApp) Middleware() []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		middleware.CORSMiddleware(),
-		utils.RecoverHandlerFunc,
+		coremiddleware.RecoverHandlerFunc,
 	}
 }

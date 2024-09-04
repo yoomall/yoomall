@@ -5,12 +5,15 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	"github.com/charmbracelet/log"
+	"github.com/patrickmn/go-cache"
 	"golang.org/x/exp/rand"
 )
 
@@ -22,6 +25,7 @@ type DtkConfig struct {
 
 type Dtk struct {
 	Config *DtkConfig
+	cache  *cache.Cache
 }
 
 func NewDtkClient(config *DtkConfig) *Dtk {
@@ -42,6 +46,7 @@ func NewDtkClient(config *DtkConfig) *Dtk {
 	}
 	return &Dtk{
 		Config: config,
+		cache:  cache.New(5*time.Minute, 10*time.Minute),
 	}
 }
 
@@ -83,7 +88,35 @@ func mergeParams(params1 map[string]string, params2 map[string]string) map[strin
 	return params1
 }
 
-func (d *Dtk) Request(path string, method string, version string, params map[string]string) (*http.Response, error) {
+func (d *Dtk) hashedUrlMethodAndParams(url string, method string, params map[string]string) string {
+	str := fmt.Sprintf("%s%s%s%s", url, method, params["nonce"], params["timer"])
+	hash := md5.Sum([]byte(str))
+	return hex.EncodeToString(hash[:])
+}
+
+func (d *Dtk) RequestWithCache(path string, method string, version string, params map[string]string) ([]byte, bool) {
+	hash := d.hashedUrlMethodAndParams(path, method, params)
+
+	if v, ok := d.cache.Get(hash); ok {
+		resp, ok := v.([]byte)
+		if !ok {
+			return []byte(""), false
+		}
+		return resp, true
+	}
+
+	resp, err := d.Request(path, method, version, params)
+
+	if err != nil {
+		return []byte(""), false
+	}
+
+	d.cache.Set(hash, resp, 5*time.Minute)
+
+	return resp, false
+}
+
+func (d *Dtk) Request(path string, method string, version string, params map[string]string) ([]byte, error) {
 	publicParams := d.publicParams()
 	publicParams["signRan"] = d.sign(publicParams)
 	mergeParams := mergeParams(publicParams, params)
@@ -106,8 +139,15 @@ func (d *Dtk) Request(path string, method string, version string, params map[str
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return nil, err
+		return []byte(""), err
 	}
 
-	return resp, nil
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return []byte(""), err
+	}
+
+	defer resp.Body.Close()
+
+	return body, nil
 }

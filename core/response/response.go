@@ -8,10 +8,11 @@ import (
 )
 
 type ApiJsonResponse struct {
-	Code     int         `json:"code"`
-	Message  string      `json:"message"`
-	Data     interface{} `json:"data"`
-	HttpCode int         `json:"-"`
+	Code     int            `json:"code"`
+	Message  string         `json:"message"`
+	Data     interface{}    `json:"data"`
+	HttpCode int            `json:"-"`
+	Extra    map[string]any `json:"extra"`
 }
 
 func NewApiJsonResponse(code int, message string, data interface{}, httpCode int) *ApiJsonResponse {
@@ -29,8 +30,18 @@ func (a *ApiJsonResponse) ToJson() string {
 }
 
 // with ctx
-func (a *ApiJsonResponse) WithCtx(ctx *gin.Context) {
+func (a *ApiJsonResponse) Done(ctx *gin.Context) {
 	ctx.JSON(a.HttpCode, a)
+}
+
+func (a *ApiJsonResponse) WithExtra(extra map[string]any) *ApiJsonResponse {
+	if a.Extra == nil {
+		a.Extra = make(map[string]any)
+	}
+	for k, v := range extra {
+		a.Extra[k] = v
+	}
+	return a
 }
 
 // success
