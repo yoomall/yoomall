@@ -19,11 +19,15 @@ type DtkHandler struct {
 }
 
 func NewDtkHandler(app core.App) Handler {
+	clent, err := dtk.NewDtkClient(app.GetConfig().DTK)
+	if err != nil {
+		log.Fatal(err)
+	}
 	return &DtkHandler{
 		handler: &handler{
 			App: app,
 		},
-		dtkClient: dtk.NewDtkClient(app.GetConfig().DTK),
+		dtkClient: clent,
 	}
 }
 

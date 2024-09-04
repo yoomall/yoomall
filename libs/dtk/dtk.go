@@ -28,26 +28,26 @@ type Dtk struct {
 	cache  *cache.Cache
 }
 
-func NewDtkClient(config *DtkConfig) *Dtk {
+func NewDtkClient(config *DtkConfig) (*Dtk, error) {
 	if config == nil {
 		config = &DtkConfig{}
 	}
 
 	if config.AppUrl == "" {
-		panic("app_url is required")
+		return nil, fmt.Errorf("app_url is required")
 	}
 
 	if config.AppKey == "" {
-		panic("app_key is required")
+		return nil, fmt.Errorf("app_key is required")
 	}
 
 	if config.AppSecret == "" {
-		panic("app_secret is required")
+		return nil, fmt.Errorf("app_secret is required")
 	}
 	return &Dtk{
 		Config: config,
 		cache:  cache.New(5*time.Minute, 10*time.Minute),
-	}
+	}, nil
 }
 
 func (d *Dtk) rand6Num() string {
@@ -66,6 +66,21 @@ func (d *Dtk) publicParams() map[string]string {
 		"timer":   strconv.FormatInt(time.Now().UnixMilli(), 10),
 		"nonce":   d.rand6Num(),
 	}
+}
+
+// checkParams
+func (d *Dtk) checkParams(params map[string]string) error {
+	if d.Config == nil {
+		return fmt.Errorf("config is required")
+	}
+	if d.Config.AppKey == "" {
+		return fmt.Errorf("app_key is required")
+	}
+
+	if d.Config.AppSecret == "" {
+		return fmt.Errorf("app_secret is required")
+	}
+	return nil
 }
 
 func (d *Dtk) sign(params map[string]string) string {
@@ -117,6 +132,10 @@ func (d *Dtk) RequestWithCache(path string, method string, version string, param
 }
 
 func (d *Dtk) Request(path string, method string, version string, params map[string]string) ([]byte, error) {
+	if err := d.checkParams(params); err != nil {
+		return []byte(""), err
+	}
+
 	publicParams := d.publicParams()
 	publicParams["signRan"] = d.sign(publicParams)
 	mergeParams := mergeParams(publicParams, params)
