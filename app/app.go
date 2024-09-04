@@ -3,11 +3,12 @@ package app
 import (
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/app/api/handler"
+	"lazyfury.github.com/yoomall-server/app/handler"
 	"lazyfury.github.com/yoomall-server/app/middleware"
 	"lazyfury.github.com/yoomall-server/app/model"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
+	"lazyfury.github.com/yoomall-server/libs/utils"
 )
 
 type DefaultApp struct {
@@ -35,5 +36,6 @@ func (d *DefaultApp) Migrate() {
 func (d *DefaultApp) Middleware() []gin.HandlerFunc {
 	return []gin.HandlerFunc{
 		middleware.CORSMiddleware(),
+		utils.RecoverHandlerFunc,
 	}
 }

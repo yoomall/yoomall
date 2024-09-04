@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
 	"lazyfury.github.com/yoomall-server/app/model"
 	"lazyfury.github.com/yoomall-server/core"
@@ -10,6 +8,7 @@ import (
 
 type UserHandler struct {
 	*handler
+	CRUD *core.CRUD
 }
 
 func NewUserHandler(app core.App) Handler {
@@ -17,15 +16,13 @@ func NewUserHandler(app core.App) Handler {
 		handler: &handler{
 			App: app,
 		},
+		CRUD: &core.CRUD{
+			DB:    app.GetDB(),
+			Model: &model.User{},
+		},
 	}
 }
 
 func (u *UserHandler) Register(router *gin.RouterGroup) {
-	router.GET("/users", u.users)
-}
-
-func (u *UserHandler) users(ctx *gin.Context) {
-	var users []model.User
-	u.App.GetDB().Find(&users)
-	ctx.JSON(http.StatusOK, map[string]any{"users": users})
+	router.GET("", u.CRUD.GetListHandler(&[]model.User{}))
 }

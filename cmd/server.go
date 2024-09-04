@@ -13,6 +13,7 @@ import (
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/docs"
 	"lazyfury.github.com/yoomall-server/driver"
+	"lazyfury.github.com/yoomall-server/modules/post"
 )
 
 // @title						Nunu Example API
@@ -55,10 +56,11 @@ func main() {
 	instance.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler, ginSwagger.DefaultModelsExpandDepth(-1),
 		ginSwagger.PersistAuthorization(true)))
 
+	router := instance.Group("/v1/api")
 	// apps
-	defApp := app.NewDefaultApp(instance, instance.Group("/api"), constants.CONFIG)
-
-	register(defApp)
+	defApp := app.NewDefaultApp(instance, router.Group("/"), constants.CONFIG)
+	postApp := post.NewDefaultApp(instance, router.Group("/posts"), constants.CONFIG)
+	register(defApp, postApp)
 	port := strconv.Itoa(constants.CONFIG.HTTP.Port)
 	if port == "0" {
 		port = "8900"
