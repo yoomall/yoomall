@@ -1,6 +1,13 @@
-version: "3.7"
 name: yoo-mall
 services:
+  api:
+    build: ../
+    ports:
+      - "8900:8900"
+    depends_on:
+      - mysql5.7
+    command: ["./server", "-c", "config.yaml"]
+
   mysql5.7:
     image: mysql:5.7
     ports:

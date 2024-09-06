@@ -1,7 +1,6 @@
 package app
 
 import (
-	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"lazyfury.github.com/yoomall-server/app/handler"
 	"lazyfury.github.com/yoomall-server/app/middleware"
@@ -32,7 +31,6 @@ func (d *DefaultApp) Register() {
 
 func (d *DefaultApp) Migrate() {
 	d.GetDB().AutoMigrate(&model.User{})
-	log.Info("default app", "db", "auto migrate success")
 }
 
 func (d *DefaultApp) Middleware() []gin.HandlerFunc {

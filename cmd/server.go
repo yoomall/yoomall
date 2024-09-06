@@ -75,6 +75,7 @@ func register(apps ...core.App) {
 		log.Info("register app", "app", app.GetName())
 		if constants.CONFIG.DEBUG {
 			app.Migrate()
+			log.Info("migrate success", "app", app.GetName())
 		}
 		app.GetRouter().Use(app.Middleware()...)
 		app.Register()
