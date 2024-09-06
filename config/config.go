@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 
@@ -15,7 +16,15 @@ type Config struct {
 		Username string
 		Password string
 		Database string
-	}
+	} `default:"{}" yaml:"mysql"`
+
+	PG struct {
+		Host     string
+		Port     int
+		Username string
+		Password string
+		Database string
+	} `default:"{}" yaml:"postgres"`
 
 	DEBUG bool `default:"false"`
 
@@ -60,6 +69,20 @@ func genConfigFile(path string) {
 			Database: "yoomall",
 		},
 
+		PG: struct {
+			Host     string
+			Port     int
+			Username string
+			Password string
+			Database string
+		}{
+			Host:     "127.0.0.1",
+			Port:     5432,
+			Username: "postgres",
+			Password: "123456",
+			Database: "yoomall",
+		},
+
 		DEBUG: false,
 		HTTP: struct {
 			Port int
@@ -93,4 +116,10 @@ func genConfigFile(path string) {
 func (c *Config) MysqlDsn() string {
 	portStr := strconv.Itoa(c.MySQL.Port)
 	return c.MySQL.Username + ":" + c.MySQL.Password + "@tcp(" + c.MySQL.Host + ":" + portStr + ")/" + c.MySQL.Database
+}
+
+func (c *Config) PgDsn() string {
+	portStr := strconv.Itoa(c.PG.Port)
+	template := "host=%s port=%s user=%s password=%s dbname=%s sslmode=disable"
+	return fmt.Sprintf(template, c.PG.Host, portStr, c.PG.Username, c.PG.Password, c.PG.Database)
 }

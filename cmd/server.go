@@ -48,8 +48,6 @@ func main() {
 
 	// db
 	constants.DB = driver.NewDB(constants.CONFIG.MysqlDsn())
-	constants.DB.AutoMigrate() // 自动迁移
-	log.Info("auto migrate success")
 	// db
 
 	docs.SwaggerInfo.BasePath = "/api"
