@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	swaggerfiles "github.com/swaggo/files"
@@ -28,8 +27,8 @@ func NewHttpServer(
 	v1 := engine.Group("/api/v1")
 
 	register(
-		&RegisterApp{app: app, router: v1.Group("")},
-		&RegisterApp{app: postApp, router: v1.Group("/posts")},
+		&core.RegisterApp{App: app, Router: v1.Group("")},
+		&core.RegisterApp{App: postApp, Router: v1.Group("/posts")},
 	)
 
 	return httpserver.HttpServer{
@@ -60,25 +59,7 @@ func setupSwag(engine *gin.Engine) {
 		ginSwagger.PersistAuthorization(true)))
 }
 
-type RegisterApp struct {
-	router *gin.RouterGroup
-	app    core.App
-}
-
-func (instance *RegisterApp) Register() {
-	log.Info(instance.app.GetName() + "====================================")
-	log.Info("注册app", "app", instance.app.GetName())
-	if config.Config.DEBUG {
-		log.Info("迁移中", "app", instance.app.GetName())
-		instance.app.Migrate()
-		log.Info("迁移成功 success", "app", instance.app.GetName())
-	}
-	instance.router.Use(instance.app.Middleware()...)
-	instance.app.Register(instance.router)
-	log.Info("注册成功", "app", instance.app.GetName())
-}
-
-func register(apps ...*RegisterApp) {
+func register(apps ...*core.RegisterApp) {
 	for _, instance := range apps {
 		instance.Register()
 	}

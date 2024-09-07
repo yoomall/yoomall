@@ -18,10 +18,12 @@ func NewConfig() *viper.Viper {
 
 func GetConfig(file string) *viper.Viper {
 	config := viper.New()
-
+	config.SetConfigType("yaml")
 	config.SetConfigFile(file)
 	if err := config.ReadInConfig(); err != nil {
 		fmt.Println("Failed to read config file, err: ", err)
+		// gen default config.yaml
+		config.WriteConfigAs("./config.yaml")
 		os.Exit(1)
 	}
 	return config
