@@ -3,17 +3,17 @@ package post
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
-	"lazyfury.github.com/yoomall-server/config"
+	"github.com/spf13/viper"
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
 type DefaultApp struct {
 	*core.AppImpl
-	Config *config.Config
+	Config *viper.Viper
 }
 
-func NewDefaultApp(config *config.Config, db *driver.DB) *DefaultApp {
+func NewDefaultApp(config *viper.Viper, db *driver.DB) *DefaultApp {
 	return &DefaultApp{
 		Config:  config,
 		AppImpl: core.NewAppImpl("post", config, db, []core.Handler{}),

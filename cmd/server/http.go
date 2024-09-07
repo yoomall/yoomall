@@ -3,11 +3,12 @@ package main
 import (
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	defappConfig "lazyfury.github.com/yoomall-server/app/config"
-	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
+	"lazyfury.github.com/yoomall-server/core/constants"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	httpserver "lazyfury.github.com/yoomall-server/core/http"
 	"lazyfury.github.com/yoomall-server/docs"
@@ -15,7 +16,7 @@ import (
 )
 
 func NewHttpServer(
-	config *config.Config,
+	config *viper.Viper,
 
 	app *defappConfig.DefaultApp,
 	postApp *post.DefaultApp,
@@ -37,14 +38,14 @@ func NewHttpServer(
 	}
 }
 
-func NewDB(config *config.Config) *driver.DB {
-	return driver.NewDB(config.MysqlDsn())
+func NewDB(config *viper.Viper) *driver.DB {
+	return driver.NewDB(config.GetString("mysql.dsn"))
 }
 
-func setup(engine *gin.Engine, config *config.Config) {
+func setup(engine *gin.Engine, config *viper.Viper) {
 	engine.SetTrustedProxies(nil)
 
-	if config.DEBUG {
+	if config.GetBool(constants.DEBUG) {
 		gin.SetMode(gin.DebugMode)
 	} else {
 		gin.SetMode(gin.ReleaseMode)
@@ -62,13 +63,13 @@ func setupSwag(engine *gin.Engine) {
 type RegisterApp struct {
 	router *gin.RouterGroup
 	app    core.App
-	config *config.Config
+	config *viper.Viper
 }
 
 func (instance *RegisterApp) Register() {
 	log.Info(instance.app.GetName() + "====================================")
 	log.Info("注册app", "app", instance.app.GetName())
-	if instance.config.DEBUG {
+	if instance.config.GetBool(constants.DEBUG) {
 		log.Info("迁移中", "app", instance.app.GetName())
 		instance.app.Migrate()
 		log.Info("迁移成功 success", "app", instance.app.GetName())

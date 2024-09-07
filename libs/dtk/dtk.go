@@ -14,6 +14,7 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/patrickmn/go-cache"
+	"github.com/spf13/viper"
 	"golang.org/x/exp/rand"
 )
 
@@ -26,6 +27,14 @@ type DtkConfig struct {
 type Dtk struct {
 	Config *DtkConfig
 	cache  *cache.Cache
+}
+
+func NewDtkFromViper(v *viper.Viper) (*Dtk, error) {
+	return NewDtkClient(&DtkConfig{
+		AppKey:    v.GetString("dtk.app_key"),
+		AppSecret: v.GetString("dtk.app_secret"),
+		AppUrl:    v.GetString("dtk.app_url"),
+	})
 }
 
 func NewDtkClient(config *DtkConfig) (*Dtk, error) {

@@ -1,20 +1,18 @@
 package httpserver
 
 import (
-	"strconv"
-
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/config"
+	"github.com/spf13/viper"
 )
 
 type HttpServer struct {
 	Engine *gin.Engine
-	Config *config.Config
+	Config *viper.Viper
 }
 
 func (h *HttpServer) Start() *gin.Engine {
-	port := strconv.Itoa(h.Config.HTTP.Port)
+	port := h.Config.GetString("http.port")
 	if port == "0" {
 		port = "8900"
 	}

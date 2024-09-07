@@ -6,7 +6,7 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/config"
+	"github.com/spf13/viper"
 	"lazyfury.github.com/yoomall-server/core/helper/response"
 	"lazyfury.github.com/yoomall-server/libs/dtk"
 )
@@ -15,8 +15,8 @@ type DtkHandler struct {
 	dtkClient *dtk.Dtk
 }
 
-func NewDtkHandler(config *config.Config) *DtkHandler {
-	clent, err := dtk.NewDtkClient(config.DTK)
+func NewDtkHandler(config *viper.Viper) *DtkHandler {
+	clent, err := dtk.NewDtkFromViper(config)
 	if err != nil {
 		log.Fatal(err)
 	}

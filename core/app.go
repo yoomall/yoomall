@@ -2,7 +2,7 @@ package core
 
 import (
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/config"
+	"github.com/spf13/viper"
 	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
@@ -11,18 +11,18 @@ type App interface {
 	GetDB() *driver.DB
 	Migrate()
 	Middleware() []gin.HandlerFunc
-	GetConfig() *config.Config
+	GetConfig() *viper.Viper
 	Register(router *gin.RouterGroup)
 }
 
 type AppImpl struct {
 	AppName   string
-	AppConfig *config.Config
+	AppConfig *viper.Viper
 	db        *driver.DB
 	Handlers  []Handler
 }
 
-func NewAppImpl(name string, config *config.Config, db *driver.DB, handlers []Handler) *AppImpl {
+func NewAppImpl(name string, config *viper.Viper, db *driver.DB, handlers []Handler) *AppImpl {
 	return &AppImpl{
 		AppName:   name,
 		AppConfig: config,
@@ -31,7 +31,7 @@ func NewAppImpl(name string, config *config.Config, db *driver.DB, handlers []Ha
 	}
 }
 
-func (a *AppImpl) GetConfig() *config.Config {
+func (a *AppImpl) GetConfig() *viper.Viper {
 	return a.AppConfig
 }
 

@@ -2,8 +2,8 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"lazyfury.github.com/yoomall-server/app/model"
-	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	"lazyfury.github.com/yoomall-server/core/helper/curd"
@@ -15,7 +15,7 @@ type UserHandler struct {
 
 var _ core.Handler = (*UserHandler)(nil)
 
-func NewUserHandler(db *driver.DB, config *config.Config) *UserHandler {
+func NewUserHandler(db *driver.DB, config *viper.Viper) *UserHandler {
 	return &UserHandler{
 		CRUD: &curd.CRUD{
 			DB:    db,

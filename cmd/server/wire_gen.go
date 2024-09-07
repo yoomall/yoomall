@@ -17,12 +17,12 @@ import (
 // Injectors from wire.go:
 
 func NewApp() httpserver.HttpServer {
-	configConfig := config.NewConfig()
-	db := NewDB(configConfig)
-	userHandler := handler.NewUserHandler(db, configConfig)
-	dtkHandler := handler.NewDtkHandler(configConfig)
-	defaultApp := app.NewWireDefaultApp(configConfig, db, userHandler, dtkHandler)
-	postDefaultApp := post.NewDefaultApp(configConfig, db)
-	httpServer := NewHttpServer(configConfig, defaultApp, postDefaultApp)
+	viper := config.NewConfig()
+	db := NewDB(viper)
+	userHandler := handler.NewUserHandler(db, viper)
+	dtkHandler := handler.NewDtkHandler(viper)
+	defaultApp := app.NewWireDefaultApp(viper, db, userHandler, dtkHandler)
+	postDefaultApp := post.NewDefaultApp(viper, db)
+	httpServer := NewHttpServer(viper, defaultApp, postDefaultApp)
 	return httpServer
 }
