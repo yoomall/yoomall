@@ -9,7 +9,7 @@ import (
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/constants"
 	"lazyfury.github.com/yoomall-server/core/driver"
-	"lazyfury.github.com/yoomall-server/core/response"
+	"lazyfury.github.com/yoomall-server/core/helper/response"
 	"lazyfury.github.com/yoomall-server/libs/dtk"
 )
 

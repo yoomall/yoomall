@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"lazyfury.github.com/yoomall-server/app/model"
 	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/curd"
+	"lazyfury.github.com/yoomall-server/core/helper/curd"
 )
 
 type UserHandler struct {
