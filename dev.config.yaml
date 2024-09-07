@@ -1,0 +1,11 @@
+mysql:
+    dsn: yoomall:yoomall@tcp(127.0.0.1:3306)/yoomall
+debug: true
+http:
+    host: 127.0.0.1
+    port: 8900
+dtk: 
+    app_key: --
+    app_secret: --
+    app_url: https://openapi.dataoke.com/api/
+storage_path: ./storage
