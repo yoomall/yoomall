@@ -18,6 +18,8 @@ type DefaultApp struct {
 	AuthMiddlewares []gin.HandlerFunc
 }
 
+var _ core.App = (*DefaultApp)(nil)
+
 func NewWireDefaultApp(config *config.Config, db *driver.DB) *DefaultApp {
 	return &DefaultApp{
 		Config:          config,

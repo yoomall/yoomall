@@ -10,6 +10,7 @@ import (
 	"lazyfury.github.com/yoomall-server/app"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core/http"
+	"lazyfury.github.com/yoomall-server/modules/post"
 )
 
 // Injectors from wire.go:
@@ -18,6 +19,7 @@ func NewApp() httpserver.HttpServer {
 	configConfig := config.NewConfig()
 	db := NewDB(configConfig)
 	defaultApp := app.NewWireDefaultApp(configConfig, db)
-	httpServer := NewHttpServer(defaultApp)
+	postDefaultApp := post.NewDefaultApp(configConfig, db)
+	httpServer := NewHttpServer(defaultApp, postDefaultApp)
 	return httpServer
 }

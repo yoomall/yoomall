@@ -12,24 +12,31 @@ import (
 	"lazyfury.github.com/yoomall-server/core/driver"
 	httpserver "lazyfury.github.com/yoomall-server/core/http"
 	"lazyfury.github.com/yoomall-server/docs"
+	"lazyfury.github.com/yoomall-server/modules/post"
 )
 
-func NewDB(config *config.Config) *driver.DB {
-	return driver.NewDB(config.MysqlDsn())
-}
-
-func NewHttpServer(app *app.DefaultApp) httpserver.HttpServer {
+func NewHttpServer(
+	app *app.DefaultApp,
+	postApp *post.DefaultApp,
+) httpserver.HttpServer {
 	engine := gin.Default()
 
 	setup(engine)
 
 	v1 := engine.Group("/api/v1")
 
-	register(&RegisterApp{app: app, router: v1.Group("")})
+	register(
+		&RegisterApp{app: app, router: v1.Group("")},
+		&RegisterApp{app: postApp, router: v1.Group("/posts")},
+	)
 
 	return httpserver.HttpServer{
 		Engine: engine,
 	}
+}
+
+func NewDB(config *config.Config) *driver.DB {
+	return driver.NewDB(config.MysqlDsn())
 }
 
 func setup(engine *gin.Engine) {
@@ -62,14 +69,16 @@ type RegisterApp struct {
 }
 
 func (instance *RegisterApp) Register() {
-	log.Info("register app", "app", instance.app.GetName())
+	log.Info(instance.app.GetName() + "====================================")
+	log.Info("注册app", "app", instance.app.GetName())
 	if constants.CONFIG.DEBUG {
+		log.Info("迁移中", "app", instance.app.GetName())
 		instance.app.Migrate()
-		log.Info("migrate success", "app", instance.app.GetName())
+		log.Info("迁移成功 success", "app", instance.app.GetName())
 	}
 	instance.router.Use(instance.app.Middleware()...)
 	instance.app.Register(instance.router)
-	log.Info("register app success", "app", instance.app.GetName())
+	log.Info("注册成功", "app", instance.app.GetName())
 }
 
 func register(apps ...*RegisterApp) {

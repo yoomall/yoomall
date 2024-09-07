@@ -2,8 +2,10 @@ package post
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/wire"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
+	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
 type DefaultApp struct {
@@ -11,12 +13,15 @@ type DefaultApp struct {
 	Config *config.Config
 }
 
-func NewDefaultApp(engine *gin.Engine, router *gin.RouterGroup, config *config.Config) core.App {
+func NewDefaultApp(config *config.Config, db *driver.DB) *DefaultApp {
 	return &DefaultApp{
 		Config:  config,
-		AppImpl: core.NewAppImpl("post", config, nil),
+		AppImpl: core.NewAppImpl("post", config, db),
 	}
 }
+
+var WireSet = wire.NewSet(NewDefaultApp)
+var _ core.App = (*DefaultApp)(nil)
 
 func (d *DefaultApp) Register(router *gin.RouterGroup) {
 	router.GET("/list", func(ctx *gin.Context) {
