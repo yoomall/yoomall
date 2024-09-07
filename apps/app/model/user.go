@@ -1,11 +1,13 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"lazyfury.github.com/yoomall-server/core"
+)
 
 type User struct {
-	*gorm.Model
+	*core.Model
 	UserName string `gorm:"not null;unique;index;column:username" json:"username"`
-	Password string `gorm:"column:password" json:"password"`
+	Password string `gorm:"column:password" json:"-"`
 	Role     int    `gorm:"column:role" json:"role"`
 	Avatar   string `gorm:"column:avatar" json:"avatar"`
 	Email    string `gorm:"not null;unique;index;column:email;validation:email" json:"email"`

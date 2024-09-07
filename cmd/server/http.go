@@ -11,6 +11,7 @@ import (
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	httpserver "lazyfury.github.com/yoomall-server/core/http"
+	coremiddleware "lazyfury.github.com/yoomall-server/core/middleware"
 	"lazyfury.github.com/yoomall-server/docs"
 )
 
@@ -23,6 +24,8 @@ func NewHttpServer(
 	engine := gin.Default()
 
 	setup(engine)
+
+	engine.Use(coremiddleware.CORSMiddleware())
 
 	v1 := engine.Group("/api/v1")
 

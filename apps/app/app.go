@@ -17,12 +17,11 @@ type DefaultApp struct {
 var _ core.App = (*DefaultApp)(nil)
 
 func (d *DefaultApp) Migrate() {
-	d.GetDB().AutoMigrate(&model.User{})
+	d.GetDB().AutoMigrate(&model.User{}, &model.UserToken{})
 }
 
 func (d *DefaultApp) Middleware() []gin.HandlerFunc {
 	return []gin.HandlerFunc{
-		coremiddleware.CORSMiddleware(),
 		coremiddleware.RecoverHandlerFunc,
 	}
 }

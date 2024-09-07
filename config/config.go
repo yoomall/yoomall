@@ -33,9 +33,11 @@ var _viper *viper.Viper = NewConfig()
 
 // 常用配置： viper 的用法很难收集配置，记录一些常用的配置，方便以后使用
 var Config = struct {
-	Port  int
-	DEBUG bool
+	Port     int
+	DEBUG    bool
+	MysqlDsn string
 }{
-	Port:  _viper.GetInt(constants.PORT),
-	DEBUG: _viper.GetBool(constants.DEBUG),
+	Port:     _viper.GetInt(constants.PORT),
+	DEBUG:    _viper.GetBool(constants.DEBUG),
+	MysqlDsn: _viper.GetString(constants.MYSQL_DSN),
 }

@@ -58,7 +58,8 @@ func (instance *RegisterApp) Register() {
 		instance.App.Migrate()
 		log.Info("迁移成功 success", "app", instance.App.GetName())
 	}
-	instance.Router.Use(instance.App.Middleware()...)
-	instance.App.Register(instance.Router)
+	router := instance.Router.Group("")
+	router.Use(instance.App.Middleware()...)
+	instance.App.Register(router)
 	log.Info("注册成功", "app", instance.App.GetName())
 }
