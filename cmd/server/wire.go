@@ -5,10 +5,10 @@ package main
 
 import (
 	"github.com/google/wire"
-	"lazyfury.github.com/yoomall-server/app"
+	"lazyfury.github.com/yoomall-server/apps/app"
+	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
 	httpserver "lazyfury.github.com/yoomall-server/core/http"
-	"lazyfury.github.com/yoomall-server/modules/post"
 )
 
 func NewApp() httpserver.HttpServer {

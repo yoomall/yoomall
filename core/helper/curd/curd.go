@@ -1,6 +1,7 @@
 package curd
 
 import (
+	"regexp"
 	"strconv"
 
 	"github.com/charmbracelet/log"
@@ -8,6 +9,7 @@ import (
 	"gorm.io/gorm"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	"lazyfury.github.com/yoomall-server/core/helper/response"
+	"lazyfury.github.com/yoomall-server/core/helper/utils"
 )
 
 type CRUD struct {
@@ -40,6 +42,61 @@ func (c *CRUD) GetList(list any, page int, limit int, params map[string]string) 
 	return c.DB.Model(c.Model).Where(params).Limit(limit).Offset((page - 1) * limit)
 }
 
+func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
+	tx := c.DB.Model(c.Model)
+	for k, v := range params {
+
+		// log.Info("where", "key", k, "value", v)
+		if regexp.MustCompile(`^(\S+)__(in|not_in|like|eq|gt|lt|is_null|is_not_null)$`).MatchString(k) {
+			delete(params, k)
+			find := regexp.MustCompile(`^(\S+)__(in|not in|like|eq|gt|lt)$`).FindStringSubmatch(k)
+			key := find[1]
+			action := find[2]
+			log.Info("find pattern", "key", key, "action", action)
+			switch action {
+			case "in":
+				tx = tx.Where(key+" IN (?)", utils.TryInterfaceToStringToArray(v))
+			case "not_in":
+				tx = tx.Where(key+" NOT IN (?)", utils.TryInterfaceToStringToArray(v))
+			case "like":
+				tx = tx.Where(key+" LIKE ?", "%"+v.(string)+"%")
+			case "eq":
+				tx = tx.Where(key+" = ?", v)
+			case "gt":
+				tx = tx.Where(key+" > ?", v)
+			case "lt":
+				tx = tx.Where(key+" < ?", v)
+			case "is_null":
+				tx = tx.Where(key + " IS NULL")
+			case "is_not_null":
+				tx = tx.Where(key + " IS NOT NULL")
+			}
+		}
+
+		// sort
+		if regexp.MustCompile(`^(\S+)__(desc|asc)$`).MatchString(k) {
+			delete(params, k)
+			find := regexp.MustCompile(`^(\S+)__(desc|asc)$`).FindStringSubmatch(k)
+			key := find[1]
+			action := find[2]
+			// log.Info("find pattern", "key", key, "action", action)
+			switch action {
+			case "desc":
+				tx = tx.Order(key + " DESC")
+			case "asc":
+				tx = tx.Order(key + " ASC")
+			}
+		}
+
+		if v == "" {
+			delete(params, k)
+		}
+
+	}
+	tx = tx.Where(params)
+	return tx
+}
+
 // get list handler
 func (c *CRUD) GetListHandler(list any) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
@@ -52,7 +109,7 @@ func (c *CRUD) GetListHandler(list any) func(ctx *gin.Context) {
 		log.Info("get list", "page", page, "limit", limit, "params", params)
 
 		// query
-		query := c.DB.Model(c.Model).Where(params)
+		query := c.Where(utils.StringMapToInterfaceMap(params))
 		var count int64 = 0
 		query.Count(&count)
 

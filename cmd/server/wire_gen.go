@@ -7,11 +7,11 @@
 package main
 
 import (
-	"lazyfury.github.com/yoomall-server/app"
-	"lazyfury.github.com/yoomall-server/app/handler"
+	"lazyfury.github.com/yoomall-server/apps/app"
+	"lazyfury.github.com/yoomall-server/apps/app/handler"
+	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core/http"
-	"lazyfury.github.com/yoomall-server/modules/post"
 )
 
 // Injectors from wire.go:

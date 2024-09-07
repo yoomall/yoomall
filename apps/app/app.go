@@ -3,7 +3,7 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/app/model"
+	"lazyfury.github.com/yoomall-server/apps/app/model"
 	"lazyfury.github.com/yoomall-server/core"
 	coremiddleware "lazyfury.github.com/yoomall-server/core/middleware"
 )

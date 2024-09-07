@@ -5,6 +5,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"lazyfury.github.com/yoomall-server/config"
 )
 
 type DB struct {
@@ -17,7 +19,13 @@ func NewEmptyDB() *DB {
 
 func NewDB(dsn string) *DB {
 	log.Info("dsn: " + dsn)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	loggerMode := logger.Silent
+	if config.Config.DEBUG {
+		loggerMode = logger.Info
+	}
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: logger.Default.LogMode(loggerMode),
+	})
 	if err != nil {
 		panic(err)
 	}

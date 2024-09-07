@@ -5,13 +5,13 @@ import (
 	"github.com/spf13/viper"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"lazyfury.github.com/yoomall-server/app"
+	"lazyfury.github.com/yoomall-server/apps/app"
+	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	httpserver "lazyfury.github.com/yoomall-server/core/http"
 	"lazyfury.github.com/yoomall-server/docs"
-	"lazyfury.github.com/yoomall-server/modules/post"
 )
 
 func NewHttpServer(
