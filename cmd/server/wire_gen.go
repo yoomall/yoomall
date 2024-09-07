@@ -8,6 +8,7 @@ package main
 
 import (
 	"lazyfury.github.com/yoomall-server/app"
+	"lazyfury.github.com/yoomall-server/app/handler"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core/http"
 	"lazyfury.github.com/yoomall-server/modules/post"
@@ -18,8 +19,10 @@ import (
 func NewApp() httpserver.HttpServer {
 	configConfig := config.NewConfig()
 	db := NewDB(configConfig)
-	defaultApp := app.NewWireDefaultApp(configConfig, db)
+	userHandler := handler.NewUserHandler(db, configConfig)
+	dtkHandler := handler.NewDtkHandler(configConfig)
+	defaultApp := app.NewWireDefaultApp(configConfig, db, userHandler, dtkHandler)
 	postDefaultApp := post.NewDefaultApp(configConfig, db)
-	httpServer := NewHttpServer(defaultApp, postDefaultApp)
+	httpServer := NewHttpServer(configConfig, defaultApp, postDefaultApp)
 	return httpServer
 }

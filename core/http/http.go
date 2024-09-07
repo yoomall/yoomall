@@ -5,15 +5,16 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/core/constants"
+	"lazyfury.github.com/yoomall-server/config"
 )
 
 type HttpServer struct {
 	Engine *gin.Engine
+	Config *config.Config
 }
 
 func (h *HttpServer) Start() *gin.Engine {
-	port := strconv.Itoa(constants.CONFIG.HTTP.Port)
+	port := strconv.Itoa(h.Config.HTTP.Port)
 	if port == "0" {
 		port = "8900"
 	}

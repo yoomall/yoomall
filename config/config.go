@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"gopkg.in/yaml.v3"
+	"lazyfury.github.com/yoomall-server/core/constants"
 	"lazyfury.github.com/yoomall-server/libs/dtk"
 )
 
@@ -38,6 +39,10 @@ type Config struct {
 }
 
 func NewConfig() *Config {
+	config_file_path := os.Getenv(constants.YOO_CONFIG)
+	if config_file_path != "" {
+		return GetConfig(config_file_path)
+	}
 	return GetConfig("./config.yaml")
 }
 

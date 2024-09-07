@@ -16,7 +16,7 @@ type DefaultApp struct {
 func NewDefaultApp(config *config.Config, db *driver.DB) *DefaultApp {
 	return &DefaultApp{
 		Config:  config,
-		AppImpl: core.NewAppImpl("post", config, db),
+		AppImpl: core.NewAppImpl("post", config, db, []core.Handler{}),
 	}
 }
 

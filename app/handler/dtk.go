@@ -6,37 +6,31 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/constants"
-	"lazyfury.github.com/yoomall-server/core/driver"
+	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core/helper/response"
 	"lazyfury.github.com/yoomall-server/libs/dtk"
 )
 
 type DtkHandler struct {
-	*handler
 	dtkClient *dtk.Dtk
 }
 
-func NewDtkHandler(app core.App) Handler {
-	clent, err := dtk.NewDtkClient(app.GetConfig().DTK)
+func NewDtkHandler(config *config.Config) *DtkHandler {
+	clent, err := dtk.NewDtkClient(config.DTK)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return &DtkHandler{
-		handler: &handler{
-			App: app,
-		},
 		dtkClient: clent,
 	}
 }
 
-func (d *DtkHandler) DB() *driver.DB {
-	return constants.DB
-}
-
 func (d *DtkHandler) Register(router *gin.RouterGroup) {
 	router.GET("", d.dtk)
+}
+
+func (d *DtkHandler) GetRouterGroupName() string {
+	return "dtk"
 }
 
 // 大淘客接口 godoc
