@@ -11,3 +11,5 @@ dist
 
 config.yaml
 tmp/*
+
+**/.DS_Store
