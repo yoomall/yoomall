@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"regexp"
 	"time"
 
 	"github.com/google/uuid"
@@ -61,7 +62,33 @@ func (s *AuthService) LoginWithUsernameAndPassword(username string, password str
 	return &user, &userToken, nil
 }
 
+func (s *AuthService) CheckPasswordStrength(password string) error {
+	lenth := len(password)
+	if lenth < 8 {
+		return fmt.Errorf("密码太短")
+	}
+	if lenth > 32 {
+		return fmt.Errorf("密码太长")
+	}
+
+	// has letter and number
+	if !regexp.MustCompile(`[a-zA-Z0-9]+`).MatchString(password) {
+		return fmt.Errorf("密码必须包含字母和数字")
+	}
+
+	return nil
+}
+
 func (s *AuthService) CreateUser(user *model.User) error {
+	if err := s.CheckPasswordStrength(user.Password); err != nil {
+		return err
+	}
+
+	find := s.DB.Where("username = ?", user.UserName).First(&model.User{}).Error
+	if find == nil {
+		return fmt.Errorf("用户已存在")
+	}
+
 	user.Password, _ = s.HashedPassword(user.Password)
 	return s.DB.Create(user).Error
 }

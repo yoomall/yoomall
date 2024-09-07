@@ -31,6 +31,7 @@ func NewUserHandler(db *driver.DB, config *viper.Viper, service *service.AuthSer
 
 func (u *UserHandler) Register(router *gin.RouterGroup) {
 	router.POST("/login", u.LoginWithUsernameAndPassword)
+	router.GET("/list", u.CRUD.GetListHandler(&[]model.User{}))
 }
 
 func (u *UserHandler) GetRouterGroupName() string {
