@@ -89,6 +89,18 @@ func (d *Dtk) checkParams(params map[string]string) error {
 	if d.Config.AppSecret == "" {
 		return fmt.Errorf("app_secret is required")
 	}
+
+	if params["path"] == "" {
+		return fmt.Errorf("path is required")
+	}
+
+	if params["method"] == "" {
+		params["method"] = http.MethodGet
+	}
+
+	if params["version"] == "" {
+		params["version"] = "v1.0.0"
+	}
 	return nil
 }
 
