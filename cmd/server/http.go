@@ -6,9 +6,9 @@ import (
 	"github.com/spf13/viper"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	defappConfig "lazyfury.github.com/yoomall-server/app/config"
+	"lazyfury.github.com/yoomall-server/app"
+	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/constants"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	httpserver "lazyfury.github.com/yoomall-server/core/http"
 	"lazyfury.github.com/yoomall-server/docs"
@@ -18,18 +18,18 @@ import (
 func NewHttpServer(
 	config *viper.Viper,
 
-	app *defappConfig.DefaultApp,
+	app *app.DefaultApp,
 	postApp *post.DefaultApp,
 ) httpserver.HttpServer {
 	engine := gin.Default()
 
-	setup(engine, config)
+	setup(engine)
 
 	v1 := engine.Group("/api/v1")
 
 	register(
-		&RegisterApp{app: app, router: v1.Group(""), config: config},
-		&RegisterApp{app: postApp, router: v1.Group("/posts"), config: config},
+		&RegisterApp{app: app, router: v1.Group("")},
+		&RegisterApp{app: postApp, router: v1.Group("/posts")},
 	)
 
 	return httpserver.HttpServer{
@@ -42,10 +42,10 @@ func NewDB(config *viper.Viper) *driver.DB {
 	return driver.NewDB(config.GetString("mysql.dsn"))
 }
 
-func setup(engine *gin.Engine, config *viper.Viper) {
+func setup(engine *gin.Engine) {
 	engine.SetTrustedProxies(nil)
 
-	if config.GetBool(constants.DEBUG) {
+	if config.Config.DEBUG {
 		gin.SetMode(gin.DebugMode)
 	} else {
 		gin.SetMode(gin.ReleaseMode)
@@ -63,13 +63,12 @@ func setupSwag(engine *gin.Engine) {
 type RegisterApp struct {
 	router *gin.RouterGroup
 	app    core.App
-	config *viper.Viper
 }
 
 func (instance *RegisterApp) Register() {
 	log.Info(instance.app.GetName() + "====================================")
 	log.Info("注册app", "app", instance.app.GetName())
-	if instance.config.GetBool(constants.DEBUG) {
+	if config.Config.DEBUG {
 		log.Info("迁移中", "app", instance.app.GetName())
 		instance.app.Migrate()
 		log.Info("迁移成功 success", "app", instance.app.GetName())

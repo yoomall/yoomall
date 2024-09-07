@@ -1,9 +1,12 @@
 package httpserver
 
 import (
+	"strconv"
+
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"lazyfury.github.com/yoomall-server/config"
 )
 
 type HttpServer struct {
@@ -12,7 +15,7 @@ type HttpServer struct {
 }
 
 func (h *HttpServer) Start() *gin.Engine {
-	port := h.Config.GetString("http.port")
+	port := strconv.Itoa(config.Config.Port)
 	if port == "0" {
 		port = "8900"
 	}

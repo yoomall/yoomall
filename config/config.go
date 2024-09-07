@@ -27,30 +27,13 @@ func GetConfig(file string) *viper.Viper {
 	return config
 }
 
-type MysqlConfig struct {
-	Host     string
-	Port     int
-	Username string
-	Password string
-	DbName   string
-}
+var _viper *viper.Viper = NewConfig()
 
-func GetMysqlConfig(config *viper.Viper) *MysqlConfig {
-	return &MysqlConfig{
-		Host:     config.GetString("mysql.host"),
-		Port:     config.GetInt("mysql.port"),
-		Username: config.GetString("mysql.username"),
-		Password: config.GetString("mysql.password"),
-		DbName:   config.GetString("mysql.db_name"),
-	}
-}
-
-type HttpConfig struct {
-	Port int
-}
-
-func GetHttpConfig(config *viper.Viper) *HttpConfig {
-	return &HttpConfig{
-		Port: config.GetInt("http.port"),
-	}
+// 常用配置： viper 的用法很难收集配置，记录一些常用的配置，方便以后使用
+var Config = struct {
+	Port  int
+	DEBUG bool
+}{
+	Port:  _viper.GetInt(constants.PORT),
+	DEBUG: _viper.GetBool(constants.DEBUG),
 }

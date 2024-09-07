@@ -1,9 +1,8 @@
-package defappConfig
+package app
 
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/app/middleware"
 	"lazyfury.github.com/yoomall-server/app/model"
 	"lazyfury.github.com/yoomall-server/core"
 	coremiddleware "lazyfury.github.com/yoomall-server/core/middleware"
@@ -23,7 +22,7 @@ func (d *DefaultApp) Migrate() {
 
 func (d *DefaultApp) Middleware() []gin.HandlerFunc {
 	return []gin.HandlerFunc{
-		middleware.CORSMiddleware(),
+		coremiddleware.CORSMiddleware(),
 		coremiddleware.RecoverHandlerFunc,
 	}
 }
