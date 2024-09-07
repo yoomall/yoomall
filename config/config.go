@@ -37,6 +37,10 @@ type Config struct {
 	STORAGT_PATH string `yaml:"storage_path"`
 }
 
+func NewConfig() *Config {
+	return GetConfig("./config.yaml")
+}
+
 func GetConfig(file string) *Config {
 	// 读取配置
 	b, err := os.ReadFile(file)

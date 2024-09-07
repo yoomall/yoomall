@@ -2,11 +2,13 @@ package app
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/wire"
 	"lazyfury.github.com/yoomall-server/app/handler"
 	"lazyfury.github.com/yoomall-server/app/middleware"
 	"lazyfury.github.com/yoomall-server/app/model"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
+	"lazyfury.github.com/yoomall-server/core/driver"
 	coremiddleware "lazyfury.github.com/yoomall-server/core/middleware"
 )
 
@@ -16,17 +18,19 @@ type DefaultApp struct {
 	AuthMiddlewares []gin.HandlerFunc
 }
 
-func NewDefaultApp(engine *gin.Engine, router *gin.RouterGroup, config *config.Config) core.App {
+func NewWireDefaultApp(config *config.Config, db *driver.DB) *DefaultApp {
 	return &DefaultApp{
 		Config:          config,
-		AppImpl:         core.NewAppImpl("default", router, config),
+		AppImpl:         core.NewAppImpl("default", config, db),
 		AuthMiddlewares: []gin.HandlerFunc{},
 	}
 }
 
-func (d *DefaultApp) Register() {
-	handler.NewDtkHandler(d).Register(d.GetRouter().Group("/dtk"))
-	handler.NewUserHandler(d).Register(d.GetRouter().Group("/users", d.AuthMiddlewares...))
+var WireSet = wire.NewSet(NewWireDefaultApp)
+
+func (d *DefaultApp) Register(router *gin.RouterGroup) {
+	handler.NewDtkHandler(d).Register(router.Group("/dtk"))
+	handler.NewUserHandler(d).Register(router.Group("/users", d.AuthMiddlewares...))
 }
 
 func (d *DefaultApp) Migrate() {

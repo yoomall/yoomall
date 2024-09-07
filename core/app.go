@@ -9,8 +9,7 @@ import (
 
 type App interface {
 	GetName() string
-	GetRouter() *gin.RouterGroup
-	Register() // 注册路由
+	Register(router *gin.RouterGroup) // 注册路由
 	GetDB() *driver.DB
 	Migrate()
 	Middleware() []gin.HandlerFunc
@@ -19,15 +18,15 @@ type App interface {
 
 type AppImpl struct {
 	AppName   string
-	AppRouter *gin.RouterGroup
 	AppConfig *config.Config
+	db        *driver.DB
 }
 
-func NewAppImpl(name string, router *gin.RouterGroup, config *config.Config) *AppImpl {
+func NewAppImpl(name string, config *config.Config, db *driver.DB) *AppImpl {
 	return &AppImpl{
 		AppName:   name,
-		AppRouter: router,
 		AppConfig: config,
+		db:        db,
 	}
 }
 
@@ -41,8 +40,4 @@ func (a *AppImpl) GetName() string {
 
 func (a *AppImpl) GetDB() *driver.DB {
 	return constants.DB
-}
-
-func (a *AppImpl) GetRouter() *gin.RouterGroup {
-	return a.AppRouter
 }

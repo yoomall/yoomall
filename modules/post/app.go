@@ -14,12 +14,12 @@ type DefaultApp struct {
 func NewDefaultApp(engine *gin.Engine, router *gin.RouterGroup, config *config.Config) core.App {
 	return &DefaultApp{
 		Config:  config,
-		AppImpl: core.NewAppImpl("post", router, config),
+		AppImpl: core.NewAppImpl("post", config, nil),
 	}
 }
 
-func (d *DefaultApp) Register() {
-	d.GetRouter().GET("/list", func(ctx *gin.Context) {
+func (d *DefaultApp) Register(router *gin.RouterGroup) {
+	router.GET("/list", func(ctx *gin.Context) {
 		ctx.JSON(200, map[string]any{"data": []any{}})
 	})
 }
