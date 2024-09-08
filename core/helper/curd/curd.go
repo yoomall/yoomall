@@ -71,6 +71,8 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 			case "is_not_null":
 				tx = tx.Where(key + " IS NOT NULL")
 			}
+
+			continue
 		}
 
 		// sort

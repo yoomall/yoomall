@@ -23,7 +23,7 @@ func seedingUsers() *cobra.Command {
 
 			users := []model.User{}
 
-			for i := 0; i < 20; i++ {
+			for i := 0; i < 9999; i++ {
 				users = append(users, model.User{
 					UserName: getRandomEmail(),
 					Password: "yoo123456",
@@ -48,7 +48,16 @@ func getRandomEmail() string {
 }
 
 func getRandomPhone() string {
-	return fmt.Sprintf("%s%s", "133", getRandomStr(8))
+	return fmt.Sprintf("%s%s", "133", getRandomNumber(8))
+}
+
+func getRandomNumber(length int) string {
+	seed := "1234567890"
+	randStr := make([]byte, length)
+	for i := range randStr {
+		randStr[i] = seed[rand.IntN(len(seed))]
+	}
+	return string(randStr)
 }
 
 func getRandomStr(length int) string {

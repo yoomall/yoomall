@@ -90,17 +90,6 @@ func (d *Dtk) checkParams(params map[string]string) error {
 		return fmt.Errorf("app_secret is required")
 	}
 
-	if params["path"] == "" {
-		return fmt.Errorf("path is required")
-	}
-
-	if params["method"] == "" {
-		params["method"] = http.MethodGet
-	}
-
-	if params["version"] == "" {
-		params["version"] = "v1.0.0"
-	}
 	return nil
 }
 
@@ -151,7 +140,7 @@ func (d *Dtk) RequestWithCache(path string, method string, version string, param
 	resp, err := d.Request(path, method, version, params)
 
 	if err != nil {
-		return []byte(""), false
+		return []byte(err.Error()), false
 	}
 
 	d.cache.Set(hash, resp, 5*time.Minute)

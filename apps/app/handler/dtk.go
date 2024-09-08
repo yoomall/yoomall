@@ -70,7 +70,7 @@ func (d *DtkHandler) dtk(ctx *gin.Context) {
 	var data map[string]any
 	err := json.Unmarshal(body, &data)
 	if err != nil {
-		response.Error(response.ErrInternalError, err.Error()).Done(ctx)
+		response.Error(response.ErrInternalError, err.Error()).WithData(string(body)).Done(ctx)
 		return
 	}
 

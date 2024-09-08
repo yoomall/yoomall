@@ -17,7 +17,7 @@ type DefaultApp struct {
 var _ core.App = (*DefaultApp)(nil)
 
 func (d *DefaultApp) Migrate() {
-	d.GetDB().AutoMigrate(&model.User{}, &model.UserToken{})
+	d.GetDB().AutoMigrate(&model.User{}, &model.UserToken{}, &model.UserExt{})
 }
 
 func (d *DefaultApp) Middleware() []gin.HandlerFunc {

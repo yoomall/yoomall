@@ -13,7 +13,14 @@ type User struct {
 	Email    string `gorm:"not null;unique;index;column:email;validation:email" json:"email"`
 	Phone    string `gorm:"not null;index;unique;column:phone;validation:phone" json:"phone"`
 
-	Bio string `gorm:"column:bio" json:"bio"`
+	Bio   string   `gorm:"column:bio" json:"bio"`
+	ExtId string   `gorm:"column:ext_id" json:"ext_id"`
+	Ext   *UserExt `gorm:"foreignKey:ext_id;references:id" json:"ext"`
+}
+
+type UserExt struct {
+	*core.Model
+	ThridPartyId string `gorm:"column:thrid_party_id" json:"thrid_party_id"`
 }
 
 func (m *User) TableName() string {

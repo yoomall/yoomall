@@ -44,6 +44,12 @@ func (a *ApiJsonResponse) WithExtra(extra map[string]any) *ApiJsonResponse {
 	return a
 }
 
+// with data
+func (a *ApiJsonResponse) WithData(data interface{}) *ApiJsonResponse {
+	a.Data = data
+	return a
+}
+
 // success
 func Success(data interface{}) *ApiJsonResponse {
 	return NewApiJsonResponse(http.StatusOK, "ok", data, http.StatusOK)
