@@ -1,5 +1,9 @@
-FROM alpine:latest
+FROM golang:1.23.1-bullseye
 
 WORKDIR /app
-COPY ./dist/ /app
-ADD ./docker/config.yaml /app/config.yaml
+
+COPY . .
+
+RUN go mod download
+
+RUN ./build.sh
