@@ -1,8 +1,10 @@
 package curd
 
 import (
+	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
@@ -38,57 +40,49 @@ func (c *CRUD) GetTableName() string {
 	return fn.TableName()
 }
 
-func (c *CRUD) GetList(list any, page int, limit int, params map[string]string) (tx *gorm.DB) {
-	return c.DB.Model(c.Model).Where(params).Limit(limit).Offset((page - 1) * limit)
+func (c *CRUD) GetList(ctx *gin.Context) map[string]any {
+	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
+	limit, _ := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
+	var params map[string]string = make(map[string]string)
+	ctx.ShouldBindQuery(&params)
+	delete(params, "page")
+	delete(params, "limit")
+	return map[string]any{
+		"query": c.Where(utils.StringMapToInterfaceMap(params)),
+		"page":  page,
+		"limit": limit,
+	}
 }
+
+var searchAct = []string{"in", "not_in", "like", "eq", "gt", "lt", "is_null", "is_not_null", "asc", "desc"}
 
 func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 	tx := c.DB.Model(c.Model)
 	for k, v := range params {
 
-		// log.Info("where", "key", k, "value", v)
-		if regexp.MustCompile(`^(\S+)__(in|not_in|like|eq|gt|lt|is_null|is_not_null)$`).MatchString(k) {
+		// 外键查询
+		fk_reg := fmt.Sprintf(`^(\S+)__(\S+)__fk__(%s)$`, strings.Join(searchAct, "|"))
+		if find := regexp.MustCompile(fk_reg).FindStringSubmatch(k); len(find) > 0 {
 			delete(params, k)
-			find := regexp.MustCompile(`^(\S+)__(in|not in|like|eq|gt|lt)$`).FindStringSubmatch(k)
-			key := find[1]
-			action := find[2]
-			log.Info("find pattern", "key", key, "action", action)
-			switch action {
-			case "in":
-				tx = tx.Where(key+" IN (?)", utils.TryInterfaceToStringToArray(v))
-			case "not_in":
-				tx = tx.Where(key+" NOT IN (?)", utils.TryInterfaceToStringToArray(v))
-			case "like":
-				tx = tx.Where(key+" LIKE ?", "%"+v.(string)+"%")
-			case "eq":
-				tx = tx.Where(key+" = ?", v)
-			case "gt":
-				tx = tx.Where(key+" > ?", v)
-			case "lt":
-				tx = tx.Where(key+" < ?", v)
-			case "is_null":
-				tx = tx.Where(key + " IS NULL")
-			case "is_not_null":
-				tx = tx.Where(key + " IS NOT NULL")
-			}
+			preload := find[1]
+			key := find[2]
+			opration := find[3]
 
+			if preload != "" {
+				tx = tx.Joins(preload)
+				tx = c.superWhere(opration, tx, fmt.Sprintf("%s.%s", preload, key), v)
+			}
 			continue
 		}
 
-		// sort
-		if regexp.MustCompile(`^(\S+)__(desc|asc)$`).MatchString(k) {
+		// log.Info("where", "key", k, "value", v)
+		where_reg := fmt.Sprintf(`^(\S+)__(%s)$`, strings.Join(searchAct, "|"))
+		if find := regexp.MustCompile(where_reg).FindStringSubmatch(k); len(find) > 0 {
 			delete(params, k)
-			find := regexp.MustCompile(`^(\S+)__(desc|asc)$`).FindStringSubmatch(k)
 			key := find[1]
 			action := find[2]
-			// log.Info("find pattern", "key", key, "action", action)
-			switch action {
-			case "desc":
-				tx = tx.Order(key + " DESC")
-			case "asc":
-				tx = tx.Order(key + " ASC")
-			}
-
+			log.Info("find pattern", "key", key, "action", action)
+			tx = c.superWhere(action, tx, key, v)
 			continue
 		}
 
@@ -101,19 +95,46 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 	return tx
 }
 
+func (*CRUD) superWhere(action string, tx *gorm.DB, key string, v interface{}) *gorm.DB {
+	switch action {
+	case "in":
+		tx = tx.Where(key+" IN (?)", utils.TryInterfaceToStringToArray(v))
+	case "not_in":
+		tx = tx.Where(key+" NOT IN (?)", utils.TryInterfaceToStringToArray(v))
+	case "like":
+		tx = tx.Where(key+" LIKE ?", "%"+v.(string)+"%")
+	case "eq":
+		tx = tx.Where(key+" = ?", v)
+	case "gt":
+		tx = tx.Where(key+" > ?", v)
+	case "lt":
+		tx = tx.Where(key+" < ?", v)
+	case "is_null":
+		tx = tx.Where(key + " IS NULL")
+	case "is_not_null":
+		tx = tx.Where(key + " IS NOT NULL")
+	// desc
+	case "desc":
+		tx = tx.Order(key + " DESC")
+	case "asc":
+		tx = tx.Order(key + " ASC")
+	}
+
+	return tx
+}
+
 // get list handler
-func (c *CRUD) GetListHandler(list any) func(ctx *gin.Context) {
+func (c *CRUD) GetListHandler(list any, extraWhere func(tx *gorm.DB) *gorm.DB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
-		page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
-		limit, _ := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
-		var params map[string]string = make(map[string]string)
-		ctx.ShouldBindQuery(&params)
-		delete(params, "page")
-		delete(params, "limit")
-		log.Info("get list", "page", page, "limit", limit, "params", params)
+		getListCurd := c.GetList(ctx)
+		var query *gorm.DB = getListCurd["query"].(*gorm.DB)
+		page := getListCurd["page"].(int)
+		limit := getListCurd["limit"].(int)
 
 		// query
-		query := c.Where(utils.StringMapToInterfaceMap(params))
+		if extraWhere != nil {
+			query = extraWhere(query)
+		}
 		var count int64 = 0
 		query.Count(&count)
 

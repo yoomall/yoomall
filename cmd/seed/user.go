@@ -25,10 +25,11 @@ func seedingUsers() *cobra.Command {
 			users := []model.User{}
 
 			for i := 0; i < count; i++ {
+				email := getRandomEmail()
 				users = append(users, model.User{
-					UserName: getRandomEmail(),
+					UserName: email,
 					Password: "yoo123456",
-					Email:    getRandomEmail(),
+					Email:    email,
 					Phone:    getRandomPhone(),
 					ExtId:    1,
 				})

@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"gorm.io/gorm"
 	"lazyfury.github.com/yoomall-server/apps/app/model"
 	"lazyfury.github.com/yoomall-server/apps/app/request"
 	"lazyfury.github.com/yoomall-server/apps/app/service"
@@ -31,7 +32,9 @@ func NewUserHandler(db *driver.DB, config *viper.Viper, service *service.AuthSer
 
 func (u *UserHandler) Register(router *gin.RouterGroup) {
 	router.POST("/login", u.LoginWithUsernameAndPassword)
-	router.GET("/list", u.CRUD.GetListHandler(&[]model.User{}))
+	router.GET("/list", u.CRUD.GetListHandler(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
+		return tx.Preload("Ext")
+	}))
 }
 
 func (u *UserHandler) GetRouterGroupName() string {
