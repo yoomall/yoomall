@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -124,6 +125,7 @@ func (*CRUD) superWhere(action string, tx *gorm.DB, key string, v interface{}) *
 // get list handler
 func (c *CRUD) GetListHandler(list any, extraWhere func(tx *gorm.DB) *gorm.DB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
+		start := time.Now()
 		getListCurd := c.GetList(ctx)
 		var query *gorm.DB = getListCurd["query"].(*gorm.DB)
 		page := getListCurd["page"].(int)
@@ -142,13 +144,14 @@ func (c *CRUD) GetListHandler(list any, extraWhere func(tx *gorm.DB) *gorm.DB) f
 			response.Error(response.ErrInternalError, err.Error()).Done(ctx)
 			return
 		}
-
+		end := time.Now()
 		response.Success(map[string]any{
 			"data":  list,
 			"total": count,
 			"page":  page,
 			"limit": limit,
 			"pages": count / int64(limit),
+			"time":  strconv.FormatInt(end.Sub(start).Milliseconds(), 10) + "ms",
 		}).Done(ctx)
 	}
 }
