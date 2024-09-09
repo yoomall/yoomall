@@ -1,3 +1,15 @@
+definitions:
+  response.ApiJsonResponse:
+    properties:
+      code:
+        type: integer
+      data: {}
+      extra:
+        additionalProperties: {}
+        type: object
+      message:
+        type: string
+    type: object
 host: localhost:8900
 info:
   contact:
@@ -12,33 +24,66 @@ info:
   title: Nunu Example API
   version: 1.0.0
 paths:
-  /dtk/tb:
+  /dtk:
     get:
       consumes:
       - application/json
       description: 大淘客接口
       parameters:
-      - description: keyWords
+      - description: 接口路径
         in: query
-        name: keyWords
+        name: path
         required: true
         type: string
-      - description: pageSize
+      - description: 请求方法
         in: query
-        name: pageSize
+        name: method
         required: true
         type: string
-      - description: pageId
+      - description: 请求参数/其他参数都是动态的参考聚推客开发文档/ swagger 不支持，请使用 apipost 工具调试
         in: query
-        name: pageId
+        name: '...params'
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.ApiJsonResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/response.ApiJsonResponse'
+      summary: 获取大淘客接口数据
+      tags:
+      - /dtk
+  /jtk:
+    get:
+      consumes:
+      - application/json
+      description: 聚推客接口
+      parameters:
+      - description: 接口路径
+        in: query
+        name: path
         required: true
+        type: string
+      - description: 请求方法
+        in: query
+        name: method
+        required: true
+        type: string
+      - description: 请求参数/其他参数都是动态的参考聚推客开发文档/ swagger 不支持，请使用 apipost 工具调试
+        in: query
+        name: '...params'
         type: string
       produces:
       - application/json
       responses: {}
-      summary: 获取大淘客接口数据
+      summary: 获取聚推客接口数据
       tags:
-      - /dtk/tb
+      - /jtk
 securityDefinitions:
   Bearer:
     in: header

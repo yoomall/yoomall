@@ -24,7 +24,8 @@ func NewApp() httpserver.HttpServer {
 	userHandler := handler.NewUserHandler(db, viper, authService)
 	dtkHandler := handler.NewDtkHandler(viper)
 	menuHandler := handler.NewMenuHandler()
-	defaultApp := app.NewWireDefaultApp(viper, db, userHandler, dtkHandler, menuHandler)
+	jtkHandler := handler.NewJtkHandler(viper)
+	defaultApp := app.NewWireDefaultApp(viper, db, userHandler, dtkHandler, menuHandler, jtkHandler)
 	postDefaultApp := post.NewDefaultApp(viper, db)
 	httpServer := NewHttpServer(viper, defaultApp, postDefaultApp)
 	return httpServer

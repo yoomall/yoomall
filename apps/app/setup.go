@@ -14,6 +14,7 @@ func NewWireDefaultApp(config *viper.Viper, db *driver.DB,
 	userHandler *handler.UserHandler,
 	dtkHandler *handler.DtkHandler,
 	menuHandler *handler.MenuHandler,
+	jtkHandler *handler.JtkHandler,
 ) *DefaultApp {
 	return &DefaultApp{
 		Config: config,
@@ -21,6 +22,7 @@ func NewWireDefaultApp(config *viper.Viper, db *driver.DB,
 			userHandler,
 			dtkHandler,
 			menuHandler,
+			jtkHandler,
 		}),
 		AuthMiddlewares: []gin.HandlerFunc{},
 	}
@@ -30,6 +32,7 @@ var handlerSet = wire.NewSet(
 	handler.NewUserHandler,
 	handler.NewDtkHandler,
 	handler.NewMenuHandler,
+	handler.NewJtkHandler,
 )
 var serviceSet = wire.NewSet(service.NewAuthService)
 

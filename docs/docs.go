@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/dtk/tb": {
+        "/dtk": {
             "get": {
                 "description": "大淘客接口",
                 "consumes": [
@@ -34,33 +34,101 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "/dtk/tb"
+                    "/dtk"
                 ],
                 "summary": "获取大淘客接口数据",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "keyWords",
-                        "name": "keyWords",
+                        "description": "接口路径",
+                        "name": "path",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "pageSize",
-                        "name": "pageSize",
+                        "description": "请求方法",
+                        "name": "method",
                         "in": "query",
                         "required": true
                     },
                     {
                         "type": "string",
-                        "description": "pageId",
-                        "name": "pageId",
+                        "description": "请求参数/其他参数都是动态的参考聚推客开发文档/ swagger 不支持，请使用 apipost 工具调试",
+                        "name": "...params",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.ApiJsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/response.ApiJsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/jtk": {
+            "get": {
+                "description": "聚推客接口",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "/jtk"
+                ],
+                "summary": "获取聚推客接口数据",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "接口路径",
+                        "name": "path",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "请求方法",
+                        "name": "method",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "请求参数/其他参数都是动态的参考聚推客开发文档/ swagger 不支持，请使用 apipost 工具调试",
+                        "name": "...params",
+                        "in": "query"
                     }
                 ],
                 "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "response.ApiJsonResponse": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "extra": {
+                    "type": "object",
+                    "additionalProperties": {}
+                },
+                "message": {
+                    "type": "string"
+                }
             }
         }
     },

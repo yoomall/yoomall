@@ -11,7 +11,7 @@ import (
 )
 
 type DtkHandler struct {
-	dtkClient *dtk.Dtk
+	client *dtk.Dtk
 }
 
 func NewDtkHandler(config *viper.Viper) *DtkHandler {
@@ -20,7 +20,7 @@ func NewDtkHandler(config *viper.Viper) *DtkHandler {
 		log.Fatal(err)
 	}
 	return &DtkHandler{
-		dtkClient: clent,
+		client: clent,
 	}
 }
 
@@ -34,15 +34,17 @@ func (d *DtkHandler) GetRouterGroupName() string {
 
 // 大淘客接口 godoc
 //
-//	@Summary		获取大淘客接口数据
-//	@Description	大淘客接口
-//	@Tags			/dtk/tb
-//	@Accept			json
-//	@Produce		json
-//	@Param			keyWords	query	string	true	"keyWords"
-//	@Param			pageSize	query	string	true	"pageSize"
-//	@Param			pageId		query	string	true	"pageId"
-//	@Router			/dtk/tb [get]
+//		@Summary		获取大淘客接口数据
+//		@Description	大淘客接口
+//		@Tags			/dtk
+//		@Accept			json
+//		@Produce		json
+//		@Param			path query string true "接口路径"
+//		@Param			method query string true "请求方法"
+//		@Param			...params query string false "请求参数/其他参数都是动态的参考聚推客开发文档/ swagger 不支持，请使用 apipost 工具调试"
+//		@Router			/dtk [get]
+//	 @Success		200 {object} response.ApiJsonResponse
+//	 @Failure		500 {object} response.ApiJsonResponse
 func (d *DtkHandler) dtk(ctx *gin.Context) {
 	var query map[string]string = make(map[string]string)
 	ctx.ShouldBindQuery(&query)
@@ -64,7 +66,7 @@ func (d *DtkHandler) dtk(ctx *gin.Context) {
 	delete(query, "version")
 
 	log.Info("dtk", "query", query, "url", ctx.Request.URL.Query())
-	resp, data, hit, err := d.dtkClient.RequestWithCache(path, method, version, query)
+	resp, data, hit, err := d.client.RequestWithCache(path, method, version, query)
 
 	extra := map[string]any{
 		"hit": hit,
