@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/charmbracelet/log"
@@ -65,16 +64,20 @@ func (d *DtkHandler) dtk(ctx *gin.Context) {
 	delete(query, "version")
 
 	log.Info("dtk", "query", query, "url", ctx.Request.URL.Query())
-	body, hit := d.dtkClient.RequestWithCache(path, method, version, query)
+	resp, data, hit, err := d.dtkClient.RequestWithCache(path, method, version, query)
 
-	var data map[string]any
-	err := json.Unmarshal(body, &data)
+	extra := map[string]any{
+		"hit": hit,
+	}
+
 	if err != nil {
-		response.Error(response.ErrInternalError, err.Error()).WithData(string(body)).Done(ctx)
+		response.Error(response.ErrInternalError, err.Error()).WithExtra(extra).WithExtra(map[string]any{
+			"text":   data,
+			"url":    resp.Request.URL.String(),
+			"method": method,
+		}).Done(ctx)
 		return
 	}
 
-	response.Success(data).WithExtra(map[string]any{
-		"hit": hit,
-	}).WithExtra(map[string]any{}).Done(ctx)
+	response.Success(data).WithExtra(extra).WithExtra(map[string]any{}).Done(ctx)
 }

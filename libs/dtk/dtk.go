@@ -126,31 +126,32 @@ func (d *Dtk) hashedUrlMethodAndParams(url string, method string, params map[str
 	return hex.EncodeToString(hash[:])
 }
 
-func (d *Dtk) RequestWithCache(path string, method string, version string, params map[string]string) ([]byte, bool) {
+func (d *Dtk) RequestWithCache(path string, method string, version string, params map[string]string) (*http.Response, any, bool, error) {
 	hash := d.hashedUrlMethodAndParams(path, method, params)
 
 	if v, ok := d.cache.Get(hash); ok {
-		resp, ok := v.([]byte)
+		data, ok := v.(map[string]any)
 		if !ok {
-			return []byte(""), false
+			return nil, nil, false, fmt.Errorf("cache value is not []byte")
 		}
-		return resp, true
+		return nil, data, true, nil
 	}
 
-	resp, err := d.Request(path, method, version, params)
+	resp, data, err := d.Request(path, method, version, params)
 
 	if err != nil {
-		return []byte(err.Error()), false
+		return resp, data, false, err
 	}
 
-	d.cache.Set(hash, resp, 5*time.Minute)
+	d.cache.Set(hash, data, 5*time.Minute)
 
-	return resp, false
+	// cache
+	return resp, data, false, nil
 }
 
-func (d *Dtk) Request(path string, method string, version string, params map[string]string) ([]byte, error) {
+func (d *Dtk) Request(path string, method string, version string, params map[string]string) (*http.Response, any, error) {
 	if err := d.checkParams(params); err != nil {
-		return []byte(""), err
+		return nil, map[string]any{}, err
 	}
 
 	publicParams := d.publicParams()
@@ -172,18 +173,27 @@ func (d *Dtk) Request(path string, method string, version string, params map[str
 		b, _ := json.Marshal(mergeParams)
 		req, _ = http.NewRequest(http.MethodPost, url, bytes.NewReader(b))
 	}
-
+	realUrl := req.URL.String()
+	fmt.Println(realUrl)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return []byte(""), err
+		return resp, nil, err
 	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return []byte(""), err
+		return resp, nil, err
 	}
 
 	defer resp.Body.Close()
 
-	return body, nil
+	var text string = string(body)
+
+	var data map[string]any
+	err = json.Unmarshal([]byte(text), &data)
+	if err != nil {
+		return resp, text, fmt.Errorf("json unmarshal error: %v", err)
+	}
+
+	return resp, data, nil
 }
