@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"lazyfury.github.com/yoomall-server/core/driver"
@@ -75,13 +74,12 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 			continue
 		}
 
-		// log.Info("where", "key", k, "value", v)
 		where_reg := fmt.Sprintf(`^(\S+)__(%s)$`, strings.Join(searchAct, "|"))
 		if find := regexp.MustCompile(where_reg).FindStringSubmatch(k); len(find) > 0 {
 			delete(params, k)
 			key := find[1]
 			action := find[2]
-			log.Info("find pattern", "key", key, "action", action)
+			// log.Info("find pattern", "key", key, "action", action)
 			tx = c.superWhere(action, tx, key, v)
 			continue
 		}
