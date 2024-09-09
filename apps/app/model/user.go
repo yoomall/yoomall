@@ -1,6 +1,8 @@
 package model
 
 import (
+	"encoding/json"
+
 	"lazyfury.github.com/yoomall-server/core"
 )
 
@@ -23,6 +25,34 @@ type UserExt struct {
 	ThridPartyId string `gorm:"column:thrid_party_id" json:"thrid_party_id"`
 }
 
+var _ core.MarshalJSON = (*User)(nil)
+
 func (m *User) TableName() string {
 	return "users"
+}
+
+func (m *User) MarshalJSON() ([]byte, error) {
+	type Alias User
+	var a = &struct {
+		*Alias
+		NewPhone string `json:"new_phone"`
+	}{
+		Alias:    (*Alias)(m),
+		NewPhone: m.hiddenPhone(),
+	}
+	a.Phone = m.hiddenPhone()
+	return json.Marshal(a)
+}
+
+func (m *User) hiddenPhone() string {
+	phone := m.Phone
+	if phone == "" {
+		return ""
+	}
+	if len(phone) <= 4 {
+		return phone
+	}
+	start := 3
+	end := len(phone) - 4
+	return phone[0:start] + "****" + phone[end:]
 }
