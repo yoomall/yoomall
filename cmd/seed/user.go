@@ -16,6 +16,7 @@ import (
 )
 
 func seedingUsers() *cobra.Command {
+	var count int
 	cmd := &cobra.Command{
 		Use: "seeding:users",
 		Run: func(cmd *cobra.Command, args []string) {
@@ -23,12 +24,13 @@ func seedingUsers() *cobra.Command {
 
 			users := []model.User{}
 
-			for i := 0; i < 9999; i++ {
+			for i := 0; i < count; i++ {
 				users = append(users, model.User{
 					UserName: getRandomEmail(),
 					Password: "yoo123456",
 					Email:    getRandomEmail(),
 					Phone:    getRandomPhone(),
+					ExtId:    1,
 				})
 			}
 
@@ -40,6 +42,8 @@ func seedingUsers() *cobra.Command {
 
 		},
 	}
+
+	cmd.Flags().IntVarP(&count, "count", "c", 10, "number of users")
 	return cmd
 }
 

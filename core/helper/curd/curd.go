@@ -88,6 +88,8 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 			case "asc":
 				tx = tx.Order(key + " ASC")
 			}
+
+			continue
 		}
 
 		if v == "" {
@@ -115,7 +117,7 @@ func (c *CRUD) GetListHandler(list any) func(ctx *gin.Context) {
 		var count int64 = 0
 		query.Count(&count)
 
-		err := query.Limit(limit).Offset((page - 1) * limit).Find(list).Error
+		err := query.Offset((page - 1) * limit).Limit(limit).Find(list).Error
 
 		if err != nil {
 			response.Error(response.ErrInternalError, err.Error()).Done(ctx)
