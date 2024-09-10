@@ -3,6 +3,7 @@ package curd
 import (
 	"fmt"
 	"math"
+	"reflect"
 	"regexp"
 	"strconv"
 	"strings"
@@ -91,6 +92,9 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 		}
 
 	}
+
+	params = c.filterModelFields(params)
+
 	tx = tx.Where(params)
 	return tx
 }
@@ -121,6 +125,28 @@ func (*CRUD) superWhere(action string, tx *gorm.DB, key string, v interface{}) *
 	}
 
 	return tx
+}
+
+func (c *CRUD) filterModelFields(data map[string]interface{}) map[string]interface{} {
+	value := reflect.ValueOf(c.Model).Elem()
+	keys := value.NumField()
+	keysArr := make([]string, 0)
+
+	for i := range keys {
+		key := value.Type().Field(i).Tag.Get("json")
+		if key == "" {
+			continue
+		}
+		keysArr = append(keysArr, key)
+	}
+
+	for k, _ := range data {
+		if !utils.InArray[string](keysArr, k) {
+			delete(data, k)
+		}
+	}
+	return data
+
 }
 
 // get list handler

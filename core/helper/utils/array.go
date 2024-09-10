@@ -44,3 +44,12 @@ func TryInterfaceToStringToArray(v interface{}) []string {
 	}
 	return []string{}
 }
+
+func InArray[T string | int | float64 | interface{}](arr []T, obj T) bool {
+	for _, a := range arr {
+		if fmt.Sprint(a) == fmt.Sprint(obj) {
+			return true
+		}
+	}
+	return false
+}
