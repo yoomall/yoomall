@@ -62,7 +62,7 @@ func (c *CRUD) GetList(ctx *gin.Context) *Pagination {
 	}
 }
 
-var searchAct = []string{"in", "not_in", "like", "eq", "gt", "lt", "is_null", "is_not_null", "asc", "desc"}
+var searchAct = []string{"in", "not_in", "like", "eq", "gt", "gte", "lte", "lt", "is_null", "is_not_null", "asc", "desc"}
 
 func (*CRUD) superWhere(action string, tx *gorm.DB, key string, v interface{}) *gorm.DB {
 	switch action {
@@ -78,6 +78,10 @@ func (*CRUD) superWhere(action string, tx *gorm.DB, key string, v interface{}) *
 		tx = tx.Where(key+" > ?", v)
 	case "lt":
 		tx = tx.Where(key+" < ?", v)
+	case "gte":
+		tx = tx.Where(key+" >= ?", v)
+	case "lte":
+		tx = tx.Where(key+" <= ?", v)
 	case "is_null":
 		tx = tx.Where(key + " IS NULL")
 	case "is_not_null":

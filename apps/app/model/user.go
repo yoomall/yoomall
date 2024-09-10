@@ -16,8 +16,8 @@ type User struct {
 	Phone    string `gorm:"not null;index;unique;column:phone;validation:phone" json:"phone"`
 
 	Bio   string   `gorm:"column:bio" json:"bio"`
-	ExtId uint     `gorm:"column:ext_id;null" json:"ext_id"`
-	Ext   *UserExt `gorm:"foreignKey:ext_id;references:id;null" json:"ext"`
+	ExtId uint     `gorm:"column:ext_id;default:null" json:"ext_id"`
+	Ext   *UserExt `gorm:"foreignKey:ext_id;references:id;delete:SET NULL;default:null" json:"ext"`
 }
 
 type UserExt struct {
