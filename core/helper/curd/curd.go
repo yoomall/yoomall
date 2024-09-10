@@ -2,6 +2,7 @@ package curd
 
 import (
 	"fmt"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -150,7 +151,7 @@ func (c *CRUD) GetListHandler(list any, extraWhere func(tx *gorm.DB) *gorm.DB) f
 			"total": count,
 			"page":  page,
 			"limit": limit,
-			"pages": count / int64(limit),
+			"pages": math.Ceil(float64(count) / float64(limit)),
 			"time":  strconv.FormatInt(end.Sub(start).Milliseconds(), 10) + "ms",
 		}).Done(ctx)
 	}
