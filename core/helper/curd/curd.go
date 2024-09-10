@@ -140,7 +140,7 @@ func (c *CRUD) filterModelFields(data map[string]interface{}) map[string]interfa
 		keysArr = append(keysArr, key)
 	}
 
-	for k, _ := range data {
+	for k := range data {
 		if !utils.InArray[string](keysArr, k) {
 			delete(data, k)
 		}
