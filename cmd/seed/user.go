@@ -6,6 +6,7 @@ import (
 	"math/rand/v2"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
@@ -20,6 +21,7 @@ func seedingUsers() *cobra.Command {
 	cmd := &cobra.Command{
 		Use: "seeding:users",
 		Run: func(cmd *cobra.Command, args []string) {
+			startTime := time.Now()
 			service := service.NewAuthService(driver.NewDB(config.Config.MysqlDsn))
 
 			users := []model.User{}
@@ -41,6 +43,8 @@ func seedingUsers() *cobra.Command {
 				}
 			}
 
+			endTime := time.Now()
+			log.Info(fmt.Sprintf("seeding users success, cost %f 分钟", endTime.Sub(startTime).Minutes()))
 		},
 	}
 

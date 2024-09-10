@@ -42,21 +42,55 @@ func (c *CRUD) GetTableName() string {
 	return fn.TableName()
 }
 
-func (c *CRUD) GetList(ctx *gin.Context) map[string]any {
+type Pagination struct {
+	Page  int
+	Limit int
+	Query *gorm.DB
+}
+
+func (c *CRUD) GetList(ctx *gin.Context) *Pagination {
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	limit, _ := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
 	var params map[string]string = make(map[string]string)
 	ctx.ShouldBindQuery(&params)
 	delete(params, "page")
 	delete(params, "limit")
-	return map[string]any{
-		"query": c.Where(utils.StringMapToInterfaceMap(params)),
-		"page":  page,
-		"limit": limit,
+	return &Pagination{
+		Page:  page,
+		Limit: limit,
+		Query: c.Where(utils.StringMapToInterfaceMap(params)),
 	}
 }
 
 var searchAct = []string{"in", "not_in", "like", "eq", "gt", "lt", "is_null", "is_not_null", "asc", "desc"}
+
+func (*CRUD) superWhere(action string, tx *gorm.DB, key string, v interface{}) *gorm.DB {
+	switch action {
+	case "in":
+		tx = tx.Where(key+" IN (?)", utils.TryInterfaceToStringToArray(v))
+	case "not_in":
+		tx = tx.Where(key+" NOT IN (?)", utils.TryInterfaceToStringToArray(v))
+	case "like":
+		tx = tx.Where(key+" LIKE ?", "%"+v.(string)+"%")
+	case "eq":
+		tx = tx.Where(key+" = ?", v)
+	case "gt":
+		tx = tx.Where(key+" > ?", v)
+	case "lt":
+		tx = tx.Where(key+" < ?", v)
+	case "is_null":
+		tx = tx.Where(key + " IS NULL")
+	case "is_not_null":
+		tx = tx.Where(key + " IS NOT NULL")
+	// desc
+	case "desc":
+		tx = tx.Order(key + " DESC")
+	case "asc":
+		tx = tx.Order(key + " ASC")
+	}
+
+	return tx
+}
 
 func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 	tx := c.DB.Model(c.Model)
@@ -104,34 +138,6 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 	return tx
 }
 
-func (*CRUD) superWhere(action string, tx *gorm.DB, key string, v interface{}) *gorm.DB {
-	switch action {
-	case "in":
-		tx = tx.Where(key+" IN (?)", utils.TryInterfaceToStringToArray(v))
-	case "not_in":
-		tx = tx.Where(key+" NOT IN (?)", utils.TryInterfaceToStringToArray(v))
-	case "like":
-		tx = tx.Where(key+" LIKE ?", "%"+v.(string)+"%")
-	case "eq":
-		tx = tx.Where(key+" = ?", v)
-	case "gt":
-		tx = tx.Where(key+" > ?", v)
-	case "lt":
-		tx = tx.Where(key+" < ?", v)
-	case "is_null":
-		tx = tx.Where(key + " IS NULL")
-	case "is_not_null":
-		tx = tx.Where(key + " IS NOT NULL")
-	// desc
-	case "desc":
-		tx = tx.Order(key + " DESC")
-	case "asc":
-		tx = tx.Order(key + " ASC")
-	}
-
-	return tx
-}
-
 func (c *CRUD) filterModelFields(data map[string]interface{}) map[string]interface{} {
 	value := reflect.ValueOf(c.Model).Elem()
 	keys := value.NumField()
@@ -153,7 +159,7 @@ func (c *CRUD) filterModelFields(data map[string]interface{}) map[string]interfa
 		keysArr = append(keysArr, key)
 	}
 
-	println("keys", fmt.Sprintf("%v", strings.Join(keysArr, ",")))
+	// println("keys", fmt.Sprintf("%v", strings.Join(keysArr, ",")))
 
 	for k := range data {
 		if !utils.InArray[string](keysArr, k) {
@@ -168,10 +174,10 @@ func (c *CRUD) filterModelFields(data map[string]interface{}) map[string]interfa
 func (c *CRUD) GetListHandler(list any, extraWhere func(tx *gorm.DB) *gorm.DB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		start := time.Now()
-		getListCurd := c.GetList(ctx)
-		var query *gorm.DB = getListCurd["query"].(*gorm.DB)
-		page := getListCurd["page"].(int)
-		limit := getListCurd["limit"].(int)
+		pagination := c.GetList(ctx)
+		var query *gorm.DB = pagination.Query
+		page := pagination.Page
+		limit := pagination.Limit
 
 		// query
 		if extraWhere != nil {

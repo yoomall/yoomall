@@ -84,7 +84,7 @@ func (s *AuthService) CreateUser(user *model.User) error {
 		return err
 	}
 
-	find := s.DB.Where("username = ?", user.UserName).First(&model.User{}).Error
+	find := s.DB.Where("username = ?", user.UserName).Where("email = ?", user.Email).Where("phone = ?", user.Phone).First(&model.User{}).Error
 	if find == nil {
 		return fmt.Errorf("用户已存在")
 	}
