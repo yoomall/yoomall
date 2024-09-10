@@ -83,7 +83,7 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 			key := find[1]
 			action := find[2]
 			// log.Info("find pattern", "key", key, "action", action)
-			tx = c.superWhere(action, tx, key, v)
+			tx = c.superWhere(action, tx, fmt.Sprintf("%s.%s", c.GetTableName(), key), v)
 			continue
 		}
 
@@ -95,7 +95,12 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 
 	params = c.filterModelFields(params)
 
-	tx = tx.Where(params)
+	// tx = tx.Where(params)
+
+	for k, v := range params {
+		tx = c.superWhere("eq", tx, fmt.Sprintf("%s.%s", c.GetTableName(), k), v)
+	}
+
 	return tx
 }
 
@@ -133,12 +138,22 @@ func (c *CRUD) filterModelFields(data map[string]interface{}) map[string]interfa
 	keysArr := make([]string, 0)
 
 	for i := range keys {
+		if value.Field(i).Kind() == reflect.Ptr {
+			_val := value.Type().Field(i).Type.Elem()
+			_keys := _val.NumField()
+			for j := range _keys {
+				keysArr = append(keysArr, _val.Field(j).Tag.Get("json"))
+			}
+
+		}
 		key := value.Type().Field(i).Tag.Get("json")
 		if key == "" {
 			continue
 		}
 		keysArr = append(keysArr, key)
 	}
+
+	println("keys", fmt.Sprintf("%v", strings.Join(keysArr, ",")))
 
 	for k := range data {
 		if !utils.InArray[string](keysArr, k) {
