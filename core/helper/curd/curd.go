@@ -160,6 +160,7 @@ func (c *CRUD) getModelKeys() []string {
 	keysArr := make([]string, 0)
 	for i := range keys {
 		if value.Field(i).Kind() == reflect.Ptr {
+			// 嵌入的 struct 比如 gin.Model 的 id,craeted_at... 字段
 			_val := value.Type().Field(i).Type.Elem()
 			_keys := _val.NumField()
 			for j := range _keys {
