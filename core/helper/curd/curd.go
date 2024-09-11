@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 	"lazyfury.github.com/yoomall-server/core/driver"
@@ -63,6 +64,7 @@ func (c *CRUD) superWhere(action string, tx *gorm.DB, key string, v interface{})
 		return tx
 	}
 	if !c.isLegalKey(key) {
+		log.Warn("illegal key: " + key)
 		return tx
 	}
 	switch action {
@@ -150,7 +152,7 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 }
 
 func (c *CRUD) isLegalKey(key string) bool {
-	return regexp.MustCompile(`^[a-zA-Z0-9_]+$`).MatchString(key)
+	return regexp.MustCompile(`^[a-zA-Z0-9_\.]+$`).MatchString(key)
 }
 
 // func get all keys
@@ -191,8 +193,12 @@ func (c *CRUD) filterModelFields(data map[string]interface{}) map[string]interfa
 	return data
 }
 
+func (c *CRUD) GetListHandler(list any) func(ctx *gin.Context) {
+	return c.GetListHandlerWithWhere(list, nil)
+}
+
 // get list handler
-func (c *CRUD) GetListHandler(list any, extraWhere func(tx *gorm.DB) *gorm.DB) func(ctx *gin.Context) {
+func (c *CRUD) GetListHandlerWithWhere(list any, extraWhere func(tx *gorm.DB) *gorm.DB) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
 		start := time.Now()
 		pagination := c.GetList(ctx)
