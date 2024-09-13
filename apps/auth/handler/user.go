@@ -4,7 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
-	"lazyfury.github.com/yoomall-server/apps/app/model"
+	"lazyfury.github.com/yoomall-server/apps/auth/model"
 	"lazyfury.github.com/yoomall-server/apps/auth/request"
 	"lazyfury.github.com/yoomall-server/apps/auth/service"
 	"lazyfury.github.com/yoomall-server/core"
