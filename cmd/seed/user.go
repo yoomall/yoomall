@@ -10,8 +10,8 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
-	"lazyfury.github.com/yoomall-server/apps/app/model"
-	"lazyfury.github.com/yoomall-server/apps/app/service"
+	"lazyfury.github.com/yoomall-server/apps/auth/model"
+	"lazyfury.github.com/yoomall-server/apps/auth/service"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core/driver"
 )

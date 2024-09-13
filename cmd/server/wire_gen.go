@@ -9,7 +9,9 @@ package main
 import (
 	"lazyfury.github.com/yoomall-server/apps/app"
 	"lazyfury.github.com/yoomall-server/apps/app/handler"
-	"lazyfury.github.com/yoomall-server/apps/app/service"
+	"lazyfury.github.com/yoomall-server/apps/auth"
+	handler2 "lazyfury.github.com/yoomall-server/apps/auth/handler"
+	"lazyfury.github.com/yoomall-server/apps/auth/service"
 	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core/http"
@@ -20,13 +22,14 @@ import (
 func NewApp() httpserver.HttpServer {
 	viper := config.NewConfig()
 	db := NewDB(viper)
-	authService := service.NewAuthService(db)
-	userHandler := handler.NewUserHandler(db, viper, authService)
 	dtkHandler := handler.NewDtkHandler(viper)
 	menuHandler := handler.NewMenuHandler()
 	jtkHandler := handler.NewJtkHandler(viper)
-	defaultApp := app.NewWireDefaultApp(viper, db, userHandler, dtkHandler, menuHandler, jtkHandler)
+	defaultApp := app.NewWireDefaultApp(viper, db, dtkHandler, menuHandler, jtkHandler)
+	authService := service.NewAuthService(db)
+	userHandler := handler2.NewUserHandler(db, viper, authService)
+	authApp := auth.NewAuthApp(viper, db, userHandler)
 	postDefaultApp := post.NewDefaultApp(viper, db)
-	httpServer := NewHttpServer(viper, defaultApp, postDefaultApp)
+	httpServer := NewHttpServer(viper, defaultApp, authApp, postDefaultApp)
 	return httpServer
 }

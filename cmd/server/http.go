@@ -6,6 +6,7 @@ import (
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"lazyfury.github.com/yoomall-server/apps/app"
+	"lazyfury.github.com/yoomall-server/apps/auth"
 	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
@@ -19,6 +20,7 @@ func NewHttpServer(
 	config *viper.Viper,
 
 	app *app.DefaultApp,
+	auth *auth.AuthApp,
 	postApp *post.DefaultApp,
 ) httpserver.HttpServer {
 	engine := gin.Default()
@@ -32,6 +34,7 @@ func NewHttpServer(
 	register(
 		&core.RegisterApp{App: app, Router: v1.Group("")},
 		&core.RegisterApp{App: postApp, Router: v1.Group("/posts")},
+		&core.RegisterApp{App: auth, Router: v1.Group("/auth")},
 	)
 
 	return httpserver.HttpServer{

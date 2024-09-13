@@ -3,7 +3,6 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/apps/app/model"
 	"lazyfury.github.com/yoomall-server/core"
 	coremiddleware "lazyfury.github.com/yoomall-server/core/middleware"
 )
@@ -17,7 +16,6 @@ type DefaultApp struct {
 var _ core.App = (*DefaultApp)(nil)
 
 func (d *DefaultApp) Migrate() {
-	d.GetDB().AutoMigrate(&model.User{}, &model.UserToken{}, &model.UserExt{})
 }
 
 func (d *DefaultApp) Middleware() []gin.HandlerFunc {

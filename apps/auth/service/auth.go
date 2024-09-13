@@ -7,7 +7,7 @@ import (
 
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
-	"lazyfury.github.com/yoomall-server/apps/app/model"
+	"lazyfury.github.com/yoomall-server/apps/auth/model"
 	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
