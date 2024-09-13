@@ -13,6 +13,6 @@ macos:
 	GOOS=darwin GOARCH=amd64 go build -o ./dist/mac/ ./cmd/seed
 	cp dev.config.yaml ./dist/mac/config.yaml
 
-service_auth:
+auth_service:
 	GOOS=linux GOARCH=amd64 go build -o ./dist/linux/ ./cmd/service/auth
 	cp dev.config.yaml ./dist/linux/config.yaml
