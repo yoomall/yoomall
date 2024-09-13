@@ -29,13 +29,21 @@ func NewHttpServer(
 
 	engine.Use(coremiddleware.CORSMiddleware())
 
+	engine.GET("", func(ctx *gin.Context) {
+		ctx.String(200, ":) yoomall server is running.")
+	})
+
 	v1 := engine.Group("/api/v1")
 
-	register(
-		&core.RegisterApp{App: app, Router: v1.Group("")},
-		&core.RegisterApp{App: postApp, Router: v1.Group("/posts")},
-		&core.RegisterApp{App: auth, Router: v1.Group("/auth")},
-	)
+	var apps = []*core.RegisterApp{
+		{App: app, Router: v1.Group("")},
+		{App: auth, Router: v1.Group("/auth")},
+		{App: postApp, Router: v1.Group("/post")},
+	}
+
+	for _, app := range apps {
+		app.Register()
+	}
 
 	return httpserver.HttpServer{
 		Engine: engine,
@@ -63,10 +71,4 @@ func setupSwag(engine *gin.Engine) {
 	docs.SwaggerInfo.BasePath = "/api"
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler, ginSwagger.DefaultModelsExpandDepth(-1),
 		ginSwagger.PersistAuthorization(true)))
-}
-
-func register(apps ...*core.RegisterApp) {
-	for _, instance := range apps {
-		instance.Register()
-	}
 }
