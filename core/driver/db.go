@@ -21,7 +21,7 @@ func NewDB(dsn string) *DB {
 	log.Info("dsn: " + dsn)
 	loggerMode := logger.Silent
 	if config.Config.DEBUG {
-		loggerMode = logger.Info
+		loggerMode = logger.Error
 	}
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		Logger: logger.Default.LogMode(loggerMode),
