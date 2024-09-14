@@ -66,3 +66,13 @@ func Error(error ApiError, message string) *ApiJsonResponse {
 	}
 	return NewApiJsonResponse(error.Code, message, nil, httpCode)
 }
+
+// not found
+func NotFound(message string) *ApiJsonResponse {
+	return NewApiJsonResponse(http.StatusNotFound, message, nil, http.StatusNotFound)
+}
+
+// bad request
+func BadRequest(message string) *ApiJsonResponse {
+	return NewApiJsonResponse(http.StatusBadRequest, message, nil, http.StatusBadRequest)
+}

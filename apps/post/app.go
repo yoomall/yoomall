@@ -8,31 +8,31 @@ import (
 	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
-type DefaultApp struct {
+type PostApp struct {
 	*core.AppImpl
 	Config *viper.Viper
 }
 
-func NewDefaultApp(config *viper.Viper, db *driver.DB) *DefaultApp {
-	return &DefaultApp{
+func NewDefaultApp(config *viper.Viper, db *driver.DB) *PostApp {
+	return &PostApp{
 		Config:  config,
 		AppImpl: core.NewAppImpl("post", config, db, []core.Handler{}),
 	}
 }
 
 var WireSet = wire.NewSet(NewDefaultApp)
-var _ core.App = (*DefaultApp)(nil)
+var _ core.App = (*PostApp)(nil)
 
-func (d *DefaultApp) Register(router *gin.RouterGroup) {
+func (d *PostApp) Register(router *gin.RouterGroup) {
 	router.GET("/list", func(ctx *gin.Context) {
 		ctx.JSON(200, map[string]any{"data": []any{}})
 	})
 }
 
-func (d *DefaultApp) Migrate() {
+func (d *PostApp) Migrate() {
 	d.GetDB().AutoMigrate()
 }
 
-func (d *DefaultApp) Middleware() []gin.HandlerFunc {
+func (d *PostApp) Middleware() []gin.HandlerFunc {
 	return []gin.HandlerFunc{}
 }

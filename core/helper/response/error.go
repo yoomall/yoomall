@@ -12,9 +12,14 @@ var ErrInternalError = ApiError{500, "Internal Error"}
 var ErrInvalidArgument = ApiError{400, "Invalid Argument"}
 var ErrNotAuthorized = ApiError{401, "Not Authorized"}
 var ErrBadRequest = ApiError{400, "Bad Request"}
+var ErrForbidden = ApiError{403, "Forbidden"}
 
 // ok
 var ErrOk = ApiError{200, "Ok"}
+
+// custom code
+var ErrNotAuth = ApiError{401, "Not Auth"}
+var ErrNotPermission = ApiError{403, "Not Permission"}
 
 func (e ApiError) Error() string {
 	return e.Message

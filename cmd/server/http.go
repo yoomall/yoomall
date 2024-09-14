@@ -21,7 +21,7 @@ func NewHttpServer(
 
 	app *app.DefaultApp,
 	auth *auth.AuthApp,
-	postApp *post.DefaultApp,
+	postApp *post.PostApp,
 ) httpserver.HttpServer {
 	engine := gin.Default()
 
