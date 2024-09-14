@@ -41,7 +41,5 @@ func (a *AuthApp) Middleware() []gin.HandlerFunc {
 }
 
 func (a *AuthApp) Register(router *gin.RouterGroup) {
-	for _, handler := range a.Handlers {
-		handler.Register(router.Group(handler.GetRouterGroupName()))
-	}
+
 }

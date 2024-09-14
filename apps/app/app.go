@@ -25,7 +25,5 @@ func (d *DefaultApp) Middleware() []gin.HandlerFunc {
 }
 
 func (d *DefaultApp) Register(router *gin.RouterGroup) {
-	for _, handler := range d.Handlers {
-		handler.Register(router.Group(handler.GetRouterGroupName()))
-	}
+
 }

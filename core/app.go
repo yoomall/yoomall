@@ -15,6 +15,7 @@ type App interface {
 	Middleware() []gin.HandlerFunc
 	GetConfig() *viper.Viper
 	Register(router *gin.RouterGroup)
+	GetHandlers() []Handler
 }
 
 type AppImpl struct {
@@ -45,6 +46,10 @@ func (a *AppImpl) GetDB() *driver.DB {
 	return a.db
 }
 
+func (a *AppImpl) GetHandlers() []Handler {
+	return a.Handlers
+}
+
 type RegisterApp struct {
 	Router *gin.RouterGroup
 	App    App
@@ -61,5 +66,10 @@ func (instance *RegisterApp) Register() {
 	router := instance.Router.Group("")
 	router.Use(instance.App.Middleware()...)
 	instance.App.Register(router)
+
+	for _, handler := range instance.App.GetHandlers() {
+		handler.Register(router.Group(handler.GetRouterGroupName()))
+	}
+
 	log.Info("注册成功", "app", instance.App.GetName())
 }
