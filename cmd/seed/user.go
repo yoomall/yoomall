@@ -14,6 +14,7 @@ import (
 	"lazyfury.github.com/yoomall-server/apps/auth/service"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core/driver"
+	"lazyfury.github.com/yoomall-server/core/helper/utils"
 )
 
 func seedingUsers() *cobra.Command {
@@ -29,7 +30,7 @@ func seedingUsers() *cobra.Command {
 			for i := 0; i < count; i++ {
 				email := getRandomEmail()
 				users = append(users, model.User{
-					UserName: email,
+					UserName: utils.StringUtils.HiddenEmail(email),
 					Password: "yoo123456",
 					Email:    email,
 					Phone:    getRandomPhone(),
