@@ -46,6 +46,12 @@ type Pagination struct {
 func (c *CRUD) GetList(ctx *gin.Context) *Pagination {
 	page, _ := strconv.Atoi(ctx.DefaultQuery("page", "1"))
 	limit, _ := strconv.Atoi(ctx.DefaultQuery("limit", "10"))
+	if page < 1 {
+		page = 1
+	}
+	if limit < 1 {
+		limit = 10
+	}
 	var params map[string]string = make(map[string]string)
 	ctx.ShouldBindQuery(&params)
 	delete(params, "page")
