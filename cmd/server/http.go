@@ -28,6 +28,7 @@ func NewHttpServer(
 	setup(engine)
 
 	engine.Use(coremiddleware.CORSMiddleware())
+	engine.Use(gin.Recovery())
 
 	engine.GET("", func(ctx *gin.Context) {
 		ctx.String(200, ":) yoomall server is running.")
