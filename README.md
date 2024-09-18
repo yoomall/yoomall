@@ -14,7 +14,9 @@ air
 ### 构建
 
 ```shell
-go build cmd/server.go
+make prod_linux
+make linux
+make windows
 ```
 
 ### 目录结构
