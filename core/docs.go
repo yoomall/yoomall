@@ -2,9 +2,9 @@ package core
 
 import (
 	"encoding/json"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/core/helper/response"
 )
 
 type Doc struct {
@@ -53,5 +53,5 @@ func (d *Doc) Add(item *DocItem) {
 }
 
 func (d *Doc) Handler(ctx *gin.Context) {
-	response.Success(d).Done(ctx)
+	ctx.JSON(http.StatusOK, d)
 }
