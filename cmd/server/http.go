@@ -38,7 +38,7 @@ func NewHttpServer(
 	v1 := &core.RouterGroup{
 		RouterGroup: engine.Group("/api/v1"),
 	}
-	v1.GET("/docs/*any", doc.Handler)
+	v1.GET("/docs/api.json", doc.Handler)
 
 	dtkHandler.Register(&core.RouterGroup{
 		RouterGroup: v1.RouterGroup,
