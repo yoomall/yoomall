@@ -12,10 +12,10 @@ import (
 )
 
 type AuthApp struct {
-	*core.AppImpl
+	*core.App
 }
 
-var _ core.App = (*AuthApp)(nil)
+var _ core.IApp = (*AuthApp)(nil)
 
 var WireSet = wire.NewSet(NewAuthApp, service.NewAuthService, handler.NewUserHandler)
 
@@ -26,7 +26,7 @@ func NewAuthApp(
 
 ) *AuthApp {
 	return &AuthApp{
-		AppImpl: core.NewAppImpl("auth", config, db, []core.Handler{
+		App: core.NewApp("auth", config, db, []core.Handler{
 			userHandler,
 		}),
 	}

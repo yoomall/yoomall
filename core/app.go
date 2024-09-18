@@ -8,7 +8,7 @@ import (
 	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
-type App interface {
+type IApp interface {
 	GetName() string
 	GetDB() *driver.DB
 	Migrate()
@@ -18,15 +18,15 @@ type App interface {
 	GetHandlers() []Handler
 }
 
-type AppImpl struct {
+type App struct {
 	AppName   string
 	AppConfig *viper.Viper
 	db        *driver.DB
 	Handlers  []Handler
 }
 
-func NewAppImpl(name string, config *viper.Viper, db *driver.DB, handlers []Handler) *AppImpl {
-	return &AppImpl{
+func NewApp(name string, config *viper.Viper, db *driver.DB, handlers []Handler) *App {
+	return &App{
 		AppName:   name,
 		AppConfig: config,
 		db:        db,
@@ -34,25 +34,25 @@ func NewAppImpl(name string, config *viper.Viper, db *driver.DB, handlers []Hand
 	}
 }
 
-func (a *AppImpl) GetConfig() *viper.Viper {
+func (a *App) GetConfig() *viper.Viper {
 	return a.AppConfig
 }
 
-func (a *AppImpl) GetName() string {
+func (a *App) GetName() string {
 	return a.AppName
 }
 
-func (a *AppImpl) GetDB() *driver.DB {
+func (a *App) GetDB() *driver.DB {
 	return a.db
 }
 
-func (a *AppImpl) GetHandlers() []Handler {
+func (a *App) GetHandlers() []Handler {
 	return a.Handlers
 }
 
 type RegisterApp struct {
 	Router *RouterGroup
-	App    App
+	App    IApp
 }
 
 func (instance *RegisterApp) Register() {

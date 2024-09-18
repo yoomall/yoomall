@@ -11,19 +11,19 @@ import (
 )
 
 type PostApp struct {
-	*core.AppImpl
+	*core.App
 	Config *viper.Viper
 }
 
 func NewDefaultApp(config *viper.Viper, db *driver.DB) *PostApp {
 	return &PostApp{
-		Config:  config,
-		AppImpl: core.NewAppImpl("post", config, db, []core.Handler{}),
+		Config: config,
+		App:    core.NewApp("post", config, db, []core.Handler{}),
 	}
 }
 
 var WireSet = wire.NewSet(NewDefaultApp)
-var _ core.App = (*PostApp)(nil)
+var _ core.IApp = (*PostApp)(nil)
 
 func (d *PostApp) Register(router *core.RouterGroup) {
 	router.WithDoc(&core.DocItem{

@@ -9,10 +9,10 @@ import (
 )
 
 type CommonApp struct {
-	*core.AppImpl
+	*core.App
 }
 
-var _ core.App = (*CommonApp)(nil)
+var _ core.IApp = (*CommonApp)(nil)
 
 // GetName implements core.App.
 // Subtle: this method shadows the method (*AppImpl).GetName of CommonApp.AppImpl.
@@ -37,7 +37,7 @@ func (c *CommonApp) Register(router *core.RouterGroup) {
 
 func NewCommonApp(config *viper.Viper, db *driver.DB) *CommonApp {
 	return &CommonApp{
-		AppImpl: core.NewAppImpl("common", config, db, []core.Handler{}),
+		App: core.NewApp("common", config, db, []core.Handler{}),
 	}
 }
 

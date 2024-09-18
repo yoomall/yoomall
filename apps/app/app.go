@@ -8,12 +8,12 @@ import (
 )
 
 type DefaultApp struct {
-	*core.AppImpl
+	*core.App
 	Config          *viper.Viper
 	AuthMiddlewares []gin.HandlerFunc
 }
 
-var _ core.App = (*DefaultApp)(nil)
+var _ core.IApp = (*DefaultApp)(nil)
 
 func (d *DefaultApp) Migrate() {
 }
