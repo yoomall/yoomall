@@ -19,6 +19,7 @@ func NewWireDefaultApp(config *viper.Viper, db *driver.DB,
 		App: core.NewApp("default", config, db, []core.Handler{
 			menuHandler,
 			jtkHandler,
+			dtkHandler,
 		}),
 		AuthMiddlewares: []gin.HandlerFunc{},
 	}

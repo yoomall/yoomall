@@ -4,7 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"lazyfury.github.com/yoomall-server/apps/app"
-	"lazyfury.github.com/yoomall-server/apps/app/handler"
 	"lazyfury.github.com/yoomall-server/apps/auth"
 	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
@@ -22,7 +21,6 @@ func NewHttpServer(
 	postApp *post.PostApp,
 
 	doc *core.Doc,
-	dtkHandler *handler.DtkHandler,
 ) httpserver.HttpServer {
 	engine := gin.Default()
 
@@ -39,10 +37,6 @@ func NewHttpServer(
 		RouterGroup: engine.Group("/api/v1"),
 	}
 	v1.GET("/docs/api.json", doc.Handler)
-
-	dtkHandler.Register(&core.RouterGroup{
-		RouterGroup: v1.RouterGroup,
-	})
 
 	var apps = []*core.RegisterApp{
 		{App: app, Router: v1.Group("")},
