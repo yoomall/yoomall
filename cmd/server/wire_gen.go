@@ -29,7 +29,8 @@ func NewApp() httpserver.HttpServer {
 	authService := service.NewAuthService(db)
 	userHandler := handler2.NewUserHandler(db, viper, authService)
 	authApp := auth.NewAuthApp(viper, db, userHandler)
-	postDefaultApp := post.NewDefaultApp(viper, db)
-	httpServer := NewHttpServer(viper, defaultApp, authApp, postDefaultApp)
+	postApp := post.NewDefaultApp(viper, db)
+	doc := NewDoc()
+	httpServer := NewHttpServer(viper, defaultApp, authApp, postApp, doc, dtkHandler)
 	return httpServer
 }

@@ -17,7 +17,6 @@ func NewWireDefaultApp(config *viper.Viper, db *driver.DB,
 	return &DefaultApp{
 		Config: config,
 		AppImpl: core.NewAppImpl("default", config, db, []core.Handler{
-			dtkHandler,
 			menuHandler,
 			jtkHandler,
 		}),

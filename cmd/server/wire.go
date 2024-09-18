@@ -13,6 +13,6 @@ import (
 )
 
 func NewApp() httpserver.HttpServer {
-	wire.Build(NewHttpServer, NewDB, config.NewConfig, app.WireSet, post.WireSet, auth.WireSet)
+	wire.Build(NewHttpServer, NewDB, NewDoc, config.NewConfig, app.WireSet, post.WireSet, auth.WireSet)
 	return httpserver.HttpServer{}
 }

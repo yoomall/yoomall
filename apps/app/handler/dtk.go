@@ -6,6 +6,7 @@ import (
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/helper/response"
 	"lazyfury.github.com/yoomall-server/libs/dtk"
 )
@@ -24,8 +25,12 @@ func NewDtkHandler(config *viper.Viper) *DtkHandler {
 	}
 }
 
-func (d *DtkHandler) Register(router *gin.RouterGroup) {
-	router.GET("", d.dtk)
+func (d *DtkHandler) Register(router *core.RouterGroup) {
+	router.WithDoc(&core.DocItem{
+		Method: http.MethodGet,
+		Tag:    "dtk",
+		Path:   "/dtk",
+	}, d.dtk)
 }
 
 func (d *DtkHandler) GetRouterGroupName() string {
@@ -33,18 +38,6 @@ func (d *DtkHandler) GetRouterGroupName() string {
 }
 
 // 大淘客接口 godoc
-//
-//		@Summary		获取大淘客接口数据
-//		@Description	大淘客接口
-//		@Tags			/dtk
-//		@Accept			json
-//		@Produce		json
-//		@Param			path query string true "接口路径"
-//		@Param			method query string true "请求方法"
-//		@Param			...params query string false "请求参数/其他参数都是动态的参考聚推客开发文档/ swagger 不支持，请使用 apipost 工具调试"
-//		@Router			/dtk [get]
-//	 @Success		200 {object} response.ApiJsonResponse
-//	 @Failure		500 {object} response.ApiJsonResponse
 func (d *DtkHandler) dtk(ctx *gin.Context) {
 	var query map[string]string = make(map[string]string)
 	ctx.ShouldBindQuery(&query)
