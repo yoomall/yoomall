@@ -14,7 +14,7 @@ type App interface {
 	Migrate()
 	Middleware() []gin.HandlerFunc
 	GetConfig() *viper.Viper
-	Register(router *gin.RouterGroup)
+	Register(router *RouterGroup)
 	GetHandlers() []Handler
 }
 
@@ -51,7 +51,7 @@ func (a *AppImpl) GetHandlers() []Handler {
 }
 
 type RegisterApp struct {
-	Router *gin.RouterGroup
+	Router *RouterGroup
 	App    App
 }
 

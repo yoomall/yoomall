@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/helper/response"
@@ -15,8 +17,11 @@ func NewMenuHandler() *MenuHandler {
 	return &MenuHandler{}
 }
 
-func (m *MenuHandler) Register(router *gin.RouterGroup) {
-	router.GET("", func(ctx *gin.Context) {
+func (m *MenuHandler) Register(router *core.RouterGroup) {
+	router.WithDoc(&core.DocItem{
+		Method: http.MethodGet,
+		Path:   "",
+	}, func(ctx *gin.Context) {
 		response.Success([]any{
 			map[string]any{
 				"key":       "overview",

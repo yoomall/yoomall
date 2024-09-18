@@ -31,8 +31,11 @@ func (j *JtkHandler) GetRouterGroupName() string {
 	return "jtk"
 }
 
-func (j *JtkHandler) Register(router *gin.RouterGroup) {
-	router.GET("", j.jtk)
+func (j *JtkHandler) Register(router *core.RouterGroup) {
+	router.WithDoc(&core.DocItem{
+		Method: http.MethodGet,
+		Path:   "",
+	}, j.jtk)
 }
 
 // 聚推客接口 godoc

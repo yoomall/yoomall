@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
@@ -30,9 +32,16 @@ func NewUserHandler(db *driver.DB, config *viper.Viper, service *service.AuthSer
 	}
 }
 
-func (u *UserHandler) Register(router *gin.RouterGroup) {
-	router.POST("/login", u.LoginWithUsernameAndPassword)
-	router.GET("user-list", u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
+func (u *UserHandler) Register(router *core.RouterGroup) {
+	router.WithDoc(&core.DocItem{
+		Method: http.MethodPost,
+		Path:   "/login",
+	}, u.LoginWithUsernameAndPassword)
+
+	router.WithDoc(&core.DocItem{
+		Method: http.MethodGet,
+		Path:   "/user-list",
+	}, u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
 		return tx.Preload("Ext")
 	}))
 }

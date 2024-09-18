@@ -1,10 +1,6 @@
 package core
 
-import (
-	"github.com/gin-gonic/gin"
-)
-
 type Handler interface {
-	Register(router *gin.RouterGroup)
+	Register(router *RouterGroup)
 	GetRouterGroupName() string
 }

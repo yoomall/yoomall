@@ -31,7 +31,7 @@ func (c *CommonApp) Migrate() {
 }
 
 // Register implements core.App.
-func (c *CommonApp) Register(router *gin.RouterGroup) {
+func (c *CommonApp) Register(router *core.RouterGroup) {
 
 }
 

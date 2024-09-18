@@ -35,11 +35,13 @@ func NewHttpServer(
 		ctx.String(200, ":) yoomall server is running.")
 	})
 
-	v1 := engine.Group("/api/v1")
+	v1 := &core.RouterGroup{
+		RouterGroup: engine.Group("/api/v1"),
+	}
 	v1.GET("/docs/*any", doc.Handler)
 
 	dtkHandler.Register(&core.RouterGroup{
-		RouterGroup: v1,
+		RouterGroup: v1.RouterGroup,
 	})
 
 	var apps = []*core.RegisterApp{

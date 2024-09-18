@@ -1,6 +1,8 @@
 package post
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/spf13/viper"
@@ -23,8 +25,12 @@ func NewDefaultApp(config *viper.Viper, db *driver.DB) *PostApp {
 var WireSet = wire.NewSet(NewDefaultApp)
 var _ core.App = (*PostApp)(nil)
 
-func (d *PostApp) Register(router *gin.RouterGroup) {
-	router.GET("/list", func(ctx *gin.Context) {
+func (d *PostApp) Register(router *core.RouterGroup) {
+	router.WithDoc(&core.DocItem{
+		Method: http.MethodGet,
+		Tag:    "post",
+		Path:   "/list",
+	}, func(ctx *gin.Context) {
 		ctx.JSON(200, map[string]any{"data": []any{}})
 	})
 }

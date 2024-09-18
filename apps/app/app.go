@@ -24,6 +24,6 @@ func (d *DefaultApp) Middleware() []gin.HandlerFunc {
 	}
 }
 
-func (d *DefaultApp) Register(router *gin.RouterGroup) {
+func (d *DefaultApp) Register(router *core.RouterGroup) {
 
 }

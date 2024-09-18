@@ -40,6 +40,6 @@ func (a *AuthApp) Middleware() []gin.HandlerFunc {
 	return nil
 }
 
-func (a *AuthApp) Register(router *gin.RouterGroup) {
+func (a *AuthApp) Register(router *core.RouterGroup) {
 
 }

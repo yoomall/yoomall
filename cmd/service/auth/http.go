@@ -22,7 +22,9 @@ func NewHttpServer(
 
 	engine.Use(coremiddleware.CORSMiddleware())
 
-	v1 := engine.Group("/api/v1")
+	v1 := &core.RouterGroup{
+		RouterGroup: engine.Group("/api/v1"),
+	}
 
 	var apps = []core.RegisterApp{
 		{App: auth, Router: v1.Group("/auth")},
