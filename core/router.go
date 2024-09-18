@@ -2,6 +2,7 @@ package core
 
 import (
 	"reflect"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,9 +22,82 @@ func (r *RouterGroup) WithDoc(doc *DocItem, handler func(ctx *gin.Context)) *Rou
 	// write doc
 	basePath := reflect.ValueOf(r).Elem().FieldByName("basePath")
 	doc.Path = basePath.String() + doc.Path
-	DocInstance.Add(doc)
 
+	if doc.Body != nil {
+		doc.Body = reflectSwagSpec(doc.Body)
+	}
+
+	if doc.Params != nil {
+		doc.Params = reflectSwagSpec(doc.Params)
+	}
+
+	DocInstance.Add(doc)
 	return r
+}
+
+// reflectSwagSpec reflects the struct and get the json tag and swag tag, and make it as a map.
+// it will return a map like this:
+//
+//	{
+//		"key1": {
+//			"type": "string",
+//			"label": "label1",
+//			"required": true
+//		},
+//		"key2": {
+//			"type": "integer",
+//			"label": "label2",
+//			"required": false
+//		},
+//		...
+//	}
+func reflectSwagSpec[T any](v T) map[string]map[string]any {
+	var _map = make(map[string]map[string]any)
+	var fieldLenth = reflect.TypeOf(v).NumField()
+	var fields []reflect.StructField
+
+	for i := 0; i < fieldLenth; i++ {
+		fields = append(fields, reflect.TypeOf(v).Field(i))
+	}
+	for _, field := range fields {
+		specstr := field.Tag.Get("swag")
+		specs := strings.Split(specstr, ",")
+
+		key := field.Tag.Get("json")
+		if key == "" {
+			key = field.Name
+		}
+
+		if _map[key] == nil {
+			_map[key] = make(map[string]any)
+		}
+
+		for _, spec := range specs {
+			switch spec {
+			case "required":
+				_map[key]["required"] = true
+			case "string":
+				_map[key]["type"] = "string"
+			case "int":
+				_map[key]["type"] = "integer"
+
+			case "float64":
+				_map[key]["type"] = "number"
+
+			case "interface{}":
+				_map[key]["type"] = "object"
+
+			case "array":
+				_map[key]["type"] = "array"
+
+			default:
+				_map[key]["label"] = spec
+			}
+		}
+
+	}
+	return _map
+
 }
 
 // GROUP

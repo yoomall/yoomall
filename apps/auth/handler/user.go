@@ -36,6 +36,7 @@ func (u *UserHandler) Register(router *core.RouterGroup) {
 	router.WithDoc(&core.DocItem{
 		Method: http.MethodPost,
 		Path:   "/login",
+		Body:   request.UserUserNameAndPasswordLoginRequest{},
 	}, u.LoginWithUsernameAndPassword)
 
 	router.WithDoc(&core.DocItem{
