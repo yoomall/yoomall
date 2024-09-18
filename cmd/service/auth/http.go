@@ -6,6 +6,7 @@ import (
 	"lazyfury.github.com/yoomall-server/apps/auth"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
+	"lazyfury.github.com/yoomall-server/core/constants"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	httpserver "lazyfury.github.com/yoomall-server/core/http"
 	coremiddleware "lazyfury.github.com/yoomall-server/core/middleware"
@@ -41,7 +42,7 @@ func NewHttpServer(
 }
 
 func NewDB(config *viper.Viper) *driver.DB {
-	return driver.NewDB(config.GetString("mysql.dsn"))
+	return driver.NewDB(config.GetString(constants.MYSQL_DSN))
 }
 
 func setup(engine *gin.Engine) {

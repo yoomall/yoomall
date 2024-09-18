@@ -41,7 +41,7 @@ type DocItem struct {
 	Failure     any
 }
 
-var DocInstance *Doc
+var DocInstance *Doc = nil
 
 func NewDoc() *Doc {
 	DocInstance = &Doc{}
