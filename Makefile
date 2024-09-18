@@ -29,6 +29,6 @@ test:
 	go test -v ./...
 
 
-prod_linux:
+slim_linux:
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/linux/ ./cmd/server && upx -9 ./dist/linux/server
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/linux/ ./cmd/seed && upx -9 ./dist/linux/seed

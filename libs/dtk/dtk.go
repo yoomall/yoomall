@@ -78,7 +78,7 @@ func (d *Dtk) publicParams() map[string]string {
 }
 
 // checkParams
-func (d *Dtk) checkParams(params map[string]string) error {
+func (d *Dtk) checkParams(_ map[string]string) error {
 	if d.Config == nil {
 		return fmt.Errorf("config is required")
 	}

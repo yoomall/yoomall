@@ -26,9 +26,6 @@ func NewHttpServer(
 
 	setup(engine)
 
-	engine.Use(coremiddleware.CORSMiddleware())
-	engine.Use(gin.Recovery())
-
 	engine.GET("", func(ctx *gin.Context) {
 		ctx.String(200, ":) yoomall server is running.")
 	})
@@ -63,8 +60,11 @@ func NewDB(config *viper.Viper) *driver.DB {
 }
 
 func setup(engine *gin.Engine) {
-	engine.SetTrustedProxies(nil)
+	engine.SetTrustedProxies(nil)               //设置允许请求的域名
+	engine.Use(coremiddleware.CORSMiddleware()) // 跨域
+	engine.Use(gin.Recovery())                  // 错误恢复
 
+	// 设置 debug mode
 	if config.Config.DEBUG {
 		gin.SetMode(gin.DebugMode)
 	} else {
