@@ -1,5 +1,7 @@
 package result
 
+import "errors"
+
 type Result struct {
 	Value any
 	Error error
@@ -10,6 +12,9 @@ func Ok(value any) *Result {
 }
 
 func Err(err error) *Result {
+	if err == nil {
+		return &Result{Error: errors.New("error without details")}
+	}
 	return &Result{Error: err}
 }
 
