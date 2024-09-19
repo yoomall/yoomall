@@ -29,7 +29,7 @@ func (d *DtkHandler) Register(router *core.RouterGroup) {
 	router.WithDoc(&core.DocItem{
 		Method: http.MethodGet,
 		Tag:    "dtk",
-		Path:   "/dtk",
+		Path:   "",
 	}, d.dtk)
 }
 

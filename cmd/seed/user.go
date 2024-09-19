@@ -25,21 +25,15 @@ func seedingUsers() *cobra.Command {
 			startTime := time.Now()
 			service := service.NewAuthService(driver.NewDB(config.Config.MysqlDsn))
 
-			users := []model.User{}
-
 			for i := 0; i < count; i++ {
 				email := getRandomEmail()
-				users = append(users, model.User{
+				if err := service.CreateUser(&model.User{
 					UserName: utils.StringUtils.HiddenEmail(email),
 					Password: "yoo123456",
 					Email:    email,
 					Phone:    getRandomPhone(),
 					ExtId:    0,
-				})
-			}
-
-			for _, user := range users {
-				if err := service.CreateUser(&user); err != nil {
+				}); err != nil {
 					log.Error(err.Error())
 				}
 			}
