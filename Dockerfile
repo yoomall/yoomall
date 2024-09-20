@@ -1,4 +1,4 @@
-FROM golang:1.23.1-bullseye
+FROM golang:1.23
 
 WORKDIR /app
 
@@ -6,4 +6,4 @@ COPY . .
 
 RUN go mod download
 
-RUN ./build.sh
+RUN make linux
