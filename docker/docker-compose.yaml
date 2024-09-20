@@ -1,12 +1,12 @@
 name: yoo-mall
 services:
-  api:
-    build: ../
-    ports:
-      - "8900:8900"
-    depends_on:
-      - mysql5.7
-    command: ["./dist/linux/server", "-c", "config.yaml"]
+  # api:
+  #   build: ../
+  #   ports:
+  #     - "8900:8900"
+  #   depends_on:
+  #     - mysql5.7
+  #   command: ["./dist/linux/server", "-c", "config.yaml"]
 
   mysql5.7:
     image: mysql:5.7
