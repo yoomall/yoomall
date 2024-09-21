@@ -24,7 +24,7 @@ func AuthMiddleware(db *driver.DB, must bool) gin.HandlerFunc {
 		}
 		var userToken model.UserToken
 		if err := db.Where("token = ?", token).First(&userToken).Error; err != nil {
-			response.Error(response.ErrNotAuthorized, err.Error()).Done(c)
+			response.Error(response.ErrNotAuthorized, "token 不可用").Done(c)
 			c.Abort()
 			return
 		}
@@ -36,7 +36,7 @@ func AuthMiddleware(db *driver.DB, must bool) gin.HandlerFunc {
 		c.Set("userId", userToken.UserId)
 		var user model.User
 		if err := db.Where("id = ?", userToken.UserId).First(&user).Error; err != nil {
-			response.Error(response.ErrNotAuthorized, err.Error()).Done(c)
+			response.Error(response.ErrNotAuthorized, "用户不存在").Done(c)
 			c.Abort()
 			return
 		}
