@@ -112,37 +112,37 @@ func (r *RouterGroup) Use(middleware ...gin.HandlerFunc) *RouterGroup {
 }
 
 // GET
-func (r *RouterGroup) GET(path string, handler gin.HandlerFunc) *RouterGroup {
-	r.RouterGroup.GET(path, handler)
+func (r *RouterGroup) GET(path string, handlers ...gin.HandlerFunc) *RouterGroup {
+	r.RouterGroup.GET(path, handlers...)
 	return r
 }
 
 // POST
-func (r *RouterGroup) POST(path string, handler gin.HandlerFunc) *RouterGroup {
-	r.RouterGroup.POST(path, handler)
+func (r *RouterGroup) POST(path string, handlers ...gin.HandlerFunc) *RouterGroup {
+	r.RouterGroup.POST(path, handlers...)
 	return r
 }
 
 // PUT
-func (r *RouterGroup) PUT(path string, handler gin.HandlerFunc) *RouterGroup {
-	r.RouterGroup.PUT(path, handler)
+func (r *RouterGroup) PUT(path string, handlers ...gin.HandlerFunc) *RouterGroup {
+	r.RouterGroup.PUT(path, handlers...)
 	return r
 }
 
 // DELETE
-func (r *RouterGroup) DELETE(path string, handler gin.HandlerFunc) *RouterGroup {
-	r.RouterGroup.DELETE(path, handler)
+func (r *RouterGroup) DELETE(path string, handlers ...gin.HandlerFunc) *RouterGroup {
+	r.RouterGroup.DELETE(path, handlers...)
 	return r
 }
 
 // PATCH
-func (r *RouterGroup) PATCH(path string, handler gin.HandlerFunc) *RouterGroup {
-	r.RouterGroup.PATCH(path, handler)
+func (r *RouterGroup) PATCH(path string, handlers ...gin.HandlerFunc) *RouterGroup {
+	r.RouterGroup.PATCH(path, handlers...)
 	return r
 }
 
 // Handle
-func (r *RouterGroup) Handle(method, path string, handler gin.HandlerFunc) *RouterGroup {
-	r.RouterGroup.Handle(method, path, handler)
+func (r *RouterGroup) Handle(method, path string, handlers ...gin.HandlerFunc) *RouterGroup {
+	r.RouterGroup.Handle(method, path, handlers...)
 	return r
 }
