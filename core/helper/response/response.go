@@ -58,7 +58,7 @@ func Success(data interface{}) *ApiJsonResponse {
 // error
 func Error(error ApiError, message string) *ApiJsonResponse {
 	if message == "" {
-		message = error.Error()
+		message = error.GetMsgFromErrCode()
 	}
 	var httpCode int = http.StatusBadRequest
 	if error.IsHttpCode() {
