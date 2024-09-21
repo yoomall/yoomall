@@ -12,9 +12,9 @@ type RouterGroup struct {
 }
 
 // handler 在 app 内注册的，注释写文档没有办法推理路由前缀
-func (r *RouterGroup) WithDoc(doc *DocItem, handler func(ctx *gin.Context)) *RouterGroup {
+func (r *RouterGroup) WithDoc(doc *DocItem, handler func(ctx *gin.Context), middlewares ...gin.HandlerFunc) *RouterGroup {
 	// register handler
-	r.Handle(doc.Method, doc.Path, func(ctx *gin.Context) {
+	r.Use(middlewares...).Handle(doc.Method, doc.Path, func(ctx *gin.Context) {
 		// 似乎还可以在这里添加验证和直接填参数 handler(ctx,page,limit,params...)
 		handler(ctx)
 	})
@@ -108,7 +108,7 @@ func (r *RouterGroup) Group(path string) *RouterGroup {
 // USE
 func (r *RouterGroup) Use(middleware ...gin.HandlerFunc) *RouterGroup {
 	r.RouterGroup.Use(middleware...)
-	return r
+	return &RouterGroup{RouterGroup: r.RouterGroup}
 }
 
 // GET
