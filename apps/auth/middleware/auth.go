@@ -9,7 +9,7 @@ import (
 	"lazyfury.github.com/yoomall-server/core/helper/response"
 )
 
-func AuthMiddleware(db *driver.DB, must bool) gin.HandlerFunc {
+func AuthMiddleware(db *driver.DB, must bool, needUser bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		print("auth middleware")
 		token := c.GetHeader("Token")
@@ -33,7 +33,15 @@ func AuthMiddleware(db *driver.DB, must bool) gin.HandlerFunc {
 			c.Abort()
 			return
 		}
+
 		c.Set("userId", userToken.UserId)
+
+		// 不需要用户具体的信息
+		if !needUser {
+			c.Next()
+			return
+		}
+
 		var user model.User
 		if err := db.Where("id = ?", userToken.UserId).First(&user).Error; err != nil {
 			response.Error(response.ErrNotAuthorized, "用户不存在").Done(c)

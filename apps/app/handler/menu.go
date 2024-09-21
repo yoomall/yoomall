@@ -40,7 +40,7 @@ func (m *MenuHandler) Register(router *core.RouterGroup) {
 				},
 			},
 		}).Done(ctx)
-	}, authmiddleware.AuthMiddleware(m.DB, true))
+	}, authmiddleware.AuthMiddleware(m.DB, true, false))
 }
 
 func (m *MenuHandler) GetRouterGroupName() string {
