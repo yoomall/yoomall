@@ -73,7 +73,7 @@ export default {
         this.$refs.loginFormRef.validate(valid => {
             if (valid) {
                 // this.$router.push({ path: '/dashboard' })
-                request.post('/users/login', this.loginForm).then(res=>{
+                request.post('/auth/users/login', this.loginForm).then(res=>{
                     if(res.data.code === 200){
                         console.log(res.data.data)
                         let {token,expired_at} = res.data?.data || {}

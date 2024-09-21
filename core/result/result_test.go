@@ -17,22 +17,10 @@ func TestResult(t *testing.T) {
 	assert.Nil(val.Error)
 
 	// Err str
-	val2 := result.Err(errors.New("err"))
+	val2 := result.Err[any](errors.New("err"))
 	assert.Equal("err", val2.Error.Error())
 
 	//Err must err
-	val3 := result.Err(nil)
+	val3 := result.Err[any](nil)
 	assert.Equal(true, val3.IsErr())
-
-	// Match test
-	valOut := 1
-	var errOut error
-	result.Match(val, func(v int) {
-		valOut += v
-	}, func(err error) {
-		errOut = err
-	})
-
-	assert.Equal(2, valOut)
-	assert.Nil(errOut)
 }

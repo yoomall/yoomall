@@ -2,54 +2,31 @@ package result
 
 import "errors"
 
-type Result struct {
-	Value any
+/**
+ * result
+ * 这么看起来还是 if err == nil 更方便一点 😂
+ */
+
+type Result[T any] struct {
+	Value T
 	Error error
 }
 
-func Ok(value any) *Result {
-	return &Result{Value: value}
+func Ok[T any](value T) *Result[T] {
+	return &Result[T]{Value: value}
 }
 
-func Err(err error) *Result {
+func Err[T any](err error) *Result[T] {
 	if err == nil {
-		return &Result{Error: errors.New("error without details")}
+		return &Result[T]{Error: errors.New("error without details")}
 	}
-	return &Result{Error: err}
+	return &Result[T]{Error: err}
 }
 
-func (r *Result) IsOk() bool {
+func (r *Result[any]) IsOk() bool {
 	return r.Error == nil
 }
 
-func (r *Result) IsErr() bool {
+func (r *Result[any]) IsErr() bool {
 	return r.Error != nil
-}
-
-func Match[T any](r *Result, ok func(T), err func(error)) {
-	if r.IsOk() {
-		ok(r.Value.(T))
-	}
-	err(r.Error)
-}
-
-func (r *Result) ValueOrZero() any {
-	if r.IsOk() {
-		return r.Value
-	}
-	return nil
-}
-
-func (r *Result) ValueOrError() (any, error) {
-	if r.IsOk() {
-		return r.Value, nil
-	}
-	return nil, r.Error
-}
-
-func (r *Result) ValueOrPanic() any {
-	if r.IsOk() {
-		return r.Value
-	}
-	panic(r.Error)
 }

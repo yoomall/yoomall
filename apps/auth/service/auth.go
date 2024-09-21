@@ -8,7 +8,9 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"lazyfury.github.com/yoomall-server/apps/auth/model"
+	authresponse "lazyfury.github.com/yoomall-server/apps/auth/response"
 	"lazyfury.github.com/yoomall-server/core/driver"
+	"lazyfury.github.com/yoomall-server/core/result"
 )
 
 type AuthService struct {
@@ -21,8 +23,17 @@ func NewAuthService(db *driver.DB) *AuthService {
 	}
 }
 
-func (s *AuthService) genToken() string {
-	return uuid.NewString()
+func (s *AuthService) createToken(userId uint) *model.UserToken {
+	str := uuid.New().String()
+	token := model.UserToken{
+		Token:      str,
+		ExpireTime: time.Now().Add(24 * time.Hour),
+		UserId:     userId,
+	}
+	if err := s.DB.Create(&token).Error; err == nil {
+		return &token
+	}
+	panic("生成 token 失败，should not reach here")
 }
 
 func (s *AuthService) HashedPassword(password string) (string, error) {
@@ -30,36 +41,48 @@ func (s *AuthService) HashedPassword(password string) (string, error) {
 	return string(hashed), err
 }
 
-func (s *AuthService) LoginWithUsernameAndPassword(username string, password string) (*model.User, *model.UserToken, error) {
+func (s *AuthService) LoginWithUsernameAndPassword(username string, password string) *result.Result[*authresponse.LoginResult] {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("AuthService.LoginWithUsernameAndPassword", err)
+		}
+	}()
+
 	if username == "" || password == "" {
-		return nil, nil, fmt.Errorf("username or password is empty")
+		return result.Err[*authresponse.LoginResult](fmt.Errorf("username or password is empty"))
 	}
 
 	var user model.User
 	err := s.DB.Where("username = ?", username).First(&user).Error
 	if err != nil {
-		return nil, nil, fmt.Errorf("用户不存在")
+		return result.Err[*authresponse.LoginResult](fmt.Errorf("用户不存在"))
 	}
 
 	// check passwrod
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
-		return nil, nil, fmt.Errorf("密码错误")
+		return result.Err[*authresponse.LoginResult](fmt.Errorf("密码错误"))
 	}
 
-	var userToken = model.UserToken{
-		UserId:     user.ID,
-		Token:      s.genToken(),
-		ExpireTime: time.Now().Add(24 * time.Hour),
+	// 复用近期的 token todo:需要一个设备信息的粗 id，来处理多设备登录的情况/或者踢掉其他的所有 token/尽量避免多设备共用一个 token 的情况
+	var findToken *model.UserToken = new(model.UserToken)
+	if err := s.DB.Where("user_id = ?", user.ID).First(&findToken).Error; err == nil {
+		if findToken.ExpireTime.After(time.Now()) {
+			findToken.ExpireTime = time.Now().Add(24 * time.Hour)
+			s.DB.Save(findToken)
+			return result.Ok(&authresponse.LoginResult{
+				User:  &user,
+				Token: findToken,
+			})
+		}
 	}
 
-	err = s.DB.Create(&userToken).Error
-
-	if err != nil {
-		return nil, nil, fmt.Errorf("登录失败")
-	}
-
-	return &user, &userToken, nil
+	// 生成新 token
+	var userToken *model.UserToken = s.createToken(user.ID)
+	return result.Ok(&authresponse.LoginResult{
+		User:  &user,
+		Token: userToken,
+	})
 }
 
 func (s *AuthService) CheckPasswordStrength(password string) error {
