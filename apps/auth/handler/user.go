@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
+	authmiddleware "lazyfury.github.com/yoomall-server/apps/auth/middleware"
 	"lazyfury.github.com/yoomall-server/apps/auth/model"
 	"lazyfury.github.com/yoomall-server/apps/auth/request"
 	"lazyfury.github.com/yoomall-server/apps/auth/service"
@@ -44,7 +45,7 @@ func (u *UserHandler) Register(router *core.RouterGroup) {
 		Path:   "/user-list",
 	}, u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
 		return tx.Preload("Ext")
-	}))
+	}), authmiddleware.AuthMiddleware(u.CRUD.DB, true, false))
 }
 
 func (u *UserHandler) GetRouterGroupName() string {

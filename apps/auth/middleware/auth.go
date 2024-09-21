@@ -14,6 +14,9 @@ func AuthMiddleware(db *driver.DB, must bool, needUser bool) gin.HandlerFunc {
 		print("auth middleware")
 		token := c.GetHeader("Token")
 		if token == "" {
+			token = c.Query("token")
+		}
+		if token == "" {
 			if must {
 				response.Error(response.ErrNotAuthorized, "token 不存在").Done(c)
 				c.Abort()
