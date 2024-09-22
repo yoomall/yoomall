@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	var rootCmd = &cobra.Command{Use: "seed"}
+	var rootCmd = &cobra.Command{Use: "tools"}
 	rootCmd.AddCommand(createSuperUser())
 	rootCmd.AddCommand(seedingUsers())
 	rootCmd.Execute()
