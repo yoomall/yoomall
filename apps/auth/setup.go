@@ -33,7 +33,11 @@ func NewAuthApp(
 }
 
 func (a *AuthApp) Migrate() {
-	a.GetDB().AutoMigrate(&model.User{}, &model.UserToken{}, &model.UserExt{})
+	a.GetDB().AutoMigrate(
+		&model.User{}, &model.UserToken{}, &model.UserExt{},
+		&model.UserRole{}, &model.UserRoleRef{},
+		&model.Permission{}, &model.RolePermissionRef{}, &model.UserPermissionRef{},
+	)
 }
 
 func (a *AuthApp) Middleware() []gin.HandlerFunc {
