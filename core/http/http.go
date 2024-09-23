@@ -19,7 +19,7 @@ func (h *HttpServer) Start() *gin.Engine {
 	if port == "0" {
 		port = "8900"
 	}
-	log.Info("[server on] http://127.0.0.1:" + port)
+	log.Info("【服务正在运行】 http://127.0.0.1:" + port)
 	h.Engine.Run(":" + port)
 	return h.Engine
 }

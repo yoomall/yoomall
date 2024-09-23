@@ -1,6 +1,8 @@
 package core
 
 import (
+	"fmt"
+
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -56,12 +58,12 @@ type RegisterApp struct {
 }
 
 func (instance *RegisterApp) Register() {
-	log.Info(instance.App.GetName() + "====================================")
+	log.Info("====App:【" + instance.App.GetName() + "】 register Start====================================")
 	log.Info("注册app", "app", instance.App.GetName())
 	if config.Config.DEBUG {
-		log.Info("迁移中", "app", instance.App.GetName())
+		log.Info("迁移中")
 		instance.App.Migrate()
-		log.Info("迁移成功 success", "app", instance.App.GetName())
+		log.Info("迁移成功 success")
 	}
 	router := instance.Router.Group("")
 	router.Use(instance.App.Middleware()...)
@@ -72,4 +74,6 @@ func (instance *RegisterApp) Register() {
 	}
 
 	log.Info("注册成功", "app", instance.App.GetName())
+	log.Info("====App:【" + instance.App.GetName() + "】 register End====================================")
+	fmt.Printf("\n\n")
 }
