@@ -23,10 +23,11 @@ func NewMenuHandler(db *driver.DB) *MenuHandler {
 }
 
 func (m *MenuHandler) Register(router *core.RouterGroup) {
+	router.Use(authmiddleware.AuthMiddleware(m.DB, true, false))
 	router.WithDoc(&core.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
-	}).Use(authmiddleware.AuthMiddleware(m.DB, true, false)).GET("", func(ctx *gin.Context) {
+	}).GET("", func(ctx *gin.Context) {
 		response.Success([]any{
 			map[string]any{
 				"key":       "overview",

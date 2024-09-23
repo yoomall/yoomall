@@ -34,18 +34,24 @@ func NewUserHandler(db *driver.DB, config *viper.Viper, service *service.AuthSer
 }
 
 func (u *UserHandler) Register(router *core.RouterGroup) {
+	// 登录接口
 	router.WithDoc(&core.DocItem{
 		Method: http.MethodPost,
 		Path:   "/login",
 		Body:   request.UserUserNameAndPasswordLoginRequest{},
 	}).POST("/login", u.LoginWithUsernameAndPassword)
 
-	router.WithDoc(&core.DocItem{
-		Method: http.MethodGet,
-		Path:   "/user-list",
-	}).Use(authmiddleware.AuthMiddleware(u.CRUD.DB, true, false)).GET("/user-list", u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
-		return tx.Preload("Ext")
-	}))
+	// 用户列表
+	auth := router.Group("").Use(authmiddleware.AuthMiddleware(u.CRUD.DB, true, false))
+	{
+		auth.WithDoc(&core.DocItem{
+			Method: http.MethodGet,
+			Path:   "/user-list",
+		}).GET("/user-list", u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
+			return tx.Preload("Ext")
+		}))
+	}
+
 }
 
 func (u *UserHandler) GetRouterGroupName() string {
