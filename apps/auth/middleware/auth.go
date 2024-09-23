@@ -9,7 +9,29 @@ import (
 	"lazyfury.github.com/yoomall-server/core/helper/response"
 )
 
-func AuthMiddleware(db *driver.DB, must bool, needUser bool) gin.HandlerFunc {
+type AuthMiddlewareGroup struct {
+	AuthMiddleware             gin.HandlerFunc
+	MustAuthMiddleware         gin.HandlerFunc
+	MustAuthMiddlewareWithUser gin.HandlerFunc
+}
+
+func NewAuthMiddlewareGroup(db *driver.DB) *AuthMiddlewareGroup {
+	return &AuthMiddlewareGroup{
+		AuthMiddleware:             NewAuthMiddleware(db, false, false),
+		MustAuthMiddleware:         NewMustAuthMiddleware(db),
+		MustAuthMiddlewareWithUser: NewMustAuthMiddlewareWithUser(db),
+	}
+}
+
+func NewMustAuthMiddleware(db *driver.DB) gin.HandlerFunc {
+	return NewAuthMiddleware(db, true, false)
+}
+
+func NewMustAuthMiddlewareWithUser(db *driver.DB) gin.HandlerFunc {
+	return NewAuthMiddleware(db, true, true)
+}
+
+func NewAuthMiddleware(db *driver.DB, must bool, needUser bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		print("auth middleware")
 		token := c.GetHeader("Token")

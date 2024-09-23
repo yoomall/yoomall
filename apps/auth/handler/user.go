@@ -17,19 +17,21 @@ import (
 )
 
 type UserHandler struct {
-	CRUD    *curd.CRUD
-	service *service.AuthService
+	CRUD      *curd.CRUD
+	service   *service.AuthService
+	authMidds *authmiddleware.AuthMiddlewareGroup
 }
 
 var _ core.Handler = (*UserHandler)(nil)
 
-func NewUserHandler(db *driver.DB, config *viper.Viper, service *service.AuthService) *UserHandler {
+func NewUserHandler(db *driver.DB, config *viper.Viper, service *service.AuthService, authMiddlewareGroup *authmiddleware.AuthMiddlewareGroup) *UserHandler {
 	return &UserHandler{
 		CRUD: &curd.CRUD{
 			DB:    db,
 			Model: &model.User{},
 		},
-		service: service,
+		service:   service,
+		authMidds: authMiddlewareGroup,
 	}
 }
 
@@ -42,7 +44,7 @@ func (u *UserHandler) Register(router *core.RouterGroup) {
 	}).POST("/login", u.LoginWithUsernameAndPassword)
 
 	// 用户列表
-	auth := router.Group("").Use(authmiddleware.AuthMiddleware(u.CRUD.DB, true, false))
+	auth := router.Group("").Use(u.authMidds.MustAuthMiddleware)
 	{
 		auth.WithDoc(&core.DocItem{
 			Method: http.MethodGet,

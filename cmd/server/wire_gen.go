@@ -11,6 +11,7 @@ import (
 	"lazyfury.github.com/yoomall-server/apps/app/handler"
 	"lazyfury.github.com/yoomall-server/apps/auth"
 	handler2 "lazyfury.github.com/yoomall-server/apps/auth/handler"
+	"lazyfury.github.com/yoomall-server/apps/auth/middleware"
 	"lazyfury.github.com/yoomall-server/apps/auth/service"
 	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
@@ -23,11 +24,12 @@ func NewApp() httpserver.HttpServer {
 	viper := config.NewConfig()
 	db := NewDB(viper)
 	dtkHandler := handler.NewDtkHandler(viper)
-	menuHandler := handler.NewMenuHandler(db)
+	authMiddlewareGroup := authmiddleware.NewAuthMiddlewareGroup(db)
+	menuHandler := handler.NewMenuHandler(db, authMiddlewareGroup)
 	jtkHandler := handler.NewJtkHandler(viper)
 	defaultApp := app.NewWireDefaultApp(viper, db, dtkHandler, menuHandler, jtkHandler)
 	authService := service.NewAuthService(db)
-	userHandler := handler2.NewUserHandler(db, viper, authService)
+	userHandler := handler2.NewUserHandler(db, viper, authService, authMiddlewareGroup)
 	authApp := auth.NewAuthApp(viper, db, userHandler)
 	postApp := post.NewDefaultApp(viper, db)
 	doc := NewDoc()

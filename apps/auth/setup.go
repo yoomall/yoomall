@@ -5,6 +5,7 @@ import (
 	"github.com/google/wire"
 	"github.com/spf13/viper"
 	"lazyfury.github.com/yoomall-server/apps/auth/handler"
+	authmiddleware "lazyfury.github.com/yoomall-server/apps/auth/middleware"
 	"lazyfury.github.com/yoomall-server/apps/auth/model"
 	"lazyfury.github.com/yoomall-server/apps/auth/service"
 	"lazyfury.github.com/yoomall-server/core"
@@ -17,7 +18,7 @@ type AuthApp struct {
 
 var _ core.IApp = (*AuthApp)(nil)
 
-var WireSet = wire.NewSet(NewAuthApp, service.NewAuthService, handler.NewUserHandler)
+var WireSet = wire.NewSet(NewAuthApp, service.NewAuthService, handler.NewUserHandler, authmiddleware.NewAuthMiddlewareGroup)
 
 func NewAuthApp(
 	config *viper.Viper,

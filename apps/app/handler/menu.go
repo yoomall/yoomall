@@ -12,19 +12,21 @@ import (
 )
 
 type MenuHandler struct {
-	DB *driver.DB
+	DB        *driver.DB
+	authMidds *authmiddleware.AuthMiddlewareGroup
 }
 
 var _ core.Handler = (*MenuHandler)(nil)
 
-func NewMenuHandler(db *driver.DB) *MenuHandler {
+func NewMenuHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewareGroup) *MenuHandler {
 	return &MenuHandler{
-		DB: db,
+		DB:        db,
+		authMidds: authMidds,
 	}
 }
 
 func (m *MenuHandler) Register(router *core.RouterGroup) {
-	router.Use(authmiddleware.AuthMiddleware(m.DB, true, false))
+	router.Use(m.authMidds.MustAuthMiddleware)
 	router.WithDoc(&core.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
