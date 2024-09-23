@@ -63,9 +63,16 @@ func userManagementUI() ui.IRouter {
 		Component: "UserManagementView",
 		Widgets:   []ui.IWidget{},
 	}).AddChildren(
-		ui.NewRouter("users", "Users", "ant-design:user-outlined", "/overview/users", nil, &ui.Page{
+		ui.NewRouter("user-list", "用户列表", "ant-design:user-outlined", "user-list", nil, &ui.Page{
 			Title:     "Users",
-			Component: "UserView",
+			Component: "HomeView",
+			Widgets:   []ui.IWidget{},
+		}),
+	).AddChildren(
+		ui.NewRouter("role-list", "角色列表", "ant-design:user-outlined", "role-list", nil, &ui.Page{
+			Title:     "Roles",
+			Component: "HomeView",
+			Widgets:   []ui.IWidget{},
 		}),
 	)
 }

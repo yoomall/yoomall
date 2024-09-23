@@ -26,6 +26,7 @@ import router from "@/router";
 import MenuItem from "./MenuItem.vue";
 import SubMenu from "./SubMenu.vue";
 import { useSubMenuStore } from "@/pinia/subMenu";
+import { useRouter } from "vue-router";
 export default {
   components: {
     MenuItem,
@@ -77,6 +78,7 @@ export default {
   },
   setup() {
     const subMenuStore = useSubMenuStore();
+
     return {
       subMenuStore,
     };
@@ -85,9 +87,15 @@ export default {
     currentMenu: {
       handler(val) {
         console.log("currentMenu", val);
-        if (!this.isSubMenu && val && val.children) {
-          console.log("setSubMenu", val.children);
-          this.subMenuStore.setSubMenu(val.children);
+        if (!this.isSubMenu) {
+          if(val && val.children){
+            console.log("setSubMenu", val.children);
+            this.subMenuStore.setSubMenu(val.children);
+          }else{
+            this.subMenuStore.setSubMenu([]);
+          }
+        }else{
+
         }
       },
       immediate: true,

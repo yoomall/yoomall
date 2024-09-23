@@ -11,7 +11,7 @@ export const useSubMenuStore = defineStore('subMenu', {
     },
     actions: {
         setSubMenu(menus: any) {
-            this.menus = menus
+            this.menus = menus || []
         }
     }
 })
