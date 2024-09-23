@@ -5,7 +5,7 @@
             <div class="flex flex-row">
                 <div>
                     <h1 class="mb-0 mt-2">{{ meta.table?.title || meta.title }}</h1>
-                    <p class="text-gray">{{ meta.description || meta.table.description }}</p>
+                    <p class="text-gray">{{ meta?.description || meta.table?.description }}</p>
                 </div>
                 <div class="flex-grow">
                     <div class="flex flex-row-reverse">

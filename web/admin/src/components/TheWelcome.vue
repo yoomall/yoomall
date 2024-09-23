@@ -19,7 +19,9 @@ const profileStore = useProfileStore()
             <DocumentationIcon />
           </template>
           <template #heading>
-            {{$t('welcome.documentation',{user:profileStore.profile.username})}}
+            <span t="t_welcome.documentation">
+              {{$t('welcome.documentation',{user:profileStore.profile.username})}}
+            </span>
           </template>
           {{$t('welcome.documentationText')}}
         </WelcomeItem>

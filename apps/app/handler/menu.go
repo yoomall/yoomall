@@ -71,7 +71,7 @@ func userManagementUI() ui.IRouter {
 	).AddChildren(
 		ui.NewRouter("role-list", "角色列表", "ant-design:user-outlined", "role-list", nil, &ui.Page{
 			Title:     "Roles",
-			Component: "HomeView",
+			Component: "TableView",
 			Widgets:   []ui.IWidget{},
 		}),
 	)

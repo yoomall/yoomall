@@ -79,11 +79,11 @@ const logout = () => {
             </div>
         </div>
         <div class="flex flex-row flex-1 light:bg-gray-100 h-screen" style="padding-top: var(--header-bar-height);box-sizing: border-box;">
-            <div class="w-124px dark:bg-dark-800 light:bg-white overflow-y-auto hidden-scroll-bar border-0 border-solid border-r-1px light:border-gray-200 dark:border-dark"  :style="subMenuStore.hasSubMenu ? `z-index: 998;box-shadow: 6px 0 36px #00000010;` : ''">
+            <div class="w-144px dark:bg-dark-800 light:bg-white overflow-y-auto hidden-scroll-bar border-0 border-solid border-r-1px light:border-gray-200 dark:border-dark"  :style="subMenuStore.hasSubMenu ? `z-index: 998;box-shadow: 6px 0 36px #00000010;` : ''">
                 <Menu :menus="menus" ></Menu>
                 <div class="h-100px"></div>
             </div>
-            <div v-if="subMenuStore.hasSubMenu" class="w-154px bg-white dark:bg-dark-800" >
+            <div v-if="subMenuStore.hasSubMenu" class="w-180px bg-white dark:bg-dark-800" >
                 <Menu :menus="subMenuStore.menus" is-sub-menu ></Menu>
             </div>
             <div class="flex-1 flex flex-col dark:bg-dark-700">
