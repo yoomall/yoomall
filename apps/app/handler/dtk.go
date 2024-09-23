@@ -32,7 +32,7 @@ func (d *DtkHandler) Register(router *core.RouterGroup) {
 		Method: http.MethodGet,
 		Tag:    "dtk",
 		Path:   "",
-	}, d.dtk)
+	}).GET("", d.dtk)
 }
 
 func (d *DtkHandler) GetRouterGroupName() string {

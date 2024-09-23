@@ -30,7 +30,7 @@ func (d *PostApp) Register(router *core.RouterGroup) {
 		Method: http.MethodGet,
 		Tag:    "post",
 		Path:   "/list",
-	}, func(ctx *gin.Context) {
+	}).GET("/list", func(ctx *gin.Context) {
 		ctx.JSON(200, map[string]any{"data": []any{}})
 	})
 }

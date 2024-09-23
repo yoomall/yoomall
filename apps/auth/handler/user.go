@@ -38,14 +38,14 @@ func (u *UserHandler) Register(router *core.RouterGroup) {
 		Method: http.MethodPost,
 		Path:   "/login",
 		Body:   request.UserUserNameAndPasswordLoginRequest{},
-	}, u.LoginWithUsernameAndPassword)
+	}).POST("/login", u.LoginWithUsernameAndPassword)
 
 	router.WithDoc(&core.DocItem{
 		Method: http.MethodGet,
 		Path:   "/user-list",
-	}, u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
+	}).Use(authmiddleware.AuthMiddleware(u.CRUD.DB, true, false)).GET("/user-list", u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
 		return tx.Preload("Ext")
-	}), authmiddleware.AuthMiddleware(u.CRUD.DB, true, false))
+	}))
 }
 
 func (u *UserHandler) GetRouterGroupName() string {

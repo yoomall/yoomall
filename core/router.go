@@ -12,12 +12,12 @@ type RouterGroup struct {
 }
 
 // handler 在 app 内注册的，注释写文档没有办法推理路由前缀
-func (r *RouterGroup) WithDoc(doc *DocItem, handler func(ctx *gin.Context), middlewares ...gin.HandlerFunc) *RouterGroup {
+func (r *RouterGroup) WithDoc(doc *DocItem) *RouterGroup {
 	// register handler
-	r.Use(middlewares...).Handle(doc.Method, doc.Path, func(ctx *gin.Context) {
-		// 似乎还可以在这里添加验证和直接填参数 handler(ctx,page,limit,params...)
-		handler(ctx)
-	})
+	// r.Use(middlewares...).Handle(doc.Method, doc.Path, func(ctx *gin.Context) {
+	// 	// 似乎还可以在这里添加验证和直接填参数 handler(ctx,page,limit,params...)
+	// 	handler(ctx)
+	// })
 
 	// write doc
 	basePath := reflect.ValueOf(r).Elem().FieldByName("basePath")
