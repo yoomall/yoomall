@@ -62,5 +62,10 @@ func userManagementUI() ui.IRouter {
 		Title:     "User Management",
 		Component: "UserManagementView",
 		Widgets:   []ui.IWidget{},
-	})
+	}).AddChildren(
+		ui.NewRouter("users", "Users", "ant-design:user-outlined", "/overview/users", nil, &ui.Page{
+			Title:     "Users",
+			Component: "UserView",
+		}),
+	)
 }
