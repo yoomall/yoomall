@@ -26,7 +26,7 @@ func (m *MenuHandler) Register(router *core.RouterGroup) {
 	router.WithDoc(&core.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
-	}).Use(authmiddleware.AuthMiddleware(m.DB, true, false)).GET("menus", func(ctx *gin.Context) {
+	}).Use(authmiddleware.AuthMiddleware(m.DB, true, false)).GET("", func(ctx *gin.Context) {
 		response.Success([]any{
 			map[string]any{
 				"key":       "overview",
