@@ -33,3 +33,10 @@ func StringMapToInterfaceMap(m map[string]string) map[string]interface{} {
 	}
 	return res
 }
+
+func GetFromMapWithDefault[T string | int | float64 | interface{}](m map[string]T, key string, defaultVal T) T {
+	if v, ok := m[key]; ok {
+		return v
+	}
+	return defaultVal
+}

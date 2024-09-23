@@ -152,3 +152,42 @@ func (v *Validator) Validate(data map[string]interface{}) (bool, string) {
 	}
 	return valid, ""
 }
+
+func NewValidator() *Validator {
+	return &Validator{}
+}
+
+func NewStringValidate(field string, required bool, msg string, min int, max int, regx *regexp.Regexp) *StringValidate {
+	return &StringValidate{
+		DefValidate: &DefValidate{
+			Field:    field,
+			Required: required,
+			Msg:      msg,
+		},
+		Min:  min,
+		Max:  max,
+		Regx: regx,
+	}
+}
+
+func NewNumberValidate(field string, required bool, msg string, min int, max int) *NumberValidate {
+	return &NumberValidate{
+		DefValidate: &DefValidate{
+			Field:    field,
+			Required: required,
+			Msg:      msg,
+		},
+		Min: min,
+		Max: max,
+	}
+}
+
+func NewEmailValidate(field string, required bool, msg string) *EmailValidate {
+	return &EmailValidate{
+		DefValidate: &DefValidate{
+			Field:    field,
+			Required: required,
+			Msg:      msg,
+		},
+	}
+}

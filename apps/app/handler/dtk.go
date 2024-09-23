@@ -8,6 +8,8 @@ import (
 	"github.com/spf13/viper"
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/helper/response"
+	"lazyfury.github.com/yoomall-server/core/helper/utils"
+	"lazyfury.github.com/yoomall-server/core/helper/validate"
 	"lazyfury.github.com/yoomall-server/libs/dtk"
 )
 
@@ -42,17 +44,17 @@ func (d *DtkHandler) dtk(ctx *gin.Context) {
 	var query map[string]string = make(map[string]string)
 	ctx.ShouldBindQuery(&query)
 
-	path := query["path"]
-	version := query["version"]
-	if path == "" || version == "" {
-		response.Error(response.ErrBadRequest, "path or version is empty").Done(ctx)
+	validator := validate.NewValidator()
+	validator.AddValidate(validate.NewStringValidate("path", false, "path is empty", 0, 0, nil))
+	validator.AddValidate(validate.NewStringValidate("version", false, "version is empty", 0, 0, nil))
+	if valid, msg := validator.Validate(utils.StringMapToInterfaceMap(query)); !valid {
+		response.Error(response.ErrBadRequest, msg).Done(ctx)
 		return
 	}
 
-	method := query["method"]
-	if method == "" {
-		method = http.MethodGet
-	}
+	path := query["path"]
+	version := query["version"]
+	method := utils.GetFromMapWithDefault(query, "method", http.MethodGet)
 
 	delete(query, "method")
 	delete(query, "path")
