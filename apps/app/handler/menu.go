@@ -41,7 +41,7 @@ func (m *MenuHandler) GetRouterGroupName() string {
 }
 
 func overviewUI() ui.IRouter {
-	return ui.NewRouter("overview", "Overview", "ant-design:home-outlined", "/overview", nil, &ui.Page{
+	return ui.NewRouter("overview", "控制台/首页", "ant-design:home-outlined", "/overview", nil, &ui.Page{
 		Title:     "Overview",
 		Component: "HomeView",
 		Widgets: []ui.IWidget{

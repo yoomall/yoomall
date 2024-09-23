@@ -81,7 +81,7 @@
                 </ElButton>
             </div>
             <div class="overflow-x-auto" :style="{
-                width: `calc(100vw - ${subMenuStore.hasSubMenu ? 362 : 180}px)`
+                width: `calc(100vw - ${subMenuStore.hasSubMenu ? 385 : 180}px)`
             }">
                 <ElTable ref="tableRef" size="default" v-loading="loading" :data="tableData" :border="true" stripe
                     :tree-props="{ hasChildren: 'hasChildren', children: 'children' }" row-key="id"
