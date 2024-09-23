@@ -14,8 +14,10 @@ func (p *Permission) TableName() string {
 
 type RolePermissionRef struct {
 	*core.Model
-	PermissionId string `json:"permissionId" gorm:"column:permission_id"`
-	RoleId       string `json:"roleId" gorm:"column:role_id"`
+	PermissionId string      `json:"permissionId" gorm:"column:permission_id"`
+	Permission   *Permission `json:"permission" gorm:"foreignKey:permission_id;references:ID;delete:SET NULL;default:null"`
+	RoleId       string      `json:"roleId" gorm:"column:role_id"`
+	Role         *UserRole   `json:"role" gorm:"foreignKey:role_id;references:ID;delete:SET NULL;default:null"`
 }
 
 func (p *RolePermissionRef) TableName() string {
@@ -24,8 +26,10 @@ func (p *RolePermissionRef) TableName() string {
 
 type UserPermissionRef struct {
 	*core.Model
-	UserId       string `json:"userId" gorm:"column:user_id"`
-	PermissionId string `json:"permissionId" gorm:"column:permission_id"`
+	UserId       string      `json:"userId" gorm:"column:user_id"`
+	User         *User       `json:"user" gorm:"foreignKey:user_id;references:ID;delete:SET NULL;default:null"`
+	PermissionId string      `json:"permissionId" gorm:"column:permission_id"`
+	Permission   *Permission `json:"permission" gorm:"foreignKey:permission_id;references:ID;delete:SET NULL;default:null"`
 }
 
 func (p *UserPermissionRef) TableName() string {
