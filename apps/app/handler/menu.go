@@ -8,6 +8,7 @@ import (
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	"lazyfury.github.com/yoomall-server/core/helper/response"
+	"lazyfury.github.com/yoomall-server/core/ui"
 )
 
 type MenuHandler struct {
@@ -29,21 +30,37 @@ func (m *MenuHandler) Register(router *core.RouterGroup) {
 		Path:   "",
 	}).GET("", func(ctx *gin.Context) {
 		response.Success([]any{
-			map[string]any{
-				"key":       "overview",
-				"name":      "overview",
-				"path":      "/overview",
-				"component": "HomeView",
-				"icon":      "ant-design:home-outlined",
-				"title":     "Overview",
-				"meta": map[string]any{
-					"noCache": true,
-				},
-			},
+			overviewUI(),
+			userManagementUI(),
 		}).Done(ctx)
 	})
 }
 
 func (m *MenuHandler) GetRouterGroupName() string {
 	return "menus"
+}
+
+func overviewUI() ui.IRouter {
+	return ui.NewRouter("overview", "Overview", "ant-design:home-outlined", "/overview", nil, &ui.Page{
+		Title:     "Overview",
+		Component: "HomeView",
+		Widgets: []ui.IWidget{
+			ui.NewTable().WithColumns([]ui.TableColumn{
+				{
+					Prop:  "id",
+					Label: "ID",
+					Width: "100px",
+					Props: nil,
+				},
+			}),
+		},
+	})
+}
+
+func userManagementUI() ui.IRouter {
+	return ui.NewRouter("user-management", "用户管理", "ant-design:user-outlined", "/user-management", nil, &ui.Page{
+		Title:     "User Management",
+		Component: "UserManagementView",
+		Widgets:   []ui.IWidget{},
+	})
 }
