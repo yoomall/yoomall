@@ -1,13 +1,14 @@
 package validate
 
 import (
+	"fmt"
 	"regexp"
 	"time"
 )
 
 type Validate interface {
 	GetField() string
-	IsValid(val interface{}) bool
+	IsValid(val interface{}) (valid bool, errMsg string)
 	GetMessage() string
 }
 
@@ -19,8 +20,8 @@ type DefValidate struct {
 
 var _ Validate = (*DefValidate)(nil)
 
-func (s *DefValidate) IsValid(val interface{}) bool {
-	return true
+func (s *DefValidate) IsValid(val interface{}) (valid bool, errMsg string) {
+	return true, ""
 }
 
 func (s *DefValidate) GetField() string {
@@ -33,121 +34,114 @@ func (s *DefValidate) GetMessage() string {
 
 type StringValidate struct {
 	*DefValidate
-	Field    string
-	Required bool
-	Msg      string
-	Min      int
-	Max      int
-	Regx     *regexp.Regexp
+	Min  int
+	Max  int
+	Regx *regexp.Regexp
 }
 
 var _ Validate = (*StringValidate)(nil)
 
-func (s *StringValidate) IsValid(val interface{}) bool {
+func (s *StringValidate) IsValid(val interface{}) (valid bool, errMsg string) {
 	str, ok := val.(string)
 	if !ok {
-		return false
+		return false, fmt.Sprintf("%s not string", s.Field)
 	}
 	if s.Required && len(str) == 0 {
-		return false
+		return false, s.GetMessage()
 	}
 
 	if s.Min > 0 && len(str) < s.Min {
-		return false
+		return false, fmt.Sprintf("%s too short", s.Field)
 	}
 	if s.Max > 0 && len(str) > s.Max {
-		return false
+		return false, fmt.Sprintf("%s too long", s.Field)
 	}
 	if s.Regx != nil && !s.Regx.MatchString(str) {
-		return false
+		return false, fmt.Sprintf("%s not match", s.Field)
 	}
-	return true
+	return true, ""
 
 }
 
 type NumberValidate struct {
 	*DefValidate
-	Field    string
-	Required bool
-	Msg      string
-	Min      int
-	Max      int
+	Min int
+	Max int
 }
 
 var _ Validate = (*NumberValidate)(nil)
 
-func (s *NumberValidate) IsValid(val interface{}) bool {
+func (s *NumberValidate) IsValid(val interface{}) (valid bool, errMsg string) {
 	switch val.(type) {
 	case int, int8, int16, int32, int64, float32, float64:
 		if s.Min > 0 && val.(int) < s.Min {
-			return false
+			return false, s.Field + " too small"
 		}
 		if s.Max > 0 && val.(int) > s.Max {
-			return false
+			return false, s.Field + " too big"
 		}
-		return true
+		return true, ""
 	default:
-		return false
+		return false, s.Field + " not number"
 	}
 }
 
 type EmailValidate struct {
 	*DefValidate
-	Field    string
-	Required bool
-	Msg      string
 }
 
 var _ Validate = (*EmailValidate)(nil)
 
-func (s *EmailValidate) IsValid(val interface{}) bool {
+func (s *EmailValidate) IsValid(val interface{}) (valid bool, errMsg string) {
 	str, ok := val.(string)
 	if !ok {
-		return false
+		return false, s.Field + " not string"
 	}
 	if s.Required && len(str) == 0 {
-		return false
+		return false, s.GetMessage()
 	}
 	regx := "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$"
 
-	return regexp.MustCompile(regx).MatchString(str)
+	valid = regexp.MustCompile(regx).MatchString(str)
+	if !valid {
+		return false, "not email"
+	}
+	return true, ""
 }
 
 type DateValidate struct {
 	*DefValidate
-	Field    string
-	Required bool
-	Msg      string
 }
 
 var _ Validate = (*DateValidate)(nil)
 
-func (s *DateValidate) IsValid(val interface{}) bool {
+func (s *DateValidate) IsValid(val interface{}) (valid bool, errMsg string) {
 	t, ok := val.(time.Time)
 	if !ok {
-		return false
+		return false, "not time.Time"
 	}
 	if s.Required && t.IsZero() {
-		return false
+		return false, s.GetMessage()
 	}
-	return true
+	return true, ""
 }
 
 type Validator struct {
-	Validates []Validate
+	Validates    []Validate
+	AllowKeys    []string
+	NotAllowKeys []string
 }
 
 func (v *Validator) AddValidate(validate Validate) {
 	v.Validates = append(v.Validates, validate)
 }
 
-func (v *Validator) Validate(data map[string]interface{}) (bool, string) {
-	var valid bool
+func (v *Validator) Validate(data map[string]interface{}) (valid bool, message string) {
 	for _, validate := range v.Validates {
 		val := data[validate.GetField()]
-		valid = validate.IsValid(val)
+		valid, message = validate.IsValid(val)
 		if !valid {
-			return valid, validate.GetMessage()
+			return valid, message
 		}
 	}
 	return valid, ""

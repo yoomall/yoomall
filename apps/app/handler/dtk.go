@@ -45,7 +45,7 @@ func (d *DtkHandler) dtk(ctx *gin.Context) {
 	ctx.ShouldBindQuery(&query)
 
 	validator := validate.NewValidator()
-	validator.AddValidate(validate.NewStringValidate("path", false, "path is empty", 0, 0, nil))
+	validator.AddValidate(validate.NewStringValidate("path", false, "path is empty", 2, 300, nil))
 	validator.AddValidate(validate.NewStringValidate("version", false, "version is empty", 0, 0, nil))
 	if valid, msg := validator.Validate(utils.StringMapToInterfaceMap(query)); !valid {
 		response.Error(response.ErrBadRequest, msg).Done(ctx)
