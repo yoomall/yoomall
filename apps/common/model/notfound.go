@@ -4,7 +4,8 @@ import "lazyfury.github.com/yoomall-server/core"
 
 type NotFoundRecord struct {
 	*core.Model
-	Path string `json:"path"`
+	Path    string `json:"path"`
+	Request string `json:"request"`
 }
 
 func (n *NotFoundRecord) TableName() string {
