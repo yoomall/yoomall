@@ -4,6 +4,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/spf13/viper"
+	commonservice "lazyfury.github.com/yoomall-server/apps/common/service"
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
 )
@@ -41,4 +42,4 @@ func NewCommonApp(config *viper.Viper, db *driver.DB) *CommonApp {
 	}
 }
 
-var WireSet = wire.NewSet(NewCommonApp)
+var WireSet = wire.NewSet(NewCommonApp, commonservice.NewNotFoundRecordService)

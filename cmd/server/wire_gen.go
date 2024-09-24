@@ -13,6 +13,7 @@ import (
 	handler2 "lazyfury.github.com/yoomall-server/apps/auth/handler"
 	"lazyfury.github.com/yoomall-server/apps/auth/middleware"
 	"lazyfury.github.com/yoomall-server/apps/auth/service"
+	"lazyfury.github.com/yoomall-server/apps/common/service"
 	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core/http"
@@ -32,7 +33,8 @@ func NewApp() httpserver.HttpServer {
 	userHandler := handler2.NewUserHandler(db, viper, authService, authMiddlewareGroup)
 	authApp := auth.NewAuthApp(viper, db, userHandler)
 	postApp := post.NewDefaultApp(viper, db)
+	notFoundRecordService := commonservice.NewNotFoundRecordService(db)
 	doc := NewDoc()
-	httpServer := NewHttpServer(viper, defaultApp, authApp, postApp, doc)
+	httpServer := NewHttpServer(viper, defaultApp, authApp, postApp, notFoundRecordService, doc)
 	return httpServer
 }

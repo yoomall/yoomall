@@ -11,7 +11,6 @@ type RouterGroup struct {
 	*gin.RouterGroup
 }
 
-// handler 在 app 内注册的，注释写文档没有办法推理路由前缀
 func (r *RouterGroup) WithDoc(doc *DocItem) *RouterGroup {
 	// register handler
 	// r.Use(middlewares...).Handle(doc.Method, doc.Path, func(ctx *gin.Context) {

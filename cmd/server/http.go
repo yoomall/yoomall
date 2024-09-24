@@ -1,10 +1,13 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"lazyfury.github.com/yoomall-server/apps/app"
 	"lazyfury.github.com/yoomall-server/apps/auth"
+	commonservice "lazyfury.github.com/yoomall-server/apps/common/service"
 	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
 	"lazyfury.github.com/yoomall-server/core"
@@ -21,6 +24,8 @@ func NewHttpServer(
 	auth *auth.AuthApp,
 	postApp *post.PostApp,
 
+	noufoundRecordService *commonservice.NotFoundRecordService,
+
 	doc *core.Doc,
 ) httpserver.HttpServer {
 	engine := gin.Default()
@@ -29,6 +34,11 @@ func NewHttpServer(
 
 	engine.GET("", func(ctx *gin.Context) {
 		ctx.String(200, ":) yoomall server is running.")
+	})
+
+	engine.NoRoute(func(ctx *gin.Context) {
+		noufoundRecordService.Add(ctx.FullPath(), ctx.Request)
+		ctx.JSON(http.StatusOK, gin.H{"message": "welcome."})
 	})
 
 	v1 := &core.RouterGroup{
