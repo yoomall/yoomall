@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/viper"
 	"lazyfury.github.com/yoomall-server/apps/app"
 	"lazyfury.github.com/yoomall-server/apps/auth"
+	"lazyfury.github.com/yoomall-server/apps/common"
 	commonservice "lazyfury.github.com/yoomall-server/apps/common/service"
 	"lazyfury.github.com/yoomall-server/apps/post"
 	"lazyfury.github.com/yoomall-server/config"
@@ -23,6 +24,7 @@ func NewHttpServer(
 	app *app.DefaultApp,
 	auth *auth.AuthApp,
 	postApp *post.PostApp,
+	commonApp *common.CommonApp,
 
 	noufoundRecordService *commonservice.NotFoundRecordService,
 
@@ -37,7 +39,7 @@ func NewHttpServer(
 	})
 
 	engine.NoRoute(func(ctx *gin.Context) {
-		noufoundRecordService.Add(ctx.FullPath(), ctx.Request)
+		noufoundRecordService.Add(ctx.Request.URL.Path, ctx.Request)
 		ctx.JSON(http.StatusOK, gin.H{"message": "welcome."})
 	})
 
@@ -50,6 +52,7 @@ func NewHttpServer(
 		{App: app, Router: v1.Group("")},
 		{App: auth, Router: v1.Group("/auth")},
 		{App: postApp, Router: v1.Group("/post")},
+		{App: commonApp, Router: v1.Group("/common")},
 	}
 
 	for _, app := range apps {

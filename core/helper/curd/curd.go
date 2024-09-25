@@ -24,6 +24,15 @@ type CRUD struct {
 	}
 }
 
+func New(db *driver.DB, model interface {
+	TableName() string
+}) *CRUD {
+	return &CRUD{
+		DB:    db,
+		Model: model,
+	}
+}
+
 func (c *CRUD) GetDB() *driver.DB {
 	return c.DB
 }

@@ -4,6 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/spf13/viper"
+	"lazyfury.github.com/yoomall-server/apps/common/handler"
+	"lazyfury.github.com/yoomall-server/apps/common/model"
 	commonservice "lazyfury.github.com/yoomall-server/apps/common/service"
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
@@ -28,7 +30,7 @@ func (c *CommonApp) Middleware() []gin.HandlerFunc {
 
 // Migrate implements core.App.
 func (c *CommonApp) Migrate() {
-	c.GetDB().AutoMigrate()
+	c.GetDB().AutoMigrate(&model.NotFoundRecord{})
 }
 
 // Register implements core.App.
@@ -36,10 +38,14 @@ func (c *CommonApp) Register(router *core.RouterGroup) {
 
 }
 
-func NewCommonApp(config *viper.Viper, db *driver.DB) *CommonApp {
+func NewCommonApp(config *viper.Viper, db *driver.DB,
+	notfoundHandler *handler.NotFoundRecordHandler,
+) *CommonApp {
 	return &CommonApp{
-		App: core.NewApp("common", config, db, []core.Handler{}),
+		App: core.NewApp("common", config, db, []core.Handler{
+			notfoundHandler,
+		}),
 	}
 }
 
-var WireSet = wire.NewSet(NewCommonApp, commonservice.NewNotFoundRecordService)
+var WireSet = wire.NewSet(NewCommonApp, commonservice.NewNotFoundRecordService, handler.NewNotFoundRecordHandler)
