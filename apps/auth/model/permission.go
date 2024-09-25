@@ -5,7 +5,7 @@ import "lazyfury.github.com/yoomall-server/core"
 type Permission struct {
 	core.Model
 	Name string `gorm:"column:name;type:varchar(255)" json:"name"`
-	Slug string `gorm:"column:slug;type:varchar(255)" json:"slug"`
+	Code string `gorm:"column:code;type:varchar(255)" json:"code"`
 }
 
 func (p *Permission) TableName() string {
