@@ -24,6 +24,7 @@ wire:
 	wire ./cmd/server
 	wire ./cmd/tools
 	wire ./cmd/service/auth
+	wire ./cmd/jobs
 
 test:
 	go test -v ./...

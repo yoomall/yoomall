@@ -1,0 +1,12 @@
+[Unit]
+Description=Yoo Mall Jobs
+After=network.target
+
+[Service]
+Type=simple
+User=www
+ExecStart=/xxx/jobs
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
