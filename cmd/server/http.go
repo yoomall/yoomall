@@ -40,7 +40,7 @@ func NewHttpServer(
 
 	engine.NoRoute(func(ctx *gin.Context) {
 		noufoundRecordService.Add(ctx.Request.URL.Path, ctx.Request)
-		ctx.JSON(http.StatusOK, gin.H{"message": "welcome."})
+		ctx.JSON(http.StatusNotFound, gin.H{"message": "不存在的路由"})
 	})
 
 	v1 := &core.RouterGroup{
