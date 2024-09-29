@@ -13,13 +13,15 @@ type IRouter interface {
 }
 
 type Router struct {
-	Key      string            `json:"key"`
-	Title    string            `json:"title"`
-	Icon     string            `json:"icon"`
-	Path     string            `json:"path"`
-	Params   map[string]string `json:"params"`
-	Page     IPage             `json:"page"`
-	Children []IRouter         `json:"children"`
+	Key         string            `json:"key"`
+	Title       string            `json:"title"`
+	Icon        string            `json:"icon"`
+	Path        string            `json:"path"`
+	Params      map[string]string `json:"params"`
+	Page        IPage             `json:"page"`
+	Children    []IRouter         `json:"children"`
+	Description string            `json:"description"`
+	Apis        map[string]string `json:"apis"`
 }
 
 var _ IRouter = (*Router)(nil)
@@ -52,6 +54,16 @@ func (r *Router) MarshalJSON() ([]byte, error) {
 
 func (r *Router) AddChildren(children ...IRouter) *Router {
 	r.Children = append(r.Children, children...)
+	return r
+}
+
+func (r *Router) WithDescription(description string) *Router {
+	r.Description = description
+	return r
+}
+
+func (r *Router) WithApis(apis map[string]string) *Router {
+	r.Apis = apis
 	return r
 }
 

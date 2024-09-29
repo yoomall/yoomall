@@ -59,6 +59,7 @@ func NewAuthMiddleware(db *driver.DB, must bool, needUser bool) gin.HandlerFunc 
 			return
 		}
 
+		c.Set("token", userToken)
 		c.Set("userId", userToken.UserId)
 
 		// 不需要用户具体的信息

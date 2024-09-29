@@ -34,7 +34,7 @@ const logout = () => {
         cancelButtonText: 'Cancel',
         type: 'warning',
     }).then(() => {
-        request.post('/logout').then(res=>{
+        request.post('/auth/logout').then(res=>{
             location.href = '/'
         })
     }).catch(() => {
@@ -86,9 +86,9 @@ const logout = () => {
             <div v-if="subMenuStore.hasSubMenu" class="w-180px bg-white dark:bg-dark-800" >
                 <Menu :menus="subMenuStore.menus" is-sub-menu ></Menu>
             </div>
-            <div class="flex-1 flex flex-col dark:bg-dark-700">
+            <div class="flex-1 flex flex-col dark:bg-dark-700" style="height:var(100vh - var(--header-bar-height));overflow-y: auto;">
                 <main class="flex-1">
-                    <RouterView ></RouterView>
+                    <RouterView :key="$route.meta.key" ></RouterView>
                 </main>
             </div>
         </div>

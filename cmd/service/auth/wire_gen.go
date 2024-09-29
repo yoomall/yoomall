@@ -23,7 +23,8 @@ func NewApp() httpserver.HttpServer {
 	authService := service.NewAuthService(db)
 	authMiddlewareGroup := authmiddleware.NewAuthMiddlewareGroup(db)
 	userHandler := handler.NewUserHandler(db, viper, authService, authMiddlewareGroup)
-	authApp := auth.NewAuthApp(viper, db, userHandler)
+	userRoleHandler := handler.NewUserRoleHandler(db, authMiddlewareGroup)
+	authApp := auth.NewAuthApp(viper, db, authService, userHandler, userRoleHandler)
 	httpServer := NewHttpServer(viper, authApp)
 	return httpServer
 }

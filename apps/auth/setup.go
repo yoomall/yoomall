@@ -1,6 +1,8 @@
 package auth
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/spf13/viper"
@@ -10,26 +12,41 @@ import (
 	"lazyfury.github.com/yoomall-server/apps/auth/service"
 	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
+	"lazyfury.github.com/yoomall-server/core/helper/response"
 )
 
 type AuthApp struct {
 	*core.App
+
+	service *service.AuthService
 }
 
 var _ core.IApp = (*AuthApp)(nil)
 
-var WireSet = wire.NewSet(NewAuthApp, service.NewAuthService, handler.NewUserHandler, authmiddleware.NewAuthMiddlewareGroup)
+var handlerSet = wire.NewSet(
+	handler.NewUserHandler,
+	handler.NewUserRoleHandler,
+)
+var WireSet = wire.NewSet(
+	NewAuthApp, service.NewAuthService, authmiddleware.NewAuthMiddlewareGroup,
+	handlerSet,
+)
 
 func NewAuthApp(
 	config *viper.Viper,
 	db *driver.DB,
+	service *service.AuthService,
 	userHandler *handler.UserHandler,
+	roleHandler *handler.UserRoleHandler,
 
 ) *AuthApp {
 	return &AuthApp{
 		App: core.NewApp("auth", config, db, []core.Handler{
 			userHandler,
+			roleHandler,
 		}),
+
+		service: service,
 	}
 }
 
@@ -46,5 +63,20 @@ func (a *AuthApp) Middleware() []gin.HandlerFunc {
 }
 
 func (a *AuthApp) Register(router *core.RouterGroup) {
+	auth := router.Group("").Use(authmiddleware.NewMustAuthMiddlewareWithUser(a.GetDB()))
+	{
+		auth.WithDoc(&core.DocItem{
+			Method: http.MethodGet,
+			Path:   "/profile",
+		}).GET("/profile", func(ctx *gin.Context) {
+			response.Success(ctx.MustGet("user")).Done(ctx)
+		})
 
+		auth.WithDoc(&core.DocItem{
+			Method: http.MethodGet,
+			Path:   "/logout",
+		}).POST("/logout", func(ctx *gin.Context) {
+			a.service.Logout(ctx)
+		})
+	}
 }

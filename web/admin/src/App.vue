@@ -22,6 +22,8 @@ export default {
         "w-80px h-80px w-60px h-60px w-50px h-50px",
         "font-bold font-normal font-light",
         "fixed left-1000% top-1000%",
+        "line-clamp-1 line-clamp-2 line-clamp-3 line-clamp-4 line-clamp-5 line-clamp-6",
+        "font-normal font-bold font-italic line-through underline underline-offset-1 underline-offset-2 underline-offset-4 underline-offset-8",
       ],
     };
   },

@@ -5,11 +5,14 @@ import (
 	"regexp"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"lazyfury.github.com/yoomall-server/apps/auth/model"
 	authresponse "lazyfury.github.com/yoomall-server/apps/auth/response"
+	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
+	"lazyfury.github.com/yoomall-server/core/helper/response"
 	"lazyfury.github.com/yoomall-server/core/result"
 )
 
@@ -56,6 +59,12 @@ func (s *AuthService) LoginWithUsernameAndPassword(username string, password str
 	err := s.DB.Where("username = ?", username).First(&user).Error
 	if err != nil {
 		return result.Err[*authresponse.LoginResult](fmt.Errorf("用户不存在"))
+	}
+
+	user.LastLoginAt = (core.LocalTime)(time.Now())
+
+	if err := s.DB.Save(&user).Error; err != nil {
+		return result.Err[*authresponse.LoginResult](fmt.Errorf("更新用户信息失败"))
 	}
 
 	// check passwrod
@@ -130,4 +139,15 @@ func (s *AuthService) GetUserByUsername(username string) (*model.User, error) {
 	var user model.User
 	err := s.DB.Where("username = ?", username).First(&user).Error
 	return &user, err
+}
+
+// logout
+
+func (s *AuthService) Logout(ctx *gin.Context) {
+	userToken := ctx.MustGet("token").(model.UserToken)
+	if err := s.DB.Delete(&userToken).Error; err != nil {
+		response.Error(response.ErrInternalError, err.Error()).Done(ctx)
+		return
+	}
+	response.Success("退出成功").Done(ctx)
 }

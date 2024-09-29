@@ -9,7 +9,8 @@ type IPage interface {
 type Page struct {
 	Title     string    `json:"title"`
 	Component string    `json:"component"`
-	Widgets   []IWidget `json:"widgets"`
+	Widgets   []IWidget `json:"widgets"` //暂未实现，处理统计页面，form 和 table 有时间改造成统一的
+	Table     *Table    `json:"table"`   // 特殊处理 for TableView.vue
 }
 
 var _ IPage = (*Page)(nil)

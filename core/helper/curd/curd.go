@@ -82,6 +82,7 @@ func (c *CRUD) superWhere(action string, tx *gorm.DB, key string, v interface{})
 		log.Warn("illegal key: " + key)
 		return tx
 	}
+
 	switch action {
 	case "in":
 		tx = tx.Where(key+" IN (?)", utils.TryInterfaceToStringToArray(v))
@@ -159,6 +160,8 @@ func (c *CRUD) Where(params map[string]interface{}) *gorm.DB {
 
 	// tx = tx.Where(params)
 
+	tx.Order("id DESC")
+
 	for k, v := range params {
 		tx = c.superWhere("eq", tx, fmt.Sprintf("%s.%s", c.GetTableName(), k), v)
 	}
@@ -179,10 +182,13 @@ func (c *CRUD) getModelKeys() []string {
 		if value.Field(i).Kind() == reflect.Ptr {
 			// 嵌入的 struct 比如 gin.Model 的 id,craeted_at... 字段
 			_val := value.Type().Field(i).Type.Elem()
-			_keys := _val.NumField()
-			for j := range _keys {
-				keysArr = append(keysArr, _val.Field(j).Tag.Get("json"))
+			if _val.Kind() == reflect.Struct {
+				_keys := _val.NumField()
+				for j := range _keys {
+					keysArr = append(keysArr, _val.Field(j).Tag.Get("json"))
+				}
 			}
+
 		}
 		key := value.Type().Field(i).Tag.Get("json")
 		if key == "" {
@@ -236,7 +242,7 @@ func (c *CRUD) GetListHandlerWithWhere(list any, extraWhere func(tx *gorm.DB) *g
 		}
 		end := time.Now()
 		response.Success(map[string]any{
-			"data":  list,
+			"list":  list,
 			"total": count,
 			"page":  page,
 			"limit": limit,

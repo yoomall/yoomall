@@ -67,14 +67,96 @@ func userManagementUI() ui.IRouter {
 	}).AddChildren(
 		ui.NewRouter("user-list", "用户列表", "ant-design:user-outlined", "user-list", nil, &ui.Page{
 			Title:     "Users",
-			Component: "HomeView",
+			Component: "TableView",
 			Widgets:   []ui.IWidget{},
-		}),
+			Table: ui.NewTable().WithColumns([]ui.TableColumn{
+				{
+					Prop:  "username",
+					Label: "用户名",
+					Width: "160px",
+					Props: map[string]any{
+						"class": "line-clamp-1",
+					},
+				},
+				{
+					Prop:  "email",
+					Label: "邮箱",
+					Width: "160px",
+					Props: map[string]any{
+						"class": "line-clamp-1 font-bold",
+					},
+				},
+				{
+					Prop:  "phone",
+					Label: "手机",
+					Width: "125px",
+					Props: map[string]any{
+						"class": "line-clamp-1 font-bold",
+					},
+				},
+				{
+					Prop:  "created_at",
+					Label: "创建时间",
+					Width: "240px",
+					Props: nil,
+				},
+				{
+					Prop:  "updated_at",
+					Label: "更新时间",
+					Width: "240px",
+					Props: nil,
+				},
+				{
+					Prop:  "last_login_at",
+					Label: "最后登录时间",
+					Width: "240px",
+					Props: nil,
+				},
+			}).WithActions([]*ui.Action{
+				ui.NewEditAction().WithApiKey("edit"),
+			}),
+		}).WithDescription("用户列表, 系统用户列表管理").WithApis(
+			map[string]string{
+				"list": "/auth/users/user-list",
+			},
+		),
 	).AddChildren(
 		ui.NewRouter("role-list", "角色列表", "ant-design:user-outlined", "role-list", nil, &ui.Page{
 			Title:     "Roles",
 			Component: "TableView",
 			Widgets:   []ui.IWidget{},
-		}),
+			Table: ui.NewTable().WithColumns([]ui.TableColumn{
+				{
+					Prop:  "name",
+					Label: "角色",
+					Width: "160px",
+					Props: map[string]any{
+						"class": "line-clamp-1",
+					},
+				},
+				{
+					Prop:  "created_at",
+					Label: "创建时间",
+					Width: "240px",
+					Props: nil,
+				},
+				{
+					Prop:  "updated_at",
+					Label: "更新时间",
+					Width: "240px",
+					Props: nil,
+				},
+			},
+			).WithForms(map[string]*ui.Form{
+				"create": ui.NewForm("1", "d").WithRows([]*ui.FormItem{
+					ui.NewFormItem("name", "角色名称"),
+					ui.NewFormItem("description", "描述"),
+				}),
+			}),
+		}).WithDescription("角色列表, 用于给用户分配角色").WithApis(
+			map[string]string{
+				"list": "/auth/user-roles/role-list",
+			},
+		),
 	)
 }

@@ -4,7 +4,7 @@
             <!-- {{ $route.meta }} -->
             <div class="flex flex-row">
                 <div>
-                    <h1 class="mb-0 mt-2">{{ meta.table?.title || meta.title }}</h1>
+                    <h1 class="mb-0 mt-2">{{  meta.title }}</h1>
                     <p class="text-gray">{{ meta?.description || meta.table?.description }}</p>
                 </div>
                 <div class="flex-grow">
@@ -96,7 +96,7 @@
                         :sortable="column.sortable ? 'custom' : false" :label="column.label" :width="column.width"
                         v-bind="column.props">
                         <template #default="{ row }" v-if="!column.slot">
-                            <div :class="[column.className]" v-if="column.type == 'render'">
+                            <div :class="[column.className || column?.props?.class]" v-attrs="column.props" v-if="column.type == 'render'">
                                 {{ column.render(row) }}
                             </div>
                             <!-- switch  -->
@@ -209,10 +209,10 @@ export default {
     watch: {},
     computed: {
         api() {
-            return this.meta.api
+            return this.meta.apis || {}
         },
         table() {
-            return this.meta.table || {}
+            return this.meta?.page?.table || {}
         },
         searchFormFields() {
             return this.meta.table?.search?.rows || []
@@ -221,7 +221,7 @@ export default {
             return this.meta.table?.filters || []
         },
         forms() {
-            return this.meta.forms || []
+            return this.table.forms || []
         },
         formsList() {
             return Object.keys(this.forms).map(key => ({
@@ -230,14 +230,14 @@ export default {
             }))
         },
         addForm() {
-            return this.meta.forms?.create || { rows: [] }
+            return this.forms?.create || { rows: [] }
         },
         canAdd() {
             return this.addForm && this.addForm.rows?.length > 0
         },
         columns() {
             console.log(this.meta)
-            let columns = this.meta.table?.columns || this.meta.columns || []
+            let columns = this.table?.columns || []
             if (typeof columns === 'string') {
                 columns = JSON.parse(columns)
             }
@@ -289,7 +289,7 @@ export default {
             })
         },
         actions() {
-            return (this.meta.table?.actions || [
+            return (this.table?.actions || [
                 {
                     key: 'edit',
                     title: '编辑',
@@ -355,7 +355,7 @@ export default {
             }
         },
         handleCreate() {
-            if(this.meta?.table.add_btn){
+            if(this.table?.add_btn){
                 return this.handlerRowAction({}, this.meta?.table.add_btn)
             }
             this.handleRowActionForm({}, {
@@ -416,7 +416,7 @@ export default {
             let current_key;
             let form
             let formRef
-
+            console.log("forms", this.forms)
             for (let key of keys) {
                 form = this.forms[key]
                 if (form) {
@@ -520,7 +520,7 @@ export default {
             }).then(res => {
                 let data = res.data.data || {}
                 this.tableData = data?.list || []
-                let { size, page, total } = data?.pageable
+                let { limit:size, page, total } = data || {}
                 this.pagination = {
                     pageSize: size,
                     currentPage: page,
