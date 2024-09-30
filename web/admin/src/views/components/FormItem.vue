@@ -52,8 +52,8 @@
     </ElRadioGroup>
 
     <!-- input  -->
-    <ElInput v-model="value" @change="handleUpdate" :type="field.epInputType || 'text'"
-        v-if="!field.type || field.type == 'input'" :placeholder="field.placeholder" v-bind="field.props">
+    <ElInput v-model="value" @change="handleUpdate" :type="field.type || 'text'"
+        v-if="!field.type || field.type == 'text'" :placeholder="field.placeholder" v-bind="field.props">
         <!-- suffix  -->
         <template v-if="field.suffix" #suffix>
             <div>

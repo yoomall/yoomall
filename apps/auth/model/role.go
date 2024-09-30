@@ -5,7 +5,8 @@ import "lazyfury.github.com/yoomall-server/core"
 type UserRole struct {
 	*core.Model
 	RoleName string `json:"roleName" gorm:"column:role_name"`
-	RoleCode string `json:"roleCode" gorm:"column:role_code"`
+	RoleCode string `json:"roleCode" gorm:"column:role_code;unique;index:role_code;default:''"`
+	RoleDesc string `json:"roleDesc" gorm:"column:role_desc;default:''"`
 }
 
 func (u *UserRole) TableName() string {

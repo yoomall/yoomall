@@ -127,12 +127,16 @@ func userManagementUI() ui.IRouter {
 			Widgets:   []ui.IWidget{},
 			Table: ui.NewTable().WithColumns([]ui.TableColumn{
 				{
-					Prop:  "name",
+					Prop:  "roleName",
 					Label: "角色",
 					Width: "160px",
 					Props: map[string]any{
 						"class": "line-clamp-1",
 					},
+				},
+				{
+					Prop:  "roleCode",
+					Label: "code",
 				},
 				{
 					Prop:  "created_at",
@@ -148,14 +152,26 @@ func userManagementUI() ui.IRouter {
 				},
 			},
 			).WithForms(map[string]*ui.Form{
-				"create": ui.NewForm("1", "d").WithRows([]*ui.FormItem{
-					ui.NewFormItem("name", "角色名称"),
-					ui.NewFormItem("description", "描述"),
+				"create": ui.NewForm("create", "添加/编辑角色", "/auth/user-roles/create-role").WithRows([][]*ui.FormItem{
+					{
+						ui.NewFormItem("角色名称", "roleName", "text", "请输入角色名称"),
+						ui.NewFormItem("Code", "roleCode", "text", "请输入角色 Code 定义"),
+					},
 				}),
+				"update": ui.NewForm("create", "添加/编辑角色", "/auth/user-roles/update-role").WithRows([][]*ui.FormItem{
+					{
+						ui.NewFormItem("角色名称", "roleName", "text", "请输入角色名称"),
+						ui.NewFormItem("Code", "roleCode", "text", "请输入角色 Code 定义"),
+					},
+				}),
+			}).WithActions([]*ui.Action{
+				ui.NewEditAction().WithFormKey("update"),
+				ui.NewDeleteAction(),
 			}),
 		}).WithDescription("角色列表, 用于给用户分配角色").WithApis(
 			map[string]string{
-				"list": "/auth/user-roles/role-list",
+				"list":   "/auth/user-roles/role-list",
+				"delete": "/auth/user-roles/delete-role",
 			},
 		),
 	)

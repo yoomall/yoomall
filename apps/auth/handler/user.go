@@ -50,7 +50,7 @@ func (u *UserHandler) Register(router *core.RouterGroup) {
 			Method: http.MethodGet,
 			Path:   "/user-list",
 		}).GET("/user-list", u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
-			return tx.Preload("Ext")
+			return tx
 		}))
 	}
 

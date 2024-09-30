@@ -16,8 +16,11 @@ var (
 )
 
 type Confirm struct {
-	Title string `json:"title"`
-	Text  string `json:"text"`
+	Title          string `json:"title"`
+	Message        string `json:"message"`
+	Type           string `json:"type"`
+	ConfirmBtnText string `json:"confirmButtonText"`
+	CancelBtnText  string `json:"cancelButtonText"`
 }
 
 type Action struct {
@@ -26,10 +29,10 @@ type Action struct {
 	Props map[string]any  `json:"props"`
 	Type  TableActionType `json:"type"`
 
-	FormKey string `json:"formKey"`
+	FormKey string `json:"form_key"`
 
-	ApiKey    string              `json:"apiKey"`
-	ParamKeys []map[string]string `json:"paramKeys"`
+	ApiKey    string              `json:"api_key"`
+	ParamKeys []map[string]string `json:"param_keys"`
 	Confirm   *Confirm            `json:"confirm"`
 
 	Path string `json:"path"`
@@ -49,14 +52,20 @@ func NewDeleteAction() *Action {
 		Label:  "删除",
 		Icon:   "ep:delete",
 		Type:   TableActionTypeApi,
-		ApiKey: "user-delete",
+		ApiKey: "delete",
 		ParamKeys: []map[string]string{
 			{
-				"key":   "id",
-				"label": "ID",
+				"id": "id",
 			},
 		},
 		Props: map[string]any{"color": "red", "type": "danger"},
+		Confirm: &Confirm{
+			Title:          "确认删除?",
+			Message:        "删除后不可恢复",
+			Type:           "warning",
+			ConfirmBtnText: "确定",
+			CancelBtnText:  "取消",
+		},
 	}
 }
 
@@ -70,11 +79,19 @@ func (a *Action) WithFormKey(key string) *Action {
 	return a
 }
 
-func (a *Action) WithConfirm(title, text string) *Action {
+func (a *Action) WithConfirm(title, message string) *Action {
 	a.Confirm = &Confirm{
-		Title: title,
-		Text:  text,
+		Title:          title,
+		Type:           "warning",
+		Message:        message,
+		ConfirmBtnText: "确定",
+		CancelBtnText:  "取消",
 	}
+	return a
+}
+
+func (a *Action) WidthCustomCofirm(c *Confirm) *Action {
+	a.Confirm = c
 	return a
 }
 
@@ -99,31 +116,42 @@ func (a *Action) WithLabel(label string) *Action {
 }
 
 type Form struct {
-	Key  string      `json:"key"`
-	Name string      `json:"name"`
-	Rows []*FormItem `json:"rows"`
+	Key       string        `json:"key"`
+	Title     string        `json:"title"`
+	Rows      [][]*FormItem `json:"rows"`
+	SubmitApi string        `json:"submit_api"`
 }
 
 type FormItem struct {
-	Label string `json:"label"`
-	Value string `json:"value"`
+	Label       string `json:"label"`
+	Type        string `json:"type"`
+	Prop        string `json:"prop"`
+	Placeholder string `json:"placeholder"`
 }
 
-func NewFormItem(label, value string) *FormItem {
+func NewFormItem(label string, prop string, t string, placeholder string) *FormItem {
 	return &FormItem{
-		Label: label,
-		Value: value,
+		Label:       label,
+		Type:        t,
+		Placeholder: placeholder,
+		Prop:        prop,
 	}
 }
 
-func NewForm(key, name string) *Form {
+func NewForm(key, title, api string) *Form {
 	return &Form{
-		Key:  key,
-		Name: name,
+		Key:       key,
+		Title:     title,
+		SubmitApi: api,
 	}
 }
 
-func (f *Form) WithRows(rows []*FormItem) *Form {
+func (f *Form) WithApi(api string) *Form {
+	f.SubmitApi = api
+	return f
+}
+
+func (f *Form) WithRows(rows [][]*FormItem) *Form {
 	f.Rows = rows
 	return f
 }

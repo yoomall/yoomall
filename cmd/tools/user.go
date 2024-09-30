@@ -32,7 +32,6 @@ func seedingUsers() *cobra.Command {
 					Password: "yoo123456",
 					Email:    email,
 					Phone:    getRandomPhone(),
-					ExtId:    0,
 				}); err != nil {
 					log.Error(err.Error())
 				}

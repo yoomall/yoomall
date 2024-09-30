@@ -18,15 +18,7 @@ type User struct {
 
 	Bio string `gorm:"column:bio" json:"bio"`
 
-	ExtId uint     `gorm:"column:ext_id;default:null;" json:"ext_id"`
-	Ext   *UserExt `gorm:"foreignKey:ext_id;references:id;delete:SET NULL;default:null" json:"ext"`
-
 	LastLoginAt core.LocalTime `gorm:"column:last_login_at" json:"last_login_at"`
-}
-
-type UserExt struct {
-	*core.Model
-	ThridPartyId string `gorm:"column:thrid_party_id" json:"thrid_party_id"`
 }
 
 var _ core.MarshalJSON = (*User)(nil)

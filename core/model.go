@@ -28,7 +28,8 @@ func (t *LocalTime) MarshalJSON() ([]byte, error) {
 	return []byte(fmt.Sprintf("\"%v\"", tTime.Format("2006-01-02 15:04:05"))), nil
 }
 func (l *LocalTime) UnmarshalJSON(b []byte) error {
-	tTime, err := time.Parse("2006-01-02 15:04:05", string(b))
+	cleanB := b[1 : len(b)-1]
+	tTime, err := time.Parse("2006-01-02 15:04:05", string(cleanB))
 	if err != nil {
 		return err
 	}
