@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -26,12 +27,30 @@ func NewAuthService(db *driver.DB) *AuthService {
 	}
 }
 
-func (s *AuthService) createToken(userId uint) *model.UserToken {
+func (s *AuthService) createToken(userId uint, ctx *gin.Context) *model.UserToken {
 	str := uuid.New().String()
+
+	ip := ctx.ClientIP()
+
+	userAgent := ctx.Request.UserAgent()
+	device := "unknown"
+	os := "unknown"
+	browser := "unknown"
+	if ua, err := s.parseUserAgent(userAgent); err == nil {
+		device = ua.Device
+		os = ua.OS
+		browser = ua.Browser
+	}
+
 	token := model.UserToken{
 		Token:      str,
 		ExpireTime: time.Now().Add(24 * time.Hour),
 		UserId:     userId,
+		IP:         ip,
+		Agent:      userAgent,
+		Device:     device,
+		OS:         os,
+		Browser:    browser,
 	}
 	if err := s.DB.Create(&token).Error; err == nil {
 		return &token
@@ -39,12 +58,52 @@ func (s *AuthService) createToken(userId uint) *model.UserToken {
 	panic("生成 token 失败，should not reach here")
 }
 
+type UserAgent struct {
+	Device  string
+	OS      string
+	Browser string
+}
+
+func (s *AuthService) parseUserAgent(userAgent string) (*UserAgent, error) {
+	ua := &UserAgent{
+		Device:  "unknown",
+		OS:      "unknown",
+		Browser: "unknown",
+	}
+	osArr := []string{"Windows", "Macintosh", "Linux", "Android", "IOS"}
+	browserArr := []string{"Chrome", "Firefox", "Safari", "Opera", "IE", "Edge"}
+
+	osRe := fmt.Sprintf("(%s)", strings.Join(osArr, "|"))
+	browserRe := fmt.Sprintf("(%s)", strings.Join(browserArr, "|"))
+
+	if match := regexp.MustCompile(osRe).FindStringSubmatch(userAgent); len(match) > 0 {
+		ua.OS = match[0]
+		switch ua.OS {
+		case "Windows":
+			ua.Device = "pc"
+		case "Macintosh":
+			ua.Device = "mac"
+		case "Linux":
+			ua.Device = "pc"
+		case "Android":
+			ua.Device = "mobile"
+		case "IOS":
+			ua.Device = "mobile"
+		}
+	}
+
+	if match := regexp.MustCompile(browserRe).FindStringSubmatch(userAgent); len(match) > 0 {
+		ua.Browser = match[0]
+	}
+
+	return ua, nil
+}
 func (s *AuthService) HashedPassword(password string) (string, error) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	return string(hashed), err
 }
 
-func (s *AuthService) LoginWithUsernameAndPassword(username string, password string) *result.Result[*authresponse.LoginResult] {
+func (s *AuthService) LoginWithUsernameAndPassword(username string, password string, ctx *gin.Context) *result.Result[*authresponse.LoginResult] {
 	defer func() {
 		if err := recover(); err != nil {
 			fmt.Println("AuthService.LoginWithUsernameAndPassword", err)
@@ -87,7 +146,7 @@ func (s *AuthService) LoginWithUsernameAndPassword(username string, password str
 	}
 
 	// 生成新 token
-	var userToken *model.UserToken = s.createToken(user.ID)
+	var userToken *model.UserToken = s.createToken(user.ID, ctx)
 	return result.Ok(&authresponse.LoginResult{
 		User:  &user,
 		Token: userToken,

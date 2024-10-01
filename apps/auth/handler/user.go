@@ -63,7 +63,7 @@ func (u *UserHandler) GetRouterGroupName() string {
 func (u *UserHandler) LoginWithUsernameAndPassword(ctx *gin.Context) {
 	var data request.UserUserNameAndPasswordLoginRequest
 	ctx.ShouldBindBodyWithJSON(&data)
-	result := u.service.LoginWithUsernameAndPassword(data.UserName, data.Password)
+	result := u.service.LoginWithUsernameAndPassword(data.UserName, data.Password, ctx)
 
 	if result.IsErr() {
 		response.Error(response.ErrBadRequest, result.Error.Error()).Done(ctx)

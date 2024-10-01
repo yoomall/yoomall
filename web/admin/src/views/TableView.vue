@@ -4,7 +4,7 @@
             <!-- {{ $route.meta }} -->
             <div class="flex flex-row">
                 <div>
-                    <h1 class="mb-0 mt-2">{{  meta.title }}</h1>
+                    <h1 class="mb-0 mt-2">{{ meta.title }}</h1>
                     <p class="text-gray">{{ meta?.description || meta.table?.description }}</p>
                 </div>
                 <div class="flex-grow">
@@ -94,9 +94,14 @@
 
                     <ElTableColumn v-for="column in columns" :key="column.prop"
                         :sortable="column.sortable ? 'custom' : false" :label="column.label" :width="column.width"
-                        v-bind="column.props">
+                        v-bind="column.props"
+                        :className="[
+                            getSortClassName(column)
+                        ]">
                         <template #default="{ row }" v-if="!column.slot">
-                            <div :class="[column.className || column?.props?.class]" v-attrs="column.props" v-if="column.type == 'render'">
+                            <div :class="[column.className || column?.props?.class]" v-attrs="column.props"
+                                v-if="column.type == 'render'"
+                                :title="column.render(row)">
                                 {{ column.render(row) }}
                             </div>
                             <!-- switch  -->
@@ -116,10 +121,10 @@
                             <Icon v-if="column.type == 'icon'" :icon="row[column.prop]" :class="[column.className]">
                             </Icon>
                             <!-- image  -->
-                            <ElImage :attrs="column.props" :class="[(column.className || 'w-40px h-40px')]" v-if="column.type == 'image'" :src="$img(row[column.prop])" fit="cover"
+                            <ElImage :attrs="column.props" :class="[(column.className || 'w-40px h-40px')]"
+                                v-if="column.type == 'image'" :src="$img(row[column.prop])" fit="cover"
                                 :preview-teleported="true"
-                                :preview-src-list="row[column.prop] ? [$img(row[column.prop])] : []"
-                                ></ElImage>
+                                :preview-src-list="row[column.prop] ? [$img(row[column.prop])] : []"></ElImage>
                             <ElTag v-if="column.type == 'tag'" :type="column.props?.type || ''">{{ row[column.prop] }}
                             </ElTag>
 
@@ -215,10 +220,10 @@ export default {
             return this.meta?.page?.table || {}
         },
         searchFormFields() {
-            return this.meta.table?.search?.rows || []
+            return this.table?.search?.rows || []
         },
         filters() {
-            return this.meta.table?.filters || []
+            return this.table?.filters || []
         },
         forms() {
             return this.table.forms || []
@@ -256,65 +261,63 @@ export default {
                     render: (row) => {
                         column.key = column.prop;
                         if (column.slot) return ""
+                        let val = this.getValueFromObj(row,column.key)
                         if (column.type === '' || column.type === 'render') {
                             let { valueType: type, key, mapping_key, data = [], def, formatStr = "", prefix = "", suffix = "" } = column || {}
                             let formatConfig = column.formatter
                             if (type === 'mapping') {
                                 console.log(data)
-                                console.log(row[column.key])
-                                return data.find(item => item[key] == row[column.key])?.[mapping_key] || def || ""
+                                console.log(val)
+                                return data.find(item => item[key] == val)?.[mapping_key] || def || ""
                             }
 
                             if (type === 'date') {
-                                return row[column.key] ? this.$dayjs(row[column.key]).format('YYYY-MM-DD HH:mm:ss') : ''
+                                return val ? this.$dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
                             }
 
                             if (type === 'datetime') {
-                                return row[column.key] ? this.$dayjs(row[column.key]).format('YYYY-MM-DD HH:mm:ss') : ''
+                                return val ? this.$dayjs(val).format('YYYY-MM-DD HH:mm:ss') : ''
                             }
                             // number 
                             if (type === 'number') {
-                                let result = row[column.key] ? this.$numeral(row[column.key]).format(formatStr || '0,0.00') : ''
+                                let result = val ? this.$numeral(val).format(formatStr || '0,0.00') : ''
                                 return `${prefix}${result}${suffix}`
                             }
 
                             // bool 
                             if (type === 'boolean') {
-                                return row[column.key] ? (formatConfig.trueText || '是') : (formatConfig.falseText || '否')
+                                return val ? (formatConfig.trueText || '是') : (formatConfig.falseText || '否')
                             }
                         }
-                        return row[column.key]
+                        return val
                     }
                 }
             })
         },
         actions() {
-            return (this.table?.actions || [
-                {
-                    key: 'edit',
-                    title: '编辑',
-                    props: {
-                        type: 'primary'
-                    },
-                    form_key: 'edit_form',
-                    type: 'form'
-                },
-                {
-                    key: 'delete',
-                    title: '删除',
-                    props: {
-                        type: 'danger'
-                    },
-                    type: 'api',
-                    api_key: 'delete'
-                }
-            ])
+            return (this.table?.actions || [])
         },
         batchActions() {
             return this.meta.table?.batch_actions || []
-        }
+        },
     },
     methods: {
+        /**
+         * 从 json 中取 user.username.last 多级 key
+         * @param obj 
+         * @param keystr 
+         */
+        getValueFromObj(obj,keystr){
+            let keys = keystr.split('.')
+            let result = obj
+            keys.forEach(k=>{
+                result = result[k]
+                if(!result){
+                    return result
+                }
+            })
+            return result
+        },
         handlerTableBatchAction(action) {
             let rows = this.getTableSelection()
             if (rows.length == 0) {
@@ -355,7 +358,7 @@ export default {
             }
         },
         handleCreate() {
-            if(this.table?.add_btn){
+            if (this.table?.add_btn) {
                 return this.handlerRowAction({}, this.meta?.table.add_btn)
             }
             this.handleRowActionForm({}, {
@@ -520,7 +523,7 @@ export default {
             }).then(res => {
                 let data = res.data.data || {}
                 this.tableData = data?.list || []
-                let { limit:size, page, total } = data || {}
+                let { limit: size, page, total } = data || {}
                 this.pagination = {
                     pageSize: size,
                     currentPage: page,
@@ -533,9 +536,44 @@ export default {
                 }, 200)
             })
         },
+
+        getSortClassName(column) {
+            // ascending descending
+            let keys = Object.keys(this.searchForm)
+            let index = keys.findIndex(v => new RegExp(`^${column.prop}`).test(v))
+            if (index > -1) {
+                let key = keys[index]
+                if (new RegExp(`asc$`).test(key)) {
+                    return "ascending"
+                }
+                if (new RegExp(`desc$`).test(key)) {
+                    return "descending"
+                }
+            }
+            return ""
+        },
         handleSortChange({ column, order }) {
-            if (!order) return
-            this.searchForm.order_by = column.rawColumnKey + (order === 'ascending' ? '__asc' : '__desc')
+            if (!this.searchForm) {
+                this.searchForm = {}
+            }
+            const unset = () => {
+                let keys = Object.keys(this.searchForm)
+                for (let i = 0; i < keys.length; i++) {
+                    let regx = new RegExp(`^${column.rawColumnKey}`)
+                    if (regx.test(keys[i])) {
+                        let key = keys[i]
+                        delete this.searchForm[key]
+                    }
+                }
+            }
+            if (!order) {
+                unset()
+                this.load()
+                return
+            }
+
+            unset()
+            this.searchForm[column.rawColumnKey + (order === 'ascending' ? '__asc' : '__desc')] = 1
             this.load()
         },
         getTableSelection() {

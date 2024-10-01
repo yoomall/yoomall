@@ -26,6 +26,8 @@ var _ core.IApp = (*AuthApp)(nil)
 var handlerSet = wire.NewSet(
 	handler.NewUserHandler,
 	handler.NewUserRoleHandler,
+	handler.NewUserTokenHandler,
+	handler.NewPermissionHandler,
 )
 var WireSet = wire.NewSet(
 	NewAuthApp, service.NewAuthService, authmiddleware.NewAuthMiddlewareGroup,
@@ -38,12 +40,15 @@ func NewAuthApp(
 	service *service.AuthService,
 	userHandler *handler.UserHandler,
 	roleHandler *handler.UserRoleHandler,
-
+	tokenHandler *handler.UserTokenHandler,
+	permissionHandler *handler.PermissionHandler,
 ) *AuthApp {
 	return &AuthApp{
 		App: core.NewApp("auth", config, db, []core.Handler{
 			userHandler,
 			roleHandler,
+			tokenHandler,
+			permissionHandler,
 		}),
 
 		service: service,

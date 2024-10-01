@@ -127,7 +127,7 @@ func userManagementUI() ui.IRouter {
 			Widgets:   []ui.IWidget{},
 			Table: ui.NewTable().WithColumns([]ui.TableColumn{
 				{
-					Prop:  "roleName",
+					Prop:  "role_name",
 					Label: "角色",
 					Width: "160px",
 					Props: map[string]any{
@@ -135,14 +135,17 @@ func userManagementUI() ui.IRouter {
 					},
 				},
 				{
-					Prop:  "roleCode",
-					Label: "code",
+					Prop:     "role_code",
+					Label:    "code",
+					Sortable: true,
+					Width:    "160px",
 				},
 				{
-					Prop:  "created_at",
-					Label: "创建时间",
-					Width: "240px",
-					Props: nil,
+					Prop:     "created_at",
+					Label:    "创建时间",
+					Width:    "240px",
+					Props:    nil,
+					Sortable: true,
 				},
 				{
 					Prop:  "updated_at",
@@ -154,17 +157,21 @@ func userManagementUI() ui.IRouter {
 			).WithForms(map[string]*ui.Form{
 				"create": ui.NewForm("create", "添加/编辑角色", "/auth/user-roles/create-role").WithRows([][]*ui.FormItem{
 					{
-						ui.NewFormItem("角色名称", "roleName", "text", "请输入角色名称"),
-						ui.NewFormItem("Code", "roleCode", "text", "请输入角色 Code 定义"),
+						ui.NewFormItem("角色名称", "role_name", "text", "请输入角色名称"),
+						ui.NewFormItem("Code", "role_code", "text", "请输入角色 Code 定义"),
 					},
 				}),
 				"update": ui.NewForm("create", "添加/编辑角色", "/auth/user-roles/update-role").WithRows([][]*ui.FormItem{
 					{
-						ui.NewFormItem("角色名称", "roleName", "text", "请输入角色名称"),
-						ui.NewFormItem("Code", "roleCode", "text", "请输入角色 Code 定义"),
+						ui.NewFormItem("角色名称", "role_name", "text", "请输入角色名称"),
+						ui.NewFormItem("Code", "role_code", "text", "请输入角色 Code 定义"),
 					},
 				}),
-			}).WithActions([]*ui.Action{
+			}).WithSearch(ui.NewForm("search", "搜索", "/auth/user-roles/search").WithRows([][]*ui.FormItem{
+				{
+					ui.NewFormItem("角色名称", "role_name__like", "text", "请输入角色名称"),
+				},
+			})).WithActions([]*ui.Action{
 				ui.NewEditAction().WithFormKey("update"),
 				ui.NewDeleteAction(),
 			}),
@@ -172,6 +179,105 @@ func userManagementUI() ui.IRouter {
 			map[string]string{
 				"list":   "/auth/user-roles/role-list",
 				"delete": "/auth/user-roles/delete-role",
+			},
+		),
+	).AddChildren(
+		ui.NewRouter("user-logs", "登录日志", "ant-design:login-outlined", "user-logs", nil, &ui.Page{
+			Title:     "Login Logs",
+			Component: "TableView",
+			Widgets:   []ui.IWidget{},
+			Table: ui.NewTable().WithColumns([]ui.TableColumn{
+				{
+					Prop:  "user.username",
+					Label: "用户名",
+					Width: "180px",
+					Props: map[string]any{
+						"class": "line-clamp-1",
+					},
+				},
+				{
+					Prop:  "ip",
+					Label: "IP",
+					Width: "160px",
+					Props: map[string]any{
+						"class": "line-clamp-1",
+					},
+				},
+				{
+					Prop:  "agent",
+					Label: "User Agent",
+					Width: "160px",
+					Props: map[string]any{
+						"class": "line-clamp-1",
+					},
+				},
+				// browser
+				{
+					Prop:  "browser",
+					Label: "浏览器",
+					Width: "160px",
+					Props: map[string]any{
+						"class": "line-clamp-1",
+					},
+				},
+				// os
+				{
+					Prop:  "os",
+					Label: "OS",
+					Width: "160px",
+					Props: map[string]any{
+						"class": "line-clamp-1",
+					},
+				},
+				// device
+				{
+					Prop:  "device",
+					Label: "设备",
+					Width: "160px",
+					Props: map[string]any{
+						"class": "line-clamp-1",
+					},
+				},
+				// expire_time
+				{
+					Prop:  "expire_time",
+					Label: "过期时间",
+					Width: "240px",
+				},
+				{
+					Prop:  "created_at",
+					Label: "创建时间",
+					Width: "240px",
+				},
+				{
+					Prop:  "updated_at",
+					Label: "更新时间",
+					Width: "240px",
+				},
+			})}).WithDescription("登录日志列表").WithApis(
+			map[string]string{
+				"list": "/auth/user-logs/logs",
+			},
+		),
+	).AddChildren(
+		ui.NewRouter("permissions-list", "权限管理", "ep:unlock", "permissions-list", nil, &ui.Page{
+			Title:     "permissions",
+			Component: "TableView",
+			Table: ui.NewTable().WithColumns([]ui.TableColumn{
+				{
+					Prop:  "id",
+					Label: "ID",
+					Width: "160px",
+				},
+				{
+					Prop:  "name",
+					Label: "名称",
+					Width: "160px",
+				},
+			}),
+		}).WithDescription("权限列表").WithApis(
+			map[string]string{
+				"list": "/auth/permissions/list",
 			},
 		),
 	)

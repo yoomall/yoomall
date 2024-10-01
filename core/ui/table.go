@@ -1,10 +1,11 @@
 package ui
 
 type TableColumn struct {
-	Prop  string         `json:"prop"`
-	Label string         `json:"label"`
-	Width string         `json:"width"`
-	Props map[string]any `json:"props"`
+	Prop     string         `json:"prop"`
+	Label    string         `json:"label"`
+	Width    string         `json:"width"`
+	Props    map[string]any `json:"props"`
+	Sortable bool           `json:"sortable"`
 }
 
 type TableActionType string
@@ -161,6 +162,8 @@ type Table struct {
 	Columns []TableColumn    `json:"columns"`
 	Forms   map[string]*Form `json:"forms"`
 	Actions []*Action        `json:"actions"`
+	Filters *Form            `json:"filters"`
+	Search  *Form            `json:"search"`
 }
 
 var _ IWidget = (*Table)(nil)
@@ -175,6 +178,16 @@ func NewTable() *Table {
 
 func (t *Table) WithForms(forms map[string]*Form) *Table {
 	t.Forms = forms
+	return t
+}
+
+func (t *Table) WithFilters(form *Form) *Table {
+	t.Filters = form
+	return t
+}
+
+func (t *Table) WithSearch(form *Form) *Table {
+	t.Search = form
 	return t
 }
 
