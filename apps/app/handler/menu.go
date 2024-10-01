@@ -284,6 +284,27 @@ func userManagementUI() ui.IRouter {
 	)
 }
 
+func systemConfigCreateForm() *ui.Form {
+	return ui.NewForm("key", "Key", "/common/system-configs/create").WithRows(
+		[][]*ui.FormItem{
+			{
+				{
+					Label:       "Key",
+					Type:        "text",
+					Prop:        "key",
+					Placeholder: "Key",
+				},
+				{
+					Label:       "Value",
+					Type:        "text",
+					Prop:        "value",
+					Placeholder: "Value",
+				},
+			},
+		},
+	)
+}
+
 func systemConfigUI() ui.IRouter {
 	return ui.NewRouter("system", "系统设置", "ant-design:setting-outlined", "/system", nil, &ui.Page{
 		Title:     "System",
@@ -305,28 +326,16 @@ func systemConfigUI() ui.IRouter {
 					Width: "160px",
 				},
 			}).WithForms(map[string]*ui.Form{
-				"create": ui.NewForm("key", "Key", "/common/system-configs/create").WithRows(
-					[][]*ui.FormItem{
-						{
-							{
-								Label:       "Key",
-								Type:        "text",
-								Prop:        "key",
-								Placeholder: "Key",
-							},
-							{
-								Label:       "Value",
-								Type:        "text",
-								Prop:        "value",
-								Placeholder: "Value",
-							},
-						},
-					},
-				),
+				"create": systemConfigCreateForm().WithApi("/common/system-configs/create"),
+				"update": systemConfigCreateForm().WithApi("/common/system-configs/update"),
+			}).WithActions([]*ui.Action{
+				ui.NewEditAction().WithFormKey("update"),
+				ui.NewDeleteAction().WithApiKey("delete"),
 			}),
 		}).WithDescription("系统配置列表").WithApis(
 			map[string]string{
-				"list": "/common/system-configs/list",
+				"list":   "/common/system-configs/list",
+				"delete": "/common/system-configs/delete",
 			},
 		),
 	).AddChildren(

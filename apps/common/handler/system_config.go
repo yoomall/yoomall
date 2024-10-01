@@ -70,18 +70,18 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 		})
 
 		auth.WithDoc(&core.DocItem{
-			Method: http.MethodPut,
+			Method: http.MethodPost,
 			Path:   "/update",
-		}).PUT("/update", func(ctx *gin.Context) {
+		}).POST("/update", func(ctx *gin.Context) {
 			s.curd.UpdateHandler(ctx, &model.SystemConfig{}, func(model interface{}) error {
 				return nil
 			})
 		})
 
 		auth.WithDoc(&core.DocItem{
-			Method: http.MethodDelete,
+			Method: http.MethodPost,
 			Path:   "/delete",
-		}).DELETE("/delete", func(ctx *gin.Context) {
+		}).POST("/delete", func(ctx *gin.Context) {
 			s.curd.DeleteHandler(ctx, nil)
 		})
 
@@ -106,18 +106,18 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 		})
 
 		auth_groups.WithDoc(&core.DocItem{
-			Method: http.MethodPut,
+			Method: http.MethodPost,
 			Path:   "/update",
-		}).PUT("/update", func(ctx *gin.Context) {
+		}).POST("/update", func(ctx *gin.Context) {
 			s.groupCurd.UpdateHandler(ctx, &model.SystemConfigGroup{}, func(model interface{}) error {
 				return nil
 			})
 		})
 
 		auth_groups.WithDoc(&core.DocItem{
-			Method: http.MethodDelete,
+			Method: http.MethodPost,
 			Path:   "/delete",
-		}).DELETE("/delete", func(ctx *gin.Context) {
+		}).POST("/delete", func(ctx *gin.Context) {
 			s.groupCurd.DeleteHandler(ctx, func(model interface{}) error {
 				return nil
 			})

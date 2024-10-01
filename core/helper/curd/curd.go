@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"gorm.io/gorm"
+	"lazyfury.github.com/yoomall-server/core"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	"lazyfury.github.com/yoomall-server/core/helper/response"
 	"lazyfury.github.com/yoomall-server/core/helper/utils"
@@ -279,7 +280,14 @@ func (c *CRUD) CreateHandler(ctx *gin.Context, model interface{}, check func(mod
 	response.Success(model).Done(ctx)
 }
 
-func (c *CRUD) UpdateHandler(ctx *gin.Context, model interface{}, check func(model interface{}) error) {
+func (c *CRUD) UpdateHandler(ctx *gin.Context, model core.IModel, check func(model interface{}) error) {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Error(err)
+			response.Error(response.ErrBadRequest, "内部错误 Painc").Done(ctx)
+		}
+	}()
+
 	if err := ctx.ShouldBindBodyWith(model, binding.JSON); err != nil {
 		response.Error(response.ErrBadRequest, "获取参数错误:"+err.Error()).Done(ctx)
 		return
@@ -301,7 +309,8 @@ func (c *CRUD) UpdateHandler(ctx *gin.Context, model interface{}, check func(mod
 
 func (c *CRUD) DeleteHandler(ctx *gin.Context, check func(model interface{}) error) {
 	type data struct {
-		Ids uint `json:"ids"`
+		Ids []uint `json:"ids"`
+		Id  uint   `json:"id"`
 	}
 
 	var d = &data{}
@@ -318,7 +327,16 @@ func (c *CRUD) DeleteHandler(ctx *gin.Context, check func(model interface{}) err
 		}
 	}
 
-	if err := c.Delete(d.Ids); err != nil {
+	if d.Id > 0 && len(d.Ids) == 0 {
+		d.Ids = []uint{d.Id}
+	}
+
+	if len(d.Ids) == 0 {
+		response.Error(response.ErrBadRequest, "请选择要删除的记录").Done(ctx)
+		return
+	}
+
+	if err := c.Delete(d.Ids...); err != nil {
 		response.Error(response.ErrInternalError, err.Error()).Done(ctx)
 		return
 	}
@@ -330,8 +348,10 @@ func (c *CRUD) Create(model interface{}) error {
 	return c.DB.Model(c.Model).Create(model).Error
 }
 
-func (c *CRUD) Update(model interface{}) error {
-	return c.DB.Model(c.Model).Save(model).Error
+func (c *CRUD) Update(model interface {
+	GetId() uint
+}) error {
+	return c.DB.Model(c.Model).Where("id = ?", model.GetId()).Save(model).Error
 }
 
 func (c *CRUD) Delete(ids ...uint) error {
