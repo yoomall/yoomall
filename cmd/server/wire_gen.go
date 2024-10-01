@@ -40,7 +40,9 @@ func NewApp() httpserver.HttpServer {
 	postApp := post.NewDefaultApp(viper, db)
 	notFoundRecordService := commonservice.NewNotFoundRecordService(db)
 	notFoundRecordHandler := handler3.NewNotFoundRecordHandler(db, notFoundRecordService)
-	commonApp := common.NewCommonApp(viper, db, notFoundRecordHandler)
+	systemConfigService := commonservice.NewSystemConfigService(db)
+	systemConfigHandler := handler3.NewSystemConfigHandler(db, systemConfigService, authMiddlewareGroup)
+	commonApp := common.NewCommonApp(viper, db, notFoundRecordHandler, systemConfigHandler)
 	doc := NewDoc()
 	httpServer := NewHttpServer(viper, defaultApp, authApp, postApp, commonApp, notFoundRecordService, doc)
 	return httpServer

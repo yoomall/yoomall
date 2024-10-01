@@ -8,6 +8,10 @@ import (
 	"gorm.io/gorm"
 )
 
+type IModel interface {
+	TableName() string
+}
+
 type Model struct {
 	ID        uint            `gorm:"primarykey" json:"id"`
 	CreatedAt LocalTime       `json:"created_at" format:"2006-01-02 15:04:05"`

@@ -11,6 +11,7 @@ import (
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"gorm.io/gorm"
 	"lazyfury.github.com/yoomall-server/core/driver"
 	"lazyfury.github.com/yoomall-server/core/helper/response"
@@ -258,6 +259,73 @@ func (c *CRUD) GetById(id int64) (interface{}, error) {
 	return model, err
 }
 
+func (c *CRUD) CreateHandler(ctx *gin.Context, model interface{}, check func(model interface{}) error) {
+	if err := ctx.ShouldBindBodyWith(model, binding.JSON); err != nil {
+		response.Error(response.ErrBadRequest, "获取参数错误:"+err.Error()).Done(ctx)
+		return
+	}
+
+	if check != nil {
+		if err := check(model); err != nil {
+			response.Error(response.ErrBadRequest, err.Error()).Done(ctx)
+			return
+		}
+	}
+
+	if err := c.Create(model); err != nil {
+		response.Error(response.ErrInternalError, err.Error()).Done(ctx)
+		return
+	}
+	response.Success(model).Done(ctx)
+}
+
+func (c *CRUD) UpdateHandler(ctx *gin.Context, model interface{}, check func(model interface{}) error) {
+	if err := ctx.ShouldBindBodyWith(model, binding.JSON); err != nil {
+		response.Error(response.ErrBadRequest, "获取参数错误:"+err.Error()).Done(ctx)
+		return
+	}
+
+	if check != nil {
+		if err := check(model); err != nil {
+			response.Error(response.ErrBadRequest, err.Error()).Done(ctx)
+			return
+		}
+	}
+
+	if err := c.Update(model); err != nil {
+		response.Error(response.ErrInternalError, err.Error()).Done(ctx)
+		return
+	}
+	response.Success(model).Done(ctx)
+}
+
+func (c *CRUD) DeleteHandler(ctx *gin.Context, check func(model interface{}) error) {
+	type data struct {
+		Ids uint `json:"ids"`
+	}
+
+	var d = &data{}
+
+	if err := ctx.ShouldBindBodyWithJSON(d); err != nil {
+		response.Error(response.ErrBadRequest, "参数错误:"+err.Error()).Done(ctx)
+		return
+	}
+
+	if check != nil {
+		if err := check(c.Model); err != nil {
+			response.Error(response.ErrBadRequest, err.Error()).Done(ctx)
+			return
+		}
+	}
+
+	if err := c.Delete(d.Ids); err != nil {
+		response.Error(response.ErrInternalError, err.Error()).Done(ctx)
+		return
+	}
+
+	response.Success("删除成功").Done(ctx)
+}
+
 func (c *CRUD) Create(model interface{}) error {
 	return c.DB.Model(c.Model).Create(model).Error
 }
@@ -266,6 +334,10 @@ func (c *CRUD) Update(model interface{}) error {
 	return c.DB.Model(c.Model).Save(model).Error
 }
 
-func (c *CRUD) Delete(model interface{}) error {
-	return c.DB.Model(c.Model).Delete(model).Error
+func (c *CRUD) Delete(ids ...uint) error {
+	if len(ids) == 0 {
+		return nil
+	}
+
+	return c.DB.Model(c.Model).Where("id in ?", ids).Delete(c.Model).Error
 }

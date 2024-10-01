@@ -30,7 +30,11 @@ func (c *CommonApp) Middleware() []gin.HandlerFunc {
 
 // Migrate implements core.App.
 func (c *CommonApp) Migrate() {
-	c.GetDB().AutoMigrate(&model.NotFoundRecord{})
+	c.GetDB().AutoMigrate(
+		&model.NotFoundRecord{},
+		&model.SystemConfig{},
+		&model.SystemConfigGroup{},
+	)
 }
 
 // Register implements core.App.
@@ -40,12 +44,14 @@ func (c *CommonApp) Register(router *core.RouterGroup) {
 
 func NewCommonApp(config *viper.Viper, db *driver.DB,
 	notfoundHandler *handler.NotFoundRecordHandler,
+	systemConfigHandler *handler.SystemConfigHandler,
 ) *CommonApp {
 	return &CommonApp{
 		App: core.NewApp("common", config, db, []core.Handler{
 			notfoundHandler,
+			systemConfigHandler,
 		}),
 	}
 }
 
-var WireSet = wire.NewSet(NewCommonApp, commonservice.NewNotFoundRecordService, handler.NewNotFoundRecordHandler)
+var WireSet = wire.NewSet(NewCommonApp, commonservice.NewNotFoundRecordService, handler.NewNotFoundRecordHandler, handler.NewSystemConfigHandler, commonservice.NewSystemConfigService)

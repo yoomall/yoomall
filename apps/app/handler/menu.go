@@ -34,6 +34,7 @@ func (m *MenuHandler) Register(router *core.RouterGroup) {
 		response.Success([]any{
 			overviewUI(),
 			userManagementUI(),
+			systemConfigUI(),
 		}).Done(ctx)
 	})
 }
@@ -62,7 +63,7 @@ func overviewUI() ui.IRouter {
 func userManagementUI() ui.IRouter {
 	return ui.NewRouter("user-management", "用户管理", "ant-design:user-outlined", "/user-management", nil, &ui.Page{
 		Title:     "User Management",
-		Component: "UserManagementView",
+		Component: "RouterView",
 		Widgets:   []ui.IWidget{},
 	}).AddChildren(
 		ui.NewRouter("user-list", "用户列表", "ant-design:user-outlined", "user-list", nil, &ui.Page{
@@ -278,6 +279,106 @@ func userManagementUI() ui.IRouter {
 		}).WithDescription("权限列表").WithApis(
 			map[string]string{
 				"list": "/auth/permissions/list",
+			},
+		),
+	)
+}
+
+func systemConfigUI() ui.IRouter {
+	return ui.NewRouter("system", "系统设置", "ant-design:setting-outlined", "/system", nil, &ui.Page{
+		Title:     "System",
+		Component: "RouterView",
+		Widgets:   []ui.IWidget{},
+	}).AddChildren(
+		ui.NewRouter("system-configs", "系统配置", "ant-design:setting-outlined", "system-configs", nil, &ui.Page{
+			Title:     "System Configs",
+			Component: "TableView",
+			Table: ui.NewTable().WithColumns([]ui.TableColumn{
+				{
+					Prop:  "key",
+					Label: "Key",
+					Width: "160px",
+				},
+				{
+					Prop:  "value",
+					Label: "Value",
+					Width: "160px",
+				},
+			}).WithForms(map[string]*ui.Form{
+				"create": ui.NewForm("key", "Key", "/common/system-configs/create").WithRows(
+					[][]*ui.FormItem{
+						{
+							{
+								Label:       "Key",
+								Type:        "text",
+								Prop:        "key",
+								Placeholder: "Key",
+							},
+							{
+								Label:       "Value",
+								Type:        "text",
+								Prop:        "value",
+								Placeholder: "Value",
+							},
+						},
+					},
+				),
+			}),
+		}).WithDescription("系统配置列表").WithApis(
+			map[string]string{
+				"list": "/common/system-configs/list",
+			},
+		),
+	).AddChildren(
+		ui.NewRouter("system-config-groups", "系统配置组", "ant-design:setting-outlined", "system-config-groups", nil, &ui.Page{
+			Title:     "System Config Groups",
+			Component: "TableView",
+			Table: ui.NewTable().WithColumns([]ui.TableColumn{
+				{
+					Prop:  "name",
+					Label: "Name",
+					Width: "160px",
+				},
+				{
+					Prop:  "key",
+					Label: "Key",
+					Width: "160px",
+				},
+				{
+					Prop:  "description",
+					Label: "Description",
+					Width: "160px",
+				},
+			}).WithForms(map[string]*ui.Form{
+				"create": ui.NewForm("name", "Name", "/common/system-configs/groups/create").WithRows(
+					[][]*ui.FormItem{
+						{
+							{
+								Label:       "Name",
+								Type:        "text",
+								Prop:        "name",
+								Placeholder: "Name",
+							},
+							{
+								Label:       "Key",
+								Type:        "text",
+								Prop:        "key",
+								Placeholder: "Key",
+							},
+							// description
+							{
+								Label:       "Description",
+								Type:        "text",
+								Prop:        "description",
+								Placeholder: "Description",
+							},
+						},
+					},
+				),
+			}),
+		}).WithDescription("系统配置组列表").WithApis(
+			map[string]string{
+				"list": "/common/system-configs/groups/list",
 			},
 		),
 	)
