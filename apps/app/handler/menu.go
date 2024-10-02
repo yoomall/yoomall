@@ -374,12 +374,14 @@ func systemConfigUI() ui.IRouter {
 								Prop:        "key",
 								Placeholder: "Key",
 							},
-							// description
+						},
+						{
 							{
 								Label:       "Description",
-								Type:        "text",
+								Type:        "textarea",
 								Prop:        "description",
 								Placeholder: "Description",
+								Width:       "100%",
 							},
 						},
 					},

@@ -128,6 +128,7 @@ type FormItem struct {
 	Type        string `json:"type"`
 	Prop        string `json:"prop"`
 	Placeholder string `json:"placeholder"`
+	Width       string `json:"width"`
 }
 
 func NewFormItem(label string, prop string, t string, placeholder string) *FormItem {
