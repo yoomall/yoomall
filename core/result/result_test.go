@@ -4,8 +4,9 @@ import (
 	"errors"
 	"testing"
 
+	"yoomall/core/result"
+
 	"github.com/stretchr/testify/assert"
-	"lazyfury.github.com/yoomall-server/core/result"
 )
 
 func TestResult(t *testing.T) {

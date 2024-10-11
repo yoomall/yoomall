@@ -1,9 +1,10 @@
 package coremiddleware
 
 import (
+	"yoomall/core/helper/response"
+
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/core/helper/response"
 )
 
 func RecoverHandlerFunc(ctx *gin.Context) {

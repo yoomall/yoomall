@@ -1,4 +1,4 @@
-module lazyfury.github.com/yoomall-server
+module yoomall
 
 go 1.23.0
 

@@ -3,16 +3,17 @@ package auth
 import (
 	"net/http"
 
+	"yoomall/apps/auth/handler"
+	authmiddleware "yoomall/apps/auth/middleware"
+	"yoomall/apps/auth/model"
+	"yoomall/apps/auth/service"
+	"yoomall/core"
+	"yoomall/core/driver"
+	"yoomall/core/helper/response"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/apps/auth/handler"
-	authmiddleware "lazyfury.github.com/yoomall-server/apps/auth/middleware"
-	"lazyfury.github.com/yoomall-server/apps/auth/model"
-	"lazyfury.github.com/yoomall-server/apps/auth/service"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/driver"
-	"lazyfury.github.com/yoomall-server/core/helper/response"
 )
 
 type AuthApp struct {

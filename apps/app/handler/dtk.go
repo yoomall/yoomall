@@ -3,14 +3,15 @@ package handler
 import (
 	"net/http"
 
+	"yoomall/core"
+	"yoomall/core/helper/response"
+	"yoomall/core/helper/utils"
+	"yoomall/core/helper/validate"
+	"yoomall/libs/dtk"
+
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/helper/response"
-	"lazyfury.github.com/yoomall-server/core/helper/utils"
-	"lazyfury.github.com/yoomall-server/core/helper/validate"
-	"lazyfury.github.com/yoomall-server/libs/dtk"
 )
 
 type DtkHandler struct {

@@ -3,12 +3,13 @@ package handler
 import (
 	"net/http"
 
+	authmiddleware "yoomall/apps/auth/middleware"
+	"yoomall/core"
+	"yoomall/core/driver"
+	"yoomall/core/helper/response"
+	"yoomall/core/ui"
+
 	"github.com/gin-gonic/gin"
-	authmiddleware "lazyfury.github.com/yoomall-server/apps/auth/middleware"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/driver"
-	"lazyfury.github.com/yoomall-server/core/helper/response"
-	"lazyfury.github.com/yoomall-server/core/ui"
 )
 
 type MenuHandler struct {

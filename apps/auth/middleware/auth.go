@@ -3,10 +3,11 @@ package authmiddleware
 import (
 	"time"
 
+	"yoomall/apps/auth/model"
+	"yoomall/core/driver"
+	"yoomall/core/helper/response"
+
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/apps/auth/model"
-	"lazyfury.github.com/yoomall-server/core/driver"
-	"lazyfury.github.com/yoomall-server/core/helper/response"
 )
 
 type AuthMiddlewareGroup struct {

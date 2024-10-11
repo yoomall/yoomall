@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	"lazyfury.github.com/yoomall-server/apps/common/model"
-	commonservice "lazyfury.github.com/yoomall-server/apps/common/service"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/driver"
-	"lazyfury.github.com/yoomall-server/core/helper/curd"
+	"yoomall/apps/common/model"
+	commonservice "yoomall/apps/common/service"
+	"yoomall/core"
+	"yoomall/core/driver"
+	"yoomall/core/helper/curd"
 )
 
 type NotFoundRecordHandler struct {

@@ -3,8 +3,8 @@ package model
 import (
 	"encoding/json"
 
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/helper/utils"
+	"yoomall/core"
+	"yoomall/core/helper/utils"
 )
 
 type User struct {

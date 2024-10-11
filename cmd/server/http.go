@@ -3,19 +3,20 @@ package main
 import (
 	"net/http"
 
+	"yoomall/apps/app"
+	"yoomall/apps/auth"
+	"yoomall/apps/common"
+	commonservice "yoomall/apps/common/service"
+	"yoomall/apps/post"
+	"yoomall/config"
+	"yoomall/core"
+	"yoomall/core/constants"
+	"yoomall/core/driver"
+	httpserver "yoomall/core/http"
+	coremiddleware "yoomall/core/middleware"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/apps/app"
-	"lazyfury.github.com/yoomall-server/apps/auth"
-	"lazyfury.github.com/yoomall-server/apps/common"
-	commonservice "lazyfury.github.com/yoomall-server/apps/common/service"
-	"lazyfury.github.com/yoomall-server/apps/post"
-	"lazyfury.github.com/yoomall-server/config"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/constants"
-	"lazyfury.github.com/yoomall-server/core/driver"
-	httpserver "lazyfury.github.com/yoomall-server/core/http"
-	coremiddleware "lazyfury.github.com/yoomall-server/core/middleware"
 )
 
 func NewHttpServer(

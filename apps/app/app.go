@@ -3,11 +3,12 @@ package app
 import (
 	"net/http"
 
+	"yoomall/core"
+	"yoomall/core/helper/utils"
+	coremiddleware "yoomall/core/middleware"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/helper/utils"
-	coremiddleware "lazyfury.github.com/yoomall-server/core/middleware"
 )
 
 type DefaultApp struct {

@@ -6,15 +6,16 @@ import (
 	"strings"
 	"time"
 
+	"yoomall/apps/auth/model"
+	authresponse "yoomall/apps/auth/response"
+	"yoomall/core"
+	"yoomall/core/driver"
+	"yoomall/core/helper/response"
+	"yoomall/core/result"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
-	"lazyfury.github.com/yoomall-server/apps/auth/model"
-	authresponse "lazyfury.github.com/yoomall-server/apps/auth/response"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/driver"
-	"lazyfury.github.com/yoomall-server/core/helper/response"
-	"lazyfury.github.com/yoomall-server/core/result"
 )
 
 type AuthService struct {

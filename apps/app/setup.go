@@ -1,12 +1,13 @@
 package app
 
 import (
+	"yoomall/apps/app/handler"
+	"yoomall/core"
+	"yoomall/core/driver"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/apps/app/handler"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
 func NewWireDefaultApp(config *viper.Viper, db *driver.DB,

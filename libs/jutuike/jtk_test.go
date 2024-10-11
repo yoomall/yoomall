@@ -3,7 +3,7 @@ package jutuike_test
 import (
 	"testing"
 
-	"lazyfury.github.com/yoomall-server/libs/jutuike"
+	"yoomall/libs/jutuike"
 )
 
 func TestJutuike(t *testing.T) {

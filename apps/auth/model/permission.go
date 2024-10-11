@@ -1,6 +1,6 @@
 package model
 
-import "lazyfury.github.com/yoomall-server/core"
+import "yoomall/core"
 
 type Permission struct {
 	core.Model

@@ -7,8 +7,9 @@ import (
 	"net/http"
 	"time"
 
+	"yoomall/core/helper/response"
+
 	"github.com/gin-gonic/gin"
-	"lazyfury.github.com/yoomall-server/core/helper/response"
 )
 
 func ProxyRequest(ctx *gin.Context) {

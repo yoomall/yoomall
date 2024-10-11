@@ -3,7 +3,7 @@ package model
 import (
 	"time"
 
-	"lazyfury.github.com/yoomall-server/core"
+	"yoomall/core"
 )
 
 type UserToken struct {

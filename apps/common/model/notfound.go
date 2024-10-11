@@ -1,6 +1,6 @@
 package model
 
-import "lazyfury.github.com/yoomall-server/core"
+import "yoomall/core"
 
 type NotFoundRecord struct {
 	*core.Model

@@ -7,18 +7,18 @@
 package main
 
 import (
-	"lazyfury.github.com/yoomall-server/apps/app"
-	"lazyfury.github.com/yoomall-server/apps/app/handler"
-	"lazyfury.github.com/yoomall-server/apps/auth"
-	handler2 "lazyfury.github.com/yoomall-server/apps/auth/handler"
-	"lazyfury.github.com/yoomall-server/apps/auth/middleware"
-	"lazyfury.github.com/yoomall-server/apps/auth/service"
-	"lazyfury.github.com/yoomall-server/apps/common"
-	handler3 "lazyfury.github.com/yoomall-server/apps/common/handler"
-	"lazyfury.github.com/yoomall-server/apps/common/service"
-	"lazyfury.github.com/yoomall-server/apps/post"
-	"lazyfury.github.com/yoomall-server/config"
-	"lazyfury.github.com/yoomall-server/core/http"
+	"yoomall/apps/app"
+	"yoomall/apps/app/handler"
+	"yoomall/apps/auth"
+	handler2 "yoomall/apps/auth/handler"
+	"yoomall/apps/auth/middleware"
+	"yoomall/apps/auth/service"
+	"yoomall/apps/common"
+	handler3 "yoomall/apps/common/handler"
+	"yoomall/apps/common/service"
+	"yoomall/apps/post"
+	"yoomall/config"
+	"yoomall/core/http"
 )
 
 // Injectors from wire.go:

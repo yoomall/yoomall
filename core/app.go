@@ -3,11 +3,12 @@ package core
 import (
 	"fmt"
 
+	"yoomall/config"
+	"yoomall/core/driver"
+
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/config"
-	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
 type IApp interface {

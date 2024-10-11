@@ -1,8 +1,8 @@
 package commonservice
 
 import (
-	"lazyfury.github.com/yoomall-server/apps/common/model"
-	"lazyfury.github.com/yoomall-server/core/driver"
+	"yoomall/apps/common/model"
+	"yoomall/core/driver"
 )
 
 type SystemConfigService struct {

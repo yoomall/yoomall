@@ -3,17 +3,18 @@ package handler
 import (
 	"net/http"
 
+	authmiddleware "yoomall/apps/auth/middleware"
+	"yoomall/apps/auth/model"
+	"yoomall/apps/auth/request"
+	"yoomall/apps/auth/service"
+	"yoomall/core"
+	"yoomall/core/driver"
+	"yoomall/core/helper/curd"
+	"yoomall/core/helper/response"
+
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
-	authmiddleware "lazyfury.github.com/yoomall-server/apps/auth/middleware"
-	"lazyfury.github.com/yoomall-server/apps/auth/model"
-	"lazyfury.github.com/yoomall-server/apps/auth/request"
-	"lazyfury.github.com/yoomall-server/apps/auth/service"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/driver"
-	"lazyfury.github.com/yoomall-server/core/helper/curd"
-	"lazyfury.github.com/yoomall-server/core/helper/response"
 )
 
 type UserHandler struct {

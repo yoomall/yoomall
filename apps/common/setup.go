@@ -1,14 +1,15 @@
 package common
 
 import (
+	"yoomall/apps/common/handler"
+	"yoomall/apps/common/model"
+	commonservice "yoomall/apps/common/service"
+	"yoomall/core"
+	"yoomall/core/driver"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/apps/common/handler"
-	"lazyfury.github.com/yoomall-server/apps/common/model"
-	commonservice "lazyfury.github.com/yoomall-server/apps/common/service"
-	"lazyfury.github.com/yoomall-server/core"
-	"lazyfury.github.com/yoomall-server/core/driver"
 )
 
 type CommonApp struct {

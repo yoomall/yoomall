@@ -3,10 +3,11 @@ package httpserver
 import (
 	"strconv"
 
+	"yoomall/config"
+
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/config"
 )
 
 type HttpServer struct {

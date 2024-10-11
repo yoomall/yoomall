@@ -8,13 +8,14 @@ import (
 	"strings"
 	"time"
 
+	"yoomall/apps/auth/model"
+	"yoomall/apps/auth/service"
+	"yoomall/config"
+	"yoomall/core/driver"
+	"yoomall/core/helper/utils"
+
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"
-	"lazyfury.github.com/yoomall-server/apps/auth/model"
-	"lazyfury.github.com/yoomall-server/apps/auth/service"
-	"lazyfury.github.com/yoomall-server/config"
-	"lazyfury.github.com/yoomall-server/core/driver"
-	"lazyfury.github.com/yoomall-server/core/helper/utils"
 )
 
 func seedingUsers() *cobra.Command {

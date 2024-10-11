@@ -4,10 +4,11 @@
 package main
 
 import (
+	"yoomall/apps/auth"
+	"yoomall/config"
+	httpserver "yoomall/core/http"
+
 	"github.com/google/wire"
-	"lazyfury.github.com/yoomall-server/apps/auth"
-	"lazyfury.github.com/yoomall-server/config"
-	httpserver "lazyfury.github.com/yoomall-server/core/http"
 )
 
 func NewApp() httpserver.HttpServer {

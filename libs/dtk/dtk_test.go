@@ -3,7 +3,7 @@ package dtk_test
 import (
 	"testing"
 
-	"lazyfury.github.com/yoomall-server/libs/dtk"
+	"yoomall/libs/dtk"
 )
 
 // TestNewDtkWithoutAppKey tests that calling NewDtkClient with an empty

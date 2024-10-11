@@ -7,7 +7,7 @@
 package main
 
 import (
-	"lazyfury.github.com/yoomall-server/jobs"
+	"yoomall/jobs"
 )
 
 // Injectors from wire.go:

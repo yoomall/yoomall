@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"yoomall/core/constants"
+
 	"github.com/spf13/viper"
-	"lazyfury.github.com/yoomall-server/core/constants"
 )
 
 func NewConfig() *viper.Viper {

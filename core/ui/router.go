@@ -3,7 +3,7 @@ package ui
 import (
 	"encoding/json"
 
-	"lazyfury.github.com/yoomall-server/core"
+	"yoomall/core"
 )
 
 type IRouter interface {

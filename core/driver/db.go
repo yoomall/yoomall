@@ -1,12 +1,13 @@
 package driver
 
 import (
+	"yoomall/config"
+
 	"github.com/charmbracelet/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"lazyfury.github.com/yoomall-server/config"
 )
 
 type DB struct {

@@ -4,8 +4,9 @@
 package main
 
 import (
+	"yoomall/jobs"
+
 	"github.com/google/wire"
-	"lazyfury.github.com/yoomall-server/jobs"
 )
 
 func NewCron() *jobs.JobServer {
