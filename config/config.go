@@ -18,6 +18,10 @@ func NewConfig() *viper.Viper {
 }
 
 func GetConfig(file string) *viper.Viper {
+	// if file exits
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		panic("配置文件不存在")
+	}
 	config := viper.New()
 	config.SetConfigType("yaml")
 	config.SetConfigFile(file)
