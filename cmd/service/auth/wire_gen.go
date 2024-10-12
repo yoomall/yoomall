@@ -8,9 +8,9 @@ package main
 
 import (
 	"yoomall/apps/auth"
-	"yoomall/apps/auth/authservice"
 	"yoomall/apps/auth/handler"
 	"yoomall/apps/auth/middleware"
+	"yoomall/apps/auth/service"
 	"yoomall/config"
 	"yoomall/core/http"
 )

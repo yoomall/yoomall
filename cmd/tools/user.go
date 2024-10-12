@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"yoomall/apps/auth/authservice"
 	"yoomall/apps/auth/model"
+	authservice "yoomall/apps/auth/service"
 	"yoomall/config"
 	"yoomall/core/driver"
 	"yoomall/core/helper/utils"

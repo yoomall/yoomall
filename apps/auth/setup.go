@@ -3,10 +3,10 @@ package auth
 import (
 	"net/http"
 
-	"yoomall/apps/auth/authservice"
 	"yoomall/apps/auth/handler"
 	authmiddleware "yoomall/apps/auth/middleware"
 	"yoomall/apps/auth/model"
+	authservice "yoomall/apps/auth/service"
 	"yoomall/core"
 	"yoomall/core/driver"
 	"yoomall/core/helper/response"
