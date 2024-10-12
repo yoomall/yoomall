@@ -10,9 +10,9 @@ import (
 	"yoomall/apps/app"
 	"yoomall/apps/app/handler"
 	"yoomall/apps/auth"
+	"yoomall/apps/auth/authservice"
 	handler2 "yoomall/apps/auth/handler"
 	"yoomall/apps/auth/middleware"
-	"yoomall/apps/auth/service"
 	"yoomall/apps/common"
 	handler3 "yoomall/apps/common/handler"
 	"yoomall/apps/common/service"
@@ -31,7 +31,7 @@ func NewApp() httpserver.HttpServer {
 	menuHandler := handler.NewMenuHandler(db, authMiddlewareGroup)
 	jtkHandler := handler.NewJtkHandler(viper)
 	defaultApp := app.NewWireDefaultApp(viper, db, dtkHandler, menuHandler, jtkHandler)
-	authService := service.NewAuthService(db)
+	authService := authservice.NewAuthService(db)
 	userHandler := handler2.NewUserHandler(db, viper, authService, authMiddlewareGroup)
 	userRoleHandler := handler2.NewUserRoleHandler(db, authMiddlewareGroup)
 	userTokenHandler := handler2.NewUserTokenHandler(db, authMiddlewareGroup)

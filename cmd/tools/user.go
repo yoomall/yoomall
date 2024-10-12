@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"yoomall/apps/auth/authservice"
 	"yoomall/apps/auth/model"
-	"yoomall/apps/auth/service"
 	"yoomall/config"
 	"yoomall/core/driver"
 	"yoomall/core/helper/utils"
@@ -24,7 +24,7 @@ func seedingUsers() *cobra.Command {
 		Use: "seeding:users",
 		Run: func(cmd *cobra.Command, args []string) {
 			startTime := time.Now()
-			service := service.NewAuthService(driver.NewDB(config.Config.MysqlDsn))
+			service := authservice.NewAuthService(driver.NewDB(config.Config.MysqlDsn))
 
 			for i := 0; i < count; i++ {
 				email := getRandomEmail()
@@ -108,7 +108,7 @@ func createSuperUser() *cobra.Command {
 			}
 
 			log.Info("create-super-user", "username", username, "password", password)
-			service := service.NewAuthService(driver.NewDB(config.Config.MysqlDsn))
+			service := authservice.NewAuthService(driver.NewDB(config.Config.MysqlDsn))
 
 			if err := service.CheckPasswordStrength(password); err != nil {
 				log.Error("create-super-user", "err", err)

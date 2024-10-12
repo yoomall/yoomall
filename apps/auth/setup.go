@@ -3,10 +3,10 @@ package auth
 import (
 	"net/http"
 
+	"yoomall/apps/auth/authservice"
 	"yoomall/apps/auth/handler"
 	authmiddleware "yoomall/apps/auth/middleware"
 	"yoomall/apps/auth/model"
-	"yoomall/apps/auth/service"
 	"yoomall/core"
 	"yoomall/core/driver"
 	"yoomall/core/helper/response"
@@ -19,7 +19,7 @@ import (
 type AuthApp struct {
 	*core.App
 
-	service *service.AuthService
+	service *authservice.AuthService
 }
 
 var _ core.IApp = (*AuthApp)(nil)
@@ -31,14 +31,14 @@ var handlerSet = wire.NewSet(
 	handler.NewPermissionHandler,
 )
 var WireSet = wire.NewSet(
-	NewAuthApp, service.NewAuthService, authmiddleware.NewAuthMiddlewareGroup,
+	NewAuthApp, authservice.NewAuthService, authmiddleware.NewAuthMiddlewareGroup,
 	handlerSet,
 )
 
 func NewAuthApp(
 	config *viper.Viper,
 	db *driver.DB,
-	service *service.AuthService,
+	service *authservice.AuthService,
 	userHandler *handler.UserHandler,
 	roleHandler *handler.UserRoleHandler,
 	tokenHandler *handler.UserTokenHandler,

@@ -8,9 +8,9 @@ package main
 
 import (
 	"yoomall/apps/auth"
+	"yoomall/apps/auth/authservice"
 	"yoomall/apps/auth/handler"
 	"yoomall/apps/auth/middleware"
-	"yoomall/apps/auth/service"
 	"yoomall/config"
 	"yoomall/core/http"
 )
@@ -20,7 +20,7 @@ import (
 func NewApp() httpserver.HttpServer {
 	viper := config.NewConfig()
 	db := NewDB(viper)
-	authService := service.NewAuthService(db)
+	authService := authservice.NewAuthService(db)
 	authMiddlewareGroup := authmiddleware.NewAuthMiddlewareGroup(db)
 	userHandler := handler.NewUserHandler(db, viper, authService, authMiddlewareGroup)
 	userRoleHandler := handler.NewUserRoleHandler(db, authMiddlewareGroup)

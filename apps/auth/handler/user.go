@@ -3,10 +3,10 @@ package handler
 import (
 	"net/http"
 
+	"yoomall/apps/auth/authservice"
 	authmiddleware "yoomall/apps/auth/middleware"
 	"yoomall/apps/auth/model"
 	"yoomall/apps/auth/request"
-	"yoomall/apps/auth/service"
 	"yoomall/core"
 	"yoomall/core/driver"
 	"yoomall/core/helper/curd"
@@ -19,13 +19,13 @@ import (
 
 type UserHandler struct {
 	CRUD      *curd.CRUD
-	service   *service.AuthService
+	service   *authservice.AuthService
 	authMidds *authmiddleware.AuthMiddlewareGroup
 }
 
 var _ core.Handler = (*UserHandler)(nil)
 
-func NewUserHandler(db *driver.DB, config *viper.Viper, service *service.AuthService, authMiddlewareGroup *authmiddleware.AuthMiddlewareGroup) *UserHandler {
+func NewUserHandler(db *driver.DB, config *viper.Viper, service *authservice.AuthService, authMiddlewareGroup *authmiddleware.AuthMiddlewareGroup) *UserHandler {
 	return &UserHandler{
 		CRUD: &curd.CRUD{
 			DB:    db,
