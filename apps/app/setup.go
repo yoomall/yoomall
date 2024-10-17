@@ -2,8 +2,10 @@ package app
 
 import (
 	"yoomall/apps/app/handler"
+	authmiddleware "yoomall/apps/auth/middleware"
 	"yoomall/core"
 	"yoomall/core/driver"
+	"yoomall/plugins/upload"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
@@ -21,8 +23,11 @@ func NewWireDefaultApp(config *viper.Viper, db *driver.DB,
 			menuHandler,
 			jtkHandler,
 			dtkHandler,
+		}).WithPlugins([]core.IPlugin{
+			upload.NewUploadPlugin().WithMiddlewares([]gin.HandlerFunc{
+				authmiddleware.NewAuthMiddleware(db, true, false),
+			}),
 		}),
-		AuthMiddlewares: []gin.HandlerFunc{},
 	}
 }
 

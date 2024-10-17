@@ -13,8 +13,7 @@ import (
 
 type DefaultApp struct {
 	*core.App
-	Config          *viper.Viper
-	AuthMiddlewares []gin.HandlerFunc
+	Config *viper.Viper
 }
 
 var _ core.IApp = (*DefaultApp)(nil)

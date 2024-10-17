@@ -16,7 +16,7 @@ type IPlugin interface {
 
 	// 注册路由
 	RegisterRouter(router *RouterGroup)
-	Middlewares() []gin.HandlerFunc
+	GetMiddlewares() []gin.HandlerFunc
 
 	// GetPluginInfo 获取插件信息
 	GetPluginInfo() *PluginInfo
@@ -29,7 +29,8 @@ type IPlugin interface {
 }
 
 type Plugin struct {
-	Info *PluginInfo
+	Info        *PluginInfo
+	Middlewares []gin.HandlerFunc
 }
 
 // Invoke implements IPlugin.
@@ -48,8 +49,8 @@ func (p *Plugin) GetPluginName() string {
 }
 
 // Middlewares implements IPlugin.
-func (p *Plugin) Middlewares() []gin.HandlerFunc {
-	return []gin.HandlerFunc{}
+func (p *Plugin) GetMiddlewares() []gin.HandlerFunc {
+	return p.Middlewares
 }
 
 // RegisterRouter implements IPlugin.
@@ -63,6 +64,12 @@ func (p *Plugin) Install() error {
 
 func (p *Plugin) Uninstall() error {
 	return nil
+}
+
+// with middlewares
+func (p *Plugin) WithMiddlewares(middlewares []gin.HandlerFunc) *Plugin {
+	p.Middlewares = append(p.Middlewares, middlewares...)
+	return p
 }
 
 func NewPlugin() *Plugin {

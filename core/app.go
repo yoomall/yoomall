@@ -15,17 +15,20 @@ type IApp interface {
 	GetName() string
 	GetDB() *driver.DB
 	Migrate()
-	Middleware() []gin.HandlerFunc
+	GetMiddlewares() []gin.HandlerFunc
 	GetConfig() *viper.Viper
 	Register(router *RouterGroup)
 	GetHandlers() []Handler
+	GetPlugins() []IPlugin
 }
 
 type App struct {
-	AppName   string
-	AppConfig *viper.Viper
-	db        *driver.DB
-	Handlers  []Handler
+	AppName     string
+	AppConfig   *viper.Viper
+	db          *driver.DB
+	Handlers    []Handler
+	Plugins     []IPlugin
+	Middlewares []gin.HandlerFunc
 }
 
 func NewApp(name string, config *viper.Viper, db *driver.DB, handlers []Handler) *App {
@@ -35,6 +38,24 @@ func NewApp(name string, config *viper.Viper, db *driver.DB, handlers []Handler)
 		db:        db,
 		Handlers:  handlers,
 	}
+}
+
+// WithPlugins
+func (a *App) WithPlugins(plugins []IPlugin) *App {
+	a.Plugins = append(a.Plugins, plugins...)
+	return a
+}
+
+// with plugin
+func (a *App) WithPlugin(plugin IPlugin) *App {
+	a.Plugins = append(a.Plugins, plugin)
+	return a
+}
+
+// with middlewares
+func (a *App) WithMiddlewares(middlewares []gin.HandlerFunc) *App {
+	a.Middlewares = append(a.Middlewares, middlewares...)
+	return a
 }
 
 func (a *App) GetConfig() *viper.Viper {
@@ -53,6 +74,14 @@ func (a *App) GetHandlers() []Handler {
 	return a.Handlers
 }
 
+func (a *App) GetPlugins() []IPlugin {
+	return a.Plugins
+}
+
+func (a *App) GetMiddlewares() []gin.HandlerFunc {
+	return a.Middlewares
+}
+
 type RegisterApp struct {
 	Router *RouterGroup
 	App    IApp
@@ -67,11 +96,15 @@ func (instance *RegisterApp) Register() {
 		log.Info("迁移成功 success")
 	}
 	router := instance.Router.Group("")
-	router.Use(instance.App.Middleware()...)
+	router.Use(instance.App.GetMiddlewares()...)
 	instance.App.Register(router)
 
 	for _, handler := range instance.App.GetHandlers() {
 		handler.Register(router.Group(handler.GetRouterGroupName()))
+	}
+
+	for _, plugin := range instance.App.GetPlugins() {
+		plugin.RegisterRouter(router.Group(""))
 	}
 
 	log.Info("注册成功", "app", instance.App.GetName())
