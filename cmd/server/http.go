@@ -21,7 +21,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 
-	_template "yoomall/plugins/template"
+	_template "yoomall/core/template"
 )
 
 func NewHttpServer(
