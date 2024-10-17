@@ -1,6 +1,7 @@
 package main
 
 import (
+	"html/template"
 	"net/http"
 
 	"yoomall/apps/app"
@@ -12,11 +13,15 @@ import (
 	"yoomall/core"
 	"yoomall/core/constants"
 	"yoomall/core/driver"
+	"yoomall/core/helper/response"
 	httpserver "yoomall/core/http"
 	coremiddleware "yoomall/core/middleware"
 
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+
+	_template "yoomall/plugins/template"
 )
 
 func NewHttpServer(
@@ -36,7 +41,7 @@ func NewHttpServer(
 	setup(engine)
 
 	engine.GET("", func(ctx *gin.Context) {
-		ctx.String(200, ":) yoomall server is running.")
+		response.Html(http.StatusOK, "ok", nil, "index.html", http.StatusOK).Done(ctx)
 	})
 
 	engine.NoRoute(func(ctx *gin.Context) {
@@ -78,6 +83,12 @@ func setup(engine *gin.Engine) {
 	engine.SetTrustedProxies(nil)               //设置允许请求的域名
 	engine.Use(coremiddleware.CORSMiddleware()) // 跨域
 	engine.Use(gin.Recovery())                  // 错误恢复
+
+	// 设置模板
+	html := template.Must(_template.ParseGlob(template.New("main"), "templates", "*.html"))
+	engine.SetHTMLTemplate(html)
+
+	engine.Use(static.Serve("/", static.LocalFile("public", false)))
 
 	// 设置 debug mode
 	if config.Config.DEBUG {

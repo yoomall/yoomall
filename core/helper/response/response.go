@@ -15,6 +15,46 @@ type ApiJsonResponse struct {
 	Extra    map[string]any `json:"extra"`
 }
 
+type HtmlTemplateResponse struct {
+	Code     int            `json:"code"`
+	Message  string         `json:"message"`
+	Data     interface{}    `json:"data"`
+	HttpCode int            `json:"-"`
+	Extra    map[string]any `json:"extra"`
+	Template string         `json:"template"`
+}
+
+func Html(code int, message string, data interface{}, template string, httpCode int) *HtmlTemplateResponse {
+	return &HtmlTemplateResponse{
+		Code:     code,
+		Message:  message,
+		Data:     data,
+		HttpCode: httpCode,
+		Template: template,
+	}
+}
+
+// withExtra
+func (a *HtmlTemplateResponse) WithExtra(extra map[string]any) *HtmlTemplateResponse {
+	if a.Extra == nil {
+		a.Extra = make(map[string]any)
+	}
+	for k, v := range extra {
+		a.Extra[k] = v
+	}
+	return a
+}
+
+func (a *HtmlTemplateResponse) Done(ctx *gin.Context) {
+	a.WithExtra(map[string]any{
+		"path": ctx.Request.URL.Path,
+		"site": map[string]any{
+			"name": "yoomall",
+		},
+	})
+	ctx.HTML(a.HttpCode, a.Template, a)
+}
+
 func NewApiJsonResponse(code int, message string, data interface{}, httpCode int) *ApiJsonResponse {
 	return &ApiJsonResponse{
 		Code:     code,

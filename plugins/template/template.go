@@ -3,7 +3,7 @@ package template
 import (
 	"fmt"
 	"html/template"
-	"io/ioutil"
+	"os"
 	"path"
 	"path/filepath"
 	"strings"
@@ -28,7 +28,7 @@ func ParseGlob(tpl *template.Template, dir string, pattern string) (t *template.
 	files := allFiles(dir, pattern)
 	for _, file := range files {
 		fmt.Printf("挂载模板：%s\n", file.Path)
-		b, err := ioutil.ReadFile(file.Path)
+		b, err := os.ReadFile(file.Path)
 		if err != nil {
 			return t, err
 		}
@@ -54,7 +54,7 @@ func ParseGlob(tpl *template.Template, dir string, pattern string) (t *template.
 // 目录下的所有文件
 func allFiles(dir string, suffix string) (arr []*tplFile) {
 
-	files, err := ioutil.ReadDir(dir)
+	files, err := os.ReadDir(dir)
 	if err != nil {
 		return
 	}
