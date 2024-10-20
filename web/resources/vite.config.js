@@ -7,12 +7,12 @@ export default defineConfig({
   plugins: [
     UnoCSS(),
   ],
-  css: {
+  css:{
     preprocessorOptions: {
       scss: {
-        api: 'modern-compiler' // or "modern"
-      }
-    }
+        silenceDeprecations: ["legacy-js-api"],
+      },
+    },
   },
   build: {
     manifest:"manifest.json",
