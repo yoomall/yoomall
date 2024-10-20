@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yoo!</title>
-</head>
-<body>
-    {{.Extra.site.name}} is running.
+{{template "header" .}}
 
-    <div>
-        <span>path:{{.Extra.path}}</span>
-    </div>
+<main>
+    <div>{{.Extra.site.name}} is on server.</div>
 
-    <div>
-        <span>{{hello}}</span>
-    </div>
-</body>
-</html>
+    <span>path:{{.Extra.path}}</span>
+</main>
+
+{{template "footer" .}}
