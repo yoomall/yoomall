@@ -7,6 +7,13 @@ export default defineConfig({
   plugins: [
     UnoCSS(),
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler' // or "modern"
+      }
+    }
+  },
   build: {
     manifest:"manifest.json",
     outDir: '../../public',
