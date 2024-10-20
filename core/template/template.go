@@ -9,6 +9,14 @@ import (
 	"strings"
 )
 
+/**
+@ usege
+```golang
+html := template.Must(_template.ParseGlob(template.New("main"), "templates", "*.html")).Funcs(_template.TemplateFuncsMap)
+engine.SetHTMLTemplate(html)
+```
+	**/
+
 // TemplateRenderer is a custom html/template renderer for Echo framework
 type (
 	TemplateRenderer struct {
@@ -79,4 +87,10 @@ func allFiles(dir string, suffix string) (arr []*tplFile) {
 	}
 
 	return
+}
+
+var Funcs = template.FuncMap{
+	"hello": func() string {
+		return "hello world by template funcs!"
+	},
 }

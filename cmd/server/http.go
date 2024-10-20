@@ -85,7 +85,8 @@ func setup(engine *gin.Engine) {
 	engine.Use(gin.Recovery())                  // 错误恢复
 
 	// 设置模板
-	html := template.Must(_template.ParseGlob(template.New("main"), "templates", "*.html"))
+	temp := template.New("main").Funcs(_template.Funcs)
+	html := template.Must(_template.ParseGlob(temp, "templates", "*.html"))
 	engine.SetHTMLTemplate(html)
 
 	engine.Use(static.Serve("/", static.LocalFile("public", false)))
