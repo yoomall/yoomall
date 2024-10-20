@@ -97,33 +97,86 @@ var Funcs = template.FuncMap{
 	"hello": func() string {
 		return "hello world by template funcs!"
 	},
-	"vite": func(_path string) string {
-		if config.VITE_DEBUG {
-			return config.VITE_URL + _path
-		}
-		manifestPath := path.Join(config.VITE_BUILD_DIR, "manifest.json")
-		manifestFile, err := os.Open(manifestPath)
-		if err != nil {
-			log.Error("open manifest error: " + err.Error())
-			return "open manifest error: " + err.Error()
-		}
-		defer manifestFile.Close()
-		manifestData := make(map[string]map[string]any)
-		if err := json.NewDecoder(manifestFile).Decode(&manifestData); err != nil {
-			log.Error("parse manifest error: " + err.Error())
-			return "parse manifest error: " + err.Error()
-		}
+	"vite": vite,
+}
 
-		if _, ok := manifestData[_path]; !ok {
-			log.Error("path not found in manifest: " + _path)
-			return "path not found in manifest: " + _path
+// vite 使用 vite 组织 js 和 css 文件
+func vite(_path string) template.HTML {
+	ext := path.Ext(_path)
+	if config.VITE_DEBUG {
+		if ext == ".js" {
+			return template.HTML(`<script>/** Vite **/</script> <script type="module" src="` + (config.VITE_URL + _path) + `"></script> <script>/** Vite end **/</script>`)
 		}
+		if ext == ".css" || ext == ".scss" {
+			return template.HTML(`<style>/** Vite **/</style> <link rel="stylesheet" href="` + (config.VITE_URL + _path) + `"> <style>/** Vite end **/</style>`)
+		}
+		return template.HTML(`unknown ext: ` + ext)
 
-		if _, ok := manifestData[_path]["file"]; !ok {
+	}
+	manifestPath := path.Join(config.VITE_BUILD_DIR, "manifest.json")
+	manifestFile, err := os.Open(manifestPath)
+	if err != nil {
+		log.Error("open manifest error: " + err.Error())
+		return template.HTML("open manifest error: " + err.Error())
+	}
+	defer manifestFile.Close()
+	manifestData := make(map[string]map[string]any)
+	if err := json.NewDecoder(manifestFile).Decode(&manifestData); err != nil {
+		log.Error("parse manifest error: " + err.Error())
+		return template.HTML("parse manifest error: " + err.Error())
+	}
+
+	if _, ok := manifestData[_path]; !ok {
+		log.Error("path not found in manifest: " + _path)
+		return template.HTML("path not found in manifest: " + _path)
+	}
+
+	if _, ok := manifestData[_path]["file"]; !ok {
+		log.Error("file not found in manifest: " + _path)
+		return template.HTML("file not found in manifest: " + _path)
+	}
+
+	if ext == ".js" {
+
+		jsFile := manifestData[_path]["file"].(string)
+		if !strings.HasSuffix(jsFile, ".js") {
 			log.Error("file not found in manifest: " + _path)
-			return "file not found in manifest: " + _path
+			return template.HTML("file not found in manifest: " + _path)
 		}
 
-		return manifestData[_path]["file"].(string)
-	},
+		cssFiles := manifestData[_path]["css"]
+		if cssFiles != nil {
+			for _, cssFile := range cssFiles.([]any) {
+				if !strings.HasSuffix(cssFile.(string), ".css") {
+					log.Error("file not found in manifest: " + _path)
+					return template.HTML("file not found in manifest: " + _path)
+				}
+			}
+		}
+
+		_html := `<script>/** Vite **/</script> <script type="module" src="` + jsFile + `"></script>`
+
+		if cssFiles != nil {
+			for _, cssFile := range cssFiles.([]any) {
+				_html += `<link rel="stylesheet" href="` + cssFile.(string) + `">`
+			}
+		}
+
+		_html += ` <script>/** Vite end **/</script>`
+
+		return template.HTML(_html)
+
+	}
+
+	if ext == ".css" || ext == ".scss" {
+		cssFile := manifestData[_path]["file"].(string)
+		if !strings.HasSuffix(cssFile, ".css") {
+			log.Error("file not found in manifest: " + _path)
+			return template.HTML("file not found in manifest: " + _path)
+		}
+
+		return template.HTML(`<style>/** Vite **/</style> <link rel="stylesheet" href="` + cssFile + `"> <style>/** Vite end **/</style>`)
+	}
+
+	return template.HTML("unknown ext: " + ext)
 }

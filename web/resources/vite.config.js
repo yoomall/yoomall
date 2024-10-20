@@ -1,8 +1,12 @@
 import { defineConfig } from 'vite';
 import babel from '@rollup/plugin-babel'
+import UnoCSS from 'unocss/vite'
+
 
 export default defineConfig({
-  plugins: [],
+  plugins: [
+    UnoCSS(),
+  ],
   build: {
     manifest:"manifest.json",
     outDir: '../../public',
@@ -18,7 +22,7 @@ export default defineConfig({
     },
     assetsInlineLimit: 0,
     rollupOptions: {
-      input: ['src/main.js'],
+      input: ['src/main.js','src/scss/main.scss'],
       plugins: [
         babel({
           babelHelpers: 'bundled',

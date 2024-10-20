@@ -14,3 +14,8 @@ tmp/*
 
 **/.DS_Store
 .DS_Store
+
+
+public/build
+public/assets
+public/manifest.json
