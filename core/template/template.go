@@ -1,12 +1,16 @@
 package template
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
+	"yoomall/config"
+
+	"github.com/charmbracelet/log"
 )
 
 /**
@@ -92,5 +96,34 @@ func allFiles(dir string, suffix string) (arr []*tplFile) {
 var Funcs = template.FuncMap{
 	"hello": func() string {
 		return "hello world by template funcs!"
+	},
+	"vite": func(_path string) string {
+		if config.VITE_DEBUG {
+			return config.VITE_URL + _path
+		}
+		manifestPath := path.Join(config.VITE_BUILD_DIR, "manifest.json")
+		manifestFile, err := os.Open(manifestPath)
+		if err != nil {
+			log.Error("open manifest error: " + err.Error())
+			return "open manifest error: " + err.Error()
+		}
+		defer manifestFile.Close()
+		manifestData := make(map[string]map[string]any)
+		if err := json.NewDecoder(manifestFile).Decode(&manifestData); err != nil {
+			log.Error("parse manifest error: " + err.Error())
+			return "parse manifest error: " + err.Error()
+		}
+
+		if _, ok := manifestData[_path]; !ok {
+			log.Error("path not found in manifest: " + _path)
+			return "path not found in manifest: " + _path
+		}
+
+		if _, ok := manifestData[_path]["file"]; !ok {
+			log.Error("file not found in manifest: " + _path)
+			return "file not found in manifest: " + _path
+		}
+
+		return manifestData[_path]["file"].(string)
 	},
 }

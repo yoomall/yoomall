@@ -40,6 +40,8 @@ func NewHttpServer(
 
 	setup(engine)
 
+	engine.Use(static.Serve("/", static.LocalFile("public", false)))
+
 	engine.GET("", func(ctx *gin.Context) {
 		response.Html(http.StatusOK, "ok", nil, "index.html", http.StatusOK).Done(ctx)
 	})
@@ -88,8 +90,6 @@ func setup(engine *gin.Engine) {
 	temp := template.New("main").Funcs(_template.Funcs)
 	html := template.Must(_template.ParseGlob(temp, "templates", "*.html"))
 	engine.SetHTMLTemplate(html)
-
-	engine.Use(static.Serve("/", static.LocalFile("public", false)))
 
 	// 设置 debug mode
 	if config.Config.DEBUG {

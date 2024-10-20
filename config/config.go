@@ -46,3 +46,7 @@ var Config = struct {
 	DEBUG:    _viper.GetBool(constants.DEBUG),
 	MysqlDsn: _viper.GetString(constants.MYSQL_DSN),
 }
+
+var VITE_URL = _viper.GetString(constants.VITE_URL)
+var VITE_DEBUG = _viper.GetBool(constants.VITE_DEBUG)
+var VITE_BUILD_DIR = _viper.GetString(constants.VITE_BUILD_DIR)

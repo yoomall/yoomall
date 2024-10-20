@@ -1,9 +1,15 @@
 package constants
 
-var YOO_CONFIG = "YOO_CONFIG"
+const YOO_CONFIG = "YOO_CONFIG"
 
-var DEBUG = "DEBUG"
+const DEBUG = "DEBUG"
 
-var PORT = "PORT"
+const PORT = "PORT"
 
-var MYSQL_DSN = "mysql.dsn"
+const MYSQL_DSN = "mysql.dsn"
+
+const VITE_URL = "vite.url"
+
+const VITE_DEBUG = "vite.debug"
+
+const VITE_BUILD_DIR = "vite.build_dir"
