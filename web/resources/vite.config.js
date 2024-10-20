@@ -1,20 +1,14 @@
 import { defineConfig } from 'vite';
-import laravel from 'laravel-vite-plugin';
 import babel from '@rollup/plugin-babel'
 
 export default defineConfig({
-  plugins: [
-    laravel({
-      input: ['src/main.js'],
-      refresh: true,
-      publicDirectory: '../../public',
-      buildDirectory: '.',
-    }),
-  ],
-  esbuild: {
-    target: 'es2020',
-  },
+  plugins: [],
   build: {
+    manifest:"manifest.json",
+    outDir: '../../public',
+    emptyOutDir: true,
+    sourcemap: true,
+    minify: true,
     target: [
       'es2020',
       'chrome100'
@@ -22,7 +16,9 @@ export default defineConfig({
     modulePreload: {
       polyfill: true
     },
+    assetsInlineLimit: 0,
     rollupOptions: {
+      input: ['src/main.js'],
       plugins: [
         babel({
           babelHelpers: 'bundled',
