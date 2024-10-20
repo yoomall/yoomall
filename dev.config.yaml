@@ -16,3 +16,9 @@ jutuike:
     pub_id: xx
     api_key: xxxx
     jtk_url: http://api.jutuike.com/
+
+
+vite:
+    url: http://127.0.0.1:5173
+    debug: false
+    build_dir: ./public 
