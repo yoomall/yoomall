@@ -1,16 +1,16 @@
 {
-  "src/css/main.scss": {
-    "file": "assets/main-B2mf1aOr.css",
-    "src": "src/css/main.scss",
-    "isEntry": true
-  },
   "src/main.js": {
-    "file": "assets/main-BIQ4XfUv.js",
+    "file": "assets/main-X50HLYLU.js",
     "name": "main",
     "src": "src/main.js",
     "isEntry": true,
     "css": [
-      "assets/main-D5iL4mLh.css"
+      "assets/main-LIr2f2tv.css"
     ]
+  },
+  "src/scss/main.scss": {
+    "file": "assets/main-BiwFuQ1q.css",
+    "src": "src/scss/main.scss",
+    "isEntry": true
   }
 }

@@ -36,8 +36,10 @@ test:
 	go test -v ./...
 
 
-slim_linux:
+prod:
 	make wire
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/linux/ ./cmd/server && upx -9 ./dist/linux/server
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/linux/ ./cmd/tools && upx -9 ./dist/linux/tools
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/linux/ ./cmd/jobs && upx -9 ./dist/linux/jobs
+	cp -r ./templates ./dist/linux/templates
+	cp -r ./public ./dist/linux/public
