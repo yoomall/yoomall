@@ -93,7 +93,7 @@ func userManagementUI() ui.IRouter {
 					Label: "手机",
 					Width: "125px",
 					Props: map[string]any{
-						"class": "line-clamp-1 font-bold",
+						"class": "line-clamp-1 font-bold !text-primary",
 					},
 				},
 				{
@@ -159,13 +159,13 @@ func userManagementUI() ui.IRouter {
 			).WithForms(map[string]*ui.Form{
 				"create": ui.NewForm("create", "添加/编辑角色", "/auth/user-roles/create-role").WithRows([][]*ui.FormItem{
 					{
-						ui.NewFormItem("角色名称", "role_name", "text", "请输入角色名称"),
+						ui.NewFormItem("角色名称", "role_name", "text", "请输入角色名称").WithRequired(true),
 						ui.NewFormItem("Code", "role_code", "text", "请输入角色 Code 定义"),
 					},
 				}),
 				"update": ui.NewForm("create", "添加/编辑角色", "/auth/user-roles/update-role").WithRows([][]*ui.FormItem{
 					{
-						ui.NewFormItem("角色名称", "role_name", "text", "请输入角色名称"),
+						ui.NewFormItem("角色名称", "role_name", "text", "请输入角色名称").WithRequired(true),
 						ui.NewFormItem("Code", "role_code", "text", "请输入角色 Code 定义"),
 					},
 				}),

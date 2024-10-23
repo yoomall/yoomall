@@ -129,6 +129,7 @@ type FormItem struct {
 	Prop        string `json:"prop"`
 	Placeholder string `json:"placeholder"`
 	Width       string `json:"width"`
+	Required    bool   `json:"required"`
 }
 
 func NewFormItem(label string, prop string, t string, placeholder string) *FormItem {
@@ -138,6 +139,16 @@ func NewFormItem(label string, prop string, t string, placeholder string) *FormI
 		Placeholder: placeholder,
 		Prop:        prop,
 	}
+}
+
+func (f *FormItem) WithWidth(width string) *FormItem {
+	f.Width = width
+	return f
+}
+
+func (f *FormItem) WithRequired(required bool) *FormItem {
+	f.Required = required
+	return f
 }
 
 func NewForm(key, title, api string) *Form {
