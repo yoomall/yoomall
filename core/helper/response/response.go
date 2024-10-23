@@ -2,7 +2,9 @@ package response
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
+	"yoomall/config"
 
 	"github.com/gin-gonic/gin"
 )
@@ -52,7 +54,12 @@ func (a *HtmlTemplateResponse) Done(ctx *gin.Context) {
 			"name": "yoomall",
 		},
 	})
-	ctx.HTML(a.HttpCode, a.Template, a)
+
+	namespace := config.Config.GetString("theme")
+	if namespace == "" {
+		namespace = "default"
+	}
+	ctx.HTML(a.HttpCode, fmt.Sprintf("%s/%s", namespace, a.Template), a)
 }
 
 func NewApiJsonResponse(code int, message string, data interface{}, httpCode int) *ApiJsonResponse {
