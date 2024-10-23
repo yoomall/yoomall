@@ -43,7 +43,7 @@ func NewHttpServer(
 	engine.Use(static.Serve("/", static.LocalFile("public", false)))
 
 	engine.GET("", func(ctx *gin.Context) {
-		response.Html(http.StatusOK, "ok", nil, "index.html", http.StatusOK).Done(ctx)
+		response.Html(http.StatusOK, "ok", nil, "mall/index.html", http.StatusOK).Done(ctx)
 	})
 
 	engine.NoRoute(func(ctx *gin.Context) {
