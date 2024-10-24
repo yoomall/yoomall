@@ -18,26 +18,6 @@ type IModel interface {
 	IsDeleted() bool
 }
 
-type ExportAttr struct {
-	Prop      string                          `json:"prop"`
-	Label     string                          `json:"label"`
-	Width     int                             `json:"width"`
-	Align     string                          `json:"align"`
-	Formatter func(v interface{}) interface{} `json:"formatter"`
-}
-
-type IExport interface {
-	ExportAttrs() []ExportAttr
-}
-
-type Export struct {
-	Fields []ExportAttr `json:"fields"`
-}
-
-func (e *Export) ExportAttrs() []ExportAttr {
-	return e.Fields
-}
-
 type Model struct {
 	ID        uint            `gorm:"primarykey" json:"id"`
 	CreatedAt LocalTime       `json:"created_at" format:"2006-01-02 15:04:05"`

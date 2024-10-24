@@ -34,8 +34,8 @@ var _ core.IModel = (*SystemConfig)(nil)
 
 var _ core.IModel = (*SystemConfigGroup)(nil)
 
-var SystemConfigExeclConfig = &core.Export{
-	Fields: []core.ExportAttr{
+var SystemConfigExeclConfig = &execl.Export{
+	Fields: []execl.ExportAttr{
 		{
 			Prop:  "ID",
 			Label: "ID",
