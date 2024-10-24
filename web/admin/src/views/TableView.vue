@@ -81,7 +81,7 @@
                 </ElButton>
             </div>
             <div class="overflow-x-auto" :style="{
-                width: `calc(100vw - ${subMenuStore.hasSubMenu ? 385 : 180}px)`
+                width: `calc(100vw - ${subMenuStore.hasSubMenu ? 315 : 180}px)`
             }">
                 <ElTable ref="tableRef" size="default" v-loading="loading" :data="tableData" :border="true" stripe
                     :tree-props="{ hasChildren: 'hasChildren', children: 'children' }" row-key="id"
@@ -185,6 +185,8 @@ import Form from '@/views/components/Form.vue'
 import FormItem from './components/FormItem.vue';
 import config from '@/config';
 import { useSubMenuStore } from '../pinia/subMenu';
+
+
 export default {
     components: { ElPagination, Form, FormItem },
     props: {},

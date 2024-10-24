@@ -27,7 +27,7 @@ func NewSystemConfigHandler(db *driver.DB, service *commonservice.SystemConfigSe
 	return &SystemConfigHandler{
 		DB:        db,
 		service:   service,
-		curd:      curd.New(db, &model.SystemConfig{}),
+		curd:      curd.New(db, &model.SystemConfig{}).WithExportAttrs(model.SystemConfigExeclConfig),
 		authMidds: authMiddlewareGroup,
 		groupCurd: curd.New(db, &model.SystemConfigGroup{}),
 	}
@@ -56,11 +56,13 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 
 	auth := router.Group("").Use(s.authMidds.MustAuthMiddleware)
 	{
+		// 系统配置
 		auth.WithDoc(&core.DocItem{
 			Method: http.MethodGet,
 			Path:   "/list",
 		}).GET("/list", s.curd.GetListHandler(&[]model.SystemConfig{}))
 
+		// 创建
 		auth.WithDoc(&core.DocItem{
 			Method: http.MethodPost,
 			Path:   "/create",
@@ -70,6 +72,7 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 			})
 		})
 
+		// 更新
 		auth.WithDoc(&core.DocItem{
 			Method: http.MethodPost,
 			Path:   "/update",
@@ -79,12 +82,19 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 			})
 		})
 
+		// 删除
 		auth.WithDoc(&core.DocItem{
 			Method: http.MethodPost,
 			Path:   "/delete",
 		}).POST("/delete", func(ctx *gin.Context) {
 			s.curd.DeleteHandler(ctx, nil)
 		})
+
+		// 导出
+		auth.WithDoc(&core.DocItem{
+			Method: http.MethodGet,
+			Path:   "/export",
+		}).GET("/export", s.curd.ExportHanderWithWhere(&[]model.SystemConfig{}, nil))
 
 	}
 

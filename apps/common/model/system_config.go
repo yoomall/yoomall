@@ -1,6 +1,9 @@
 package model
 
-import "yoomall/core"
+import (
+	"fmt"
+	"yoomall/core"
+)
 
 type SystemConfig struct {
 	*core.Model
@@ -30,3 +33,34 @@ func (s *SystemConfigGroup) TableName() string {
 var _ core.IModel = (*SystemConfig)(nil)
 
 var _ core.IModel = (*SystemConfigGroup)(nil)
+
+var SystemConfigExeclConfig = &core.Export{
+	Fields: []core.ExportAttr{
+		{
+			Prop:  "ID",
+			Label: "ID",
+			Align: "center",
+		},
+		{
+			Prop:  "Key",
+			Label: "Key",
+		},
+		{
+			Prop:  "Value",
+			Label: "Value",
+		},
+		{
+			Prop:  "CreatedAt",
+			Label: "创建时间",
+			Width: 24,
+			Formatter: func(v interface{}) interface{} {
+				fmt.Printf("Formatter %v \n", v)
+				t, ok := v.(core.LocalTime)
+				if !ok {
+					return v
+				}
+				return t.Format("2006-01-02 15:04:05")
+			},
+		},
+	},
+}

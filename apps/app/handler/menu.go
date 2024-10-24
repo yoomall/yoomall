@@ -337,6 +337,7 @@ func systemConfigUI() ui.IRouter {
 			map[string]string{
 				"list":   "/common/system-configs/list",
 				"delete": "/common/system-configs/delete",
+				"export": "/common/system-configs/export",
 			},
 		),
 	).AddChildren(
