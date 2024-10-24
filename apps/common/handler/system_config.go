@@ -33,6 +33,7 @@ func NewSystemConfigHandler(db *driver.DB, service *commonservice.SystemConfigSe
 	}
 }
 
+// 检查 handler 是否实现
 var _ core.Handler = (*SystemConfigHandler)(nil)
 
 // GetRouterGroupName implements core.Handler.
