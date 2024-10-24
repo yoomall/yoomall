@@ -1,8 +1,8 @@
 package model
 
 import (
-	"fmt"
 	"yoomall/core"
+	"yoomall/core/helper/execl"
 )
 
 type SystemConfig struct {
@@ -50,17 +50,10 @@ var SystemConfigExeclConfig = &core.Export{
 			Label: "Value",
 		},
 		{
-			Prop:  "CreatedAt",
-			Label: "创建时间",
-			Width: 24,
-			Formatter: func(v interface{}) interface{} {
-				fmt.Printf("Formatter %v \n", v)
-				t, ok := v.(core.LocalTime)
-				if !ok {
-					return v
-				}
-				return t.Format("2006-01-02 15:04:05")
-			},
+			Prop:      "CreatedAt",
+			Label:     "创建时间",
+			Width:     24,
+			Formatter: execl.TimeFormatter,
 		},
 	},
 }
