@@ -1,9 +1,13 @@
 {{define "default/layout/footer"}}
 
 
-<footer class="p-2 m-0 bg-background text-dark min-h-200px">    
+<footer class="p-2 m-0 bg-background text-dark min-h-150px">    
     <div class="p-0 m-0">
         <span>footer</span>
+
+        {{range .Extra.footer.links}}
+        <a href="{{.href}}">{{.text}}</a>
+        {{end}}
     </div>
 </footer>
 </body>

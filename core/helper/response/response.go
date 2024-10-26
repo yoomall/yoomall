@@ -49,14 +49,9 @@ func (a *HtmlTemplateResponse) WithExtra(extra map[string]any) *HtmlTemplateResp
 
 func (a *HtmlTemplateResponse) Done(ctx *gin.Context) {
 	a.WithExtra(map[string]any{
-		"path": ctx.Request.URL.Path,
-		"site": map[string]any{
-			"title":       config.Config.GetString("site.title"),
-			"description": config.Config.GetString("site.description"),
-			"keywords":    config.Config.GetString("site.keywords"),
-			"author":      config.Config.GetString("site.author"),
-			"logo":        config.Config.GetString("site.logo"),
-		},
+		"path":    ctx.Request.URL.Path,
+		"request": ctx.Request,
+		"config":  config.Config.Viper,
 	})
 
 	namespace := config.Config.GetString("theme")

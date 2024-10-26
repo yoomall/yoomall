@@ -14,17 +14,6 @@ type ViewsApp struct {
 	*core.App
 }
 
-// Migrate implements core.IApp.
-func (v *ViewsApp) Migrate() {
-}
-
-// Register implements core.IApp.
-func (v *ViewsApp) Register(router *core.RouterGroup) {
-	router.GET("", func(ctx *gin.Context) {
-		render.Html(ctx, "index.html", nil)
-	})
-}
-
 var _ core.IApp = (*ViewsApp)(nil)
 
 func NewViewApp(db *driver.DB, config *viper.Viper) *ViewsApp {
@@ -34,3 +23,18 @@ func NewViewApp(db *driver.DB, config *viper.Viper) *ViewsApp {
 }
 
 var WireSet = wire.NewSet(NewViewApp)
+
+// Migrate implements core.IApp.
+func (v *ViewsApp) Migrate() {
+}
+
+// Register implements core.IApp.
+func (v *ViewsApp) Register(router *core.RouterGroup) {
+	router.GET("", func(ctx *gin.Context) {
+		render.Html(ctx, "index.html", nil)
+	})
+
+	router.GET("/about.html", func(ctx *gin.Context) {
+		render.Html(ctx, "about.html", nil)
+	})
+}

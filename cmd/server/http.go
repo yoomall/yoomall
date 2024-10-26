@@ -14,6 +14,7 @@ import (
 	"yoomall/core"
 	"yoomall/core/constants"
 	"yoomall/core/driver"
+	"yoomall/core/helper/response"
 	httpserver "yoomall/core/http"
 	coremiddleware "yoomall/core/middleware"
 
@@ -45,7 +46,12 @@ func NewHttpServer(
 
 	engine.NoRoute(func(ctx *gin.Context) {
 		noufoundRecordService.Add(ctx.Request.URL.Path, ctx.Request)
-		ctx.JSON(http.StatusNotFound, gin.H{"message": "不存在的路由"})
+
+		if ctx.Request.Header.Get("Accept") == "application/json" {
+			ctx.JSON(http.StatusNotFound, gin.H{"message": "不存在的路由"})
+			return
+		}
+		response.Html(http.StatusOK, "", nil, "404.html", http.StatusNotFound).Done(ctx)
 	})
 
 	root := &core.RouterGroup{

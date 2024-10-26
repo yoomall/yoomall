@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"net/http"
 	"os"
 	"path"
 	"path/filepath"
@@ -97,7 +98,8 @@ var Funcs = template.FuncMap{
 	"hello": func() string {
 		return "hello world by template funcs!"
 	},
-	"vite": vite,
+	"vite":        vite,
+	"isActiveUrl": isActiveUrl,
 }
 
 // vite 使用 vite 组织 js 和 css 文件
@@ -179,4 +181,8 @@ func vite(_path string) template.HTML {
 	}
 
 	return template.HTML("unknown ext: " + ext)
+}
+
+func isActiveUrl(path string, request *http.Request) bool {
+	return request.URL.Path == path
 }
