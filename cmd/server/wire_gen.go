@@ -17,6 +17,7 @@ import (
 	handler3 "yoomall/apps/common/handler"
 	"yoomall/apps/common/service"
 	"yoomall/apps/post"
+	"yoomall/apps/views"
 	"yoomall/config"
 	"yoomall/core/http"
 )
@@ -43,7 +44,8 @@ func NewApp() httpserver.HttpServer {
 	systemConfigService := commonservice.NewSystemConfigService(db)
 	systemConfigHandler := handler3.NewSystemConfigHandler(db, systemConfigService, authMiddlewareGroup)
 	commonApp := common.NewCommonApp(viper, db, notFoundRecordHandler, systemConfigHandler)
+	viewsApp := views.NewViewApp(db, viper)
 	doc := NewDoc()
-	httpServer := NewHttpServer(viper, defaultApp, authApp, postApp, commonApp, notFoundRecordService, doc)
+	httpServer := NewHttpServer(viper, defaultApp, authApp, postApp, commonApp, viewsApp, notFoundRecordService, doc)
 	return httpServer
 }

@@ -9,11 +9,11 @@ import (
 	"yoomall/apps/common"
 	commonservice "yoomall/apps/common/service"
 	"yoomall/apps/post"
+	"yoomall/apps/views"
 	"yoomall/config"
 	"yoomall/core"
 	"yoomall/core/constants"
 	"yoomall/core/driver"
-	"yoomall/core/helper/response"
 	httpserver "yoomall/core/http"
 	coremiddleware "yoomall/core/middleware"
 
@@ -31,6 +31,7 @@ func NewHttpServer(
 	auth *auth.AuthApp,
 	postApp *post.PostApp,
 	commonApp *common.CommonApp,
+	viewsApp *views.ViewsApp,
 
 	noufoundRecordService *commonservice.NotFoundRecordService,
 
@@ -42,14 +43,14 @@ func NewHttpServer(
 
 	engine.Use(static.Serve("/", static.LocalFile("public", false)))
 
-	engine.GET("", func(ctx *gin.Context) {
-		response.Html(http.StatusOK, "ok", nil, "index.html", http.StatusOK).Done(ctx)
-	})
-
 	engine.NoRoute(func(ctx *gin.Context) {
 		noufoundRecordService.Add(ctx.Request.URL.Path, ctx.Request)
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "不存在的路由"})
 	})
+
+	root := &core.RouterGroup{
+		RouterGroup: engine.Group("/"),
+	}
 
 	v1 := &core.RouterGroup{
 		RouterGroup: engine.Group("/api/v1"),
@@ -57,6 +58,8 @@ func NewHttpServer(
 	v1.GET("/docs/api.json", doc.Handler)
 
 	var apps = []*core.RegisterApp{
+		{App: viewsApp, Router: root.Group("")},
+
 		{App: app, Router: v1.Group("")},
 		{App: auth, Router: v1.Group("/auth")},
 		{App: postApp, Router: v1.Group("/post")},

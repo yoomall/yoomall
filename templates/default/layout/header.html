@@ -1,4 +1,4 @@
-{{define "def_header"}}
+{{define "default/layout/header"}}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,11 +6,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{.Extra.site.name}}</title>
+    <title>{{.Extra.site.title}}</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="{{.Extra.site.description}}">
+    <meta name="keywords" content="{{.Extra.site.keywords}}">
     {{vite "src/main.js"}}
     {{vite "src/scss/main.scss"}}
 </head>
 
-<body>
-{{end}}
+<body class="p-0 m-0 min-h-screen flex flex-col bg-gray-50">
 
+    <div class="font-light bg-white text-dark p-2">
+        <span class="text-primary text-3xl font-bold">{{.Extra.site.title}}</span>
+        is on server.
+    </div>
+
+    <div class="notice bg-gray-100 text-dark-100 px-2 text-sm">
+        <span>hello world.</span>
+    </div>
+
+    <!-- <div class="banner w-full h-600px"></div> -->
+
+    {{end}}

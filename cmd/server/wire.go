@@ -8,6 +8,7 @@ import (
 	"yoomall/apps/auth"
 	"yoomall/apps/common"
 	"yoomall/apps/post"
+	"yoomall/apps/views"
 	"yoomall/config"
 	httpserver "yoomall/core/http"
 
@@ -15,6 +16,6 @@ import (
 )
 
 func NewApp() httpserver.HttpServer {
-	wire.Build(NewHttpServer, NewDB, NewDoc, config.NewConfig, app.WireSet, post.WireSet, auth.WireSet, common.WireSet)
+	wire.Build(NewHttpServer, NewDB, NewDoc, config.NewConfig, app.WireSet, post.WireSet, auth.WireSet, common.WireSet, views.WireSet)
 	return httpserver.HttpServer{}
 }
