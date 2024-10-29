@@ -4,5 +4,10 @@
         "src": "/.*",
         "dest": "/cmd/vercel/router.go"
       }
-    ]
+    ],
+    "functions": {
+      "cmd/vercel/router.go": {
+        "memory": 128
+      }
+    }
   }
