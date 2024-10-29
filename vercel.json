@@ -9,12 +9,7 @@
     "api/router.go": {
       "memory": 128,
       "maxDuration": "10s",
-      "includeFiles": [
-        "api/*",
-        "config.yaml",
-        "templates/*",
-        "public/*"
-      ]
+      "includeFiles": "**/*"
     }
   },
   "build": {
