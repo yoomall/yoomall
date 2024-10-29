@@ -1,13 +1,18 @@
 {
-    "routes": [
-      {
-        "src": "/.*",
-        "dest": "/cmd/vercel/router.go"
-      }
-    ],
-    "functions": {
-      "./cmd/vercel/router.go": {
-        "memory": 128
-      }
+  "routes": [
+    {
+      "src": "/.*",
+      "dest": "/api/router.go"
+    }
+  ],
+  "functions": {
+    "api/router.go": {
+      "memory": 128
+    }
+  },
+  "build": {
+    "env": {
+      "GO_BUILD_FLAGS": "-ldflags '-s -w'"
     }
   }
+}
