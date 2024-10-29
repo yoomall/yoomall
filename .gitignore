@@ -19,3 +19,4 @@ tmp/*
 public/build
 public/assets
 public/manifest.json
+.vercel

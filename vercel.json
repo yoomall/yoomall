@@ -8,8 +8,7 @@
   "functions": {
     "api/router.go": {
       "memory": 128,
-      "maxDuration": 30,
-      "includeFiles": "**/*"
+      "maxDuration": 30
     }
   },
   "build": {
