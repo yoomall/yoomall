@@ -1,9 +1,7 @@
 package httpserver
 
 import (
-	"strconv"
-
-	"yoomall/config"
+	"fmt"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
@@ -15,12 +13,11 @@ type HttpServer struct {
 	Config *viper.Viper
 }
 
-func (h *HttpServer) Start() *gin.Engine {
-	port := strconv.Itoa(config.Config.Port)
+func (h *HttpServer) Start(port string) *gin.Engine {
 	if port == "0" {
 		port = "8900"
 	}
-	log.Info("【服务正在运行】 http://127.0.0.1:" + port)
-	h.Engine.Run(":" + port)
+	log.Info(fmt.Sprintf("start http server on port: http://127.1:%s", port))
+	h.Engine.Run(fmt.Sprintf(":%s", port))
 	return h.Engine
 }

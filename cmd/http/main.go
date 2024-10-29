@@ -1,8 +1,16 @@
 package main
 
-import "yoomall/cmd/api"
+import (
+	"os"
+	"yoomall/cmd/api"
+)
 
 func main() {
 	server := api.NewApp()
-	server.Start()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8900"
+	}
+
+	server.Start(port)
 }

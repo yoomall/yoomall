@@ -1,11 +1,8 @@
 mysql:
     dsn: yoomall:yoomall@tcp(127.0.0.1:3306)/yoomall?charset=utf8mb4&parseTime=True&loc=Local
 DEBUG: true
-http:
-    host: 127.0.0.1
-    port: 8900
-storage_path: ./storage
 
+storage_path: ./storage
 
 dtk: 
     app_key: xx
