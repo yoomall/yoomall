@@ -6,7 +6,7 @@
       }
     ],
     "functions": {
-      "cmd/vercel/router.go": {
+      "/cmd/vercel/router.go": {
         "memory": 128
       }
     }
