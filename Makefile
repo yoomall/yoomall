@@ -23,7 +23,7 @@ jobs:
 	go run ./cmd/jobs
 
 wire:
-	wire ./cmd/http
+	wire ./cmd/http/api
 	wire ./cmd/tools
 	wire ./cmd/jobs
 

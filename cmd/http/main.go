@@ -2,7 +2,7 @@ package main
 
 import (
 	"os"
-	"yoomall/cmd/api"
+	"yoomall/cmd/http/api"
 )
 
 func main() {
