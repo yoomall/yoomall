@@ -1,7 +1,8 @@
 package vercel
 
-func init() {
+import "yoomall/cmd/api"
 
+func Listen() {
+	server := api.NewApp()
+	server.Engine.ServeHTTP(nil, nil)
 }
-
-func Listen() {}
