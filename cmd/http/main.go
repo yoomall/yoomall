@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"html/template"
 	"os"
 	"yoomall/cmd/http/api"
@@ -8,6 +9,11 @@ import (
 	"yoomall/core/driver"
 
 	_template "yoomall/core/template"
+)
+
+var (
+	//go:embed templates/**
+	templateFs embed.FS
 )
 
 func main() {
@@ -20,7 +26,7 @@ func main() {
 
 	// 设置模板
 	temp := template.New("main").Funcs(_template.Funcs)
-	html := template.Must(_template.ParseGlob(temp, "templates", "*.html"))
+	html := template.Must(_template.ParseGlobEmbedFS(temp, templateFs, "templates", "*.html"))
 	server.Engine.SetHTMLTemplate(html)
 
 	server.Start(port)

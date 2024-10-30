@@ -1,0 +1,20 @@
+{{template "default/layout/header" .}}
+
+
+
+<main class="p-0 m-0 flex-1 flex flex-col min-h-480px">
+
+
+
+    <div class="flex flex-row mt-1 mb-1 flex-1">
+        {{template "default/layout/sidebar" .}}
+        
+        <div class="app">
+            <span>path:{{.Extra.path}}</span>
+
+        </div>
+    </div>
+
+</main>
+
+{{template "default/layout/footer" .}}
