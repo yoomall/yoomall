@@ -28,7 +28,6 @@ var server httpserver.HttpServer
 
 func init() {
 	conf = config.NewConfigFromBytes(configBytes)
-	config.Init(true, conf)
 	server = api.NewApp(conf, driver.NewPostgresDB(conf.GetString("postgres.dsn")))
 
 	// 设置模板

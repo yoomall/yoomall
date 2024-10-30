@@ -25,7 +25,7 @@ func NewConfigFromBytes(_bytes []byte) *viper.Viper {
 	if err != nil {
 		panic("failed to read config file, err: " + err.Error())
 	}
-
+	setup(config)
 	return config
 }
 
@@ -47,7 +47,7 @@ func NewConfigFromFile() *viper.Viper {
 		config.WriteConfigAs("./config.yaml")
 		os.Exit(1)
 	}
-
+	setup(config)
 	return config
 }
 
@@ -64,7 +64,7 @@ var VITE_URL string
 var VITE_DEBUG bool
 var VITE_BUILD_DIR string
 
-func Init(isVercel bool, config *viper.Viper) {
+func setup(config *viper.Viper) {
 
 	_viper = config
 

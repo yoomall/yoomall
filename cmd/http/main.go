@@ -12,7 +12,6 @@ import (
 
 func main() {
 	conf := config.NewConfig()
-	config.Init(false, conf)
 	server := api.NewApp(conf, driver.NewPostgresDB(conf.GetString("postgres.dsn")))
 	port := os.Getenv("PORT")
 	if port == "" {
