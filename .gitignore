@@ -9,7 +9,7 @@ docker/pg-data
 
 dist
 
-config.yaml
+/config.yaml
 tmp/*
 
 **/.DS_Store

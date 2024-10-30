@@ -9,13 +9,14 @@ import (
 	"yoomall/apps/common"
 	"yoomall/apps/post"
 	"yoomall/apps/views"
-	"yoomall/config"
+	"yoomall/core/driver"
 	httpserver "yoomall/core/http"
 
 	"github.com/google/wire"
+	"github.com/spf13/viper"
 )
 
-func NewApp() httpserver.HttpServer {
-	wire.Build(NewHttpServer, NewDB, NewDoc, config.NewConfig, app.WireSet, post.WireSet, auth.WireSet, common.WireSet, views.WireSet)
+func NewApp(conf *viper.Viper, db *driver.DB) httpserver.HttpServer {
+	wire.Build(NewHttpServer, NewDoc, app.WireSet, post.WireSet, auth.WireSet, common.WireSet, views.WireSet)
 	return httpserver.HttpServer{}
 }

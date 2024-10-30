@@ -7,6 +7,7 @@
 package api
 
 import (
+	"github.com/spf13/viper"
 	"yoomall/apps/app"
 	"yoomall/apps/app/handler"
 	"yoomall/apps/auth"
@@ -18,34 +19,32 @@ import (
 	"yoomall/apps/common/service"
 	"yoomall/apps/post"
 	"yoomall/apps/views"
-	"yoomall/config"
+	"yoomall/core/driver"
 	"yoomall/core/http"
 )
 
 // Injectors from wire.go:
 
-func NewApp() httpserver.HttpServer {
-	viper := config.NewConfig()
-	db := NewDB(viper)
-	dtkHandler := handler.NewDtkHandler(viper)
+func NewApp(conf *viper.Viper, db *driver.DB) httpserver.HttpServer {
+	dtkHandler := handler.NewDtkHandler(conf)
 	authMiddlewareGroup := authmiddleware.NewAuthMiddlewareGroup(db)
 	menuHandler := handler.NewMenuHandler(db, authMiddlewareGroup)
-	jtkHandler := handler.NewJtkHandler(viper)
-	defaultApp := app.NewWireDefaultApp(viper, db, dtkHandler, menuHandler, jtkHandler)
+	jtkHandler := handler.NewJtkHandler(conf)
+	defaultApp := app.NewWireDefaultApp(conf, db, dtkHandler, menuHandler, jtkHandler)
 	authService := authservice.NewAuthService(db)
-	userHandler := handler2.NewUserHandler(db, viper, authService, authMiddlewareGroup)
+	userHandler := handler2.NewUserHandler(db, conf, authService, authMiddlewareGroup)
 	userRoleHandler := handler2.NewUserRoleHandler(db, authMiddlewareGroup)
 	userTokenHandler := handler2.NewUserTokenHandler(db, authMiddlewareGroup)
 	permissionHandler := handler2.NewPermissionHandler(db, authMiddlewareGroup)
-	authApp := auth.NewAuthApp(viper, db, authService, userHandler, userRoleHandler, userTokenHandler, permissionHandler)
-	postApp := post.NewDefaultApp(viper, db)
+	authApp := auth.NewAuthApp(conf, db, authService, userHandler, userRoleHandler, userTokenHandler, permissionHandler)
+	postApp := post.NewDefaultApp(conf, db)
 	notFoundRecordService := commonservice.NewNotFoundRecordService(db)
 	notFoundRecordHandler := handler3.NewNotFoundRecordHandler(db, notFoundRecordService)
 	systemConfigService := commonservice.NewSystemConfigService(db)
 	systemConfigHandler := handler3.NewSystemConfigHandler(db, systemConfigService, authMiddlewareGroup)
-	commonApp := common.NewCommonApp(viper, db, notFoundRecordHandler, systemConfigHandler)
-	viewsApp := views.NewViewApp(db, viper)
+	commonApp := common.NewCommonApp(conf, db, notFoundRecordHandler, systemConfigHandler)
+	viewsApp := views.NewViewApp(db, conf)
 	doc := NewDoc()
-	httpServer := NewHttpServer(viper, defaultApp, authApp, postApp, commonApp, viewsApp, notFoundRecordService, doc)
+	httpServer := NewHttpServer(conf, defaultApp, authApp, postApp, commonApp, viewsApp, notFoundRecordService, doc)
 	return httpServer
 }
