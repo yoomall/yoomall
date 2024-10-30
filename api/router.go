@@ -18,7 +18,7 @@ var (
 	//go:embed config.yaml
 	configBytes []byte
 
-	//go:embed templates
+	//go:embed templates/**
 	templateFs embed.FS
 )
 
