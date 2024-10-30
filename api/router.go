@@ -9,6 +9,7 @@ import (
 	"yoomall/core/driver"
 	httpserver "yoomall/core/http"
 
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 
 	_template "yoomall/core/template"
@@ -28,12 +29,14 @@ var server httpserver.HttpServer
 
 func init() {
 	conf = config.NewConfigFromBytes(configBytes)
-	server = api.NewApp(conf, driver.NewPostgresDB(conf.GetString("postgres.dsn")))
+	server = api.NewApp(conf, driver.NewPostgresDB(conf.GetString("postgres.dsn")), func(e *gin.Engine) *gin.Engine {
+		// 设置模板
+		temp := template.New("main").Funcs(_template.Funcs)
+		html := template.Must(_template.ParseGlobEmbedFS(temp, templateFs, ".", "*.html"))
+		e.SetHTMLTemplate(html)
+		return e
+	})
 
-	// 设置模板
-	temp := template.New("main").Funcs(_template.Funcs)
-	html := template.Must(_template.ParseGlobEmbedFS(temp, templateFs, ".", "*.html"))
-	server.Engine.SetHTMLTemplate(html)
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {

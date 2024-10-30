@@ -7,6 +7,7 @@
 package api
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"yoomall/apps/app"
 	"yoomall/apps/app/handler"
@@ -25,7 +26,7 @@ import (
 
 // Injectors from wire.go:
 
-func NewApp(conf *viper.Viper, db *driver.DB) httpserver.HttpServer {
+func NewApp(conf *viper.Viper, db *driver.DB, setHTMLTemplate func(*gin.Engine) *gin.Engine) httpserver.HttpServer {
 	dtkHandler := handler.NewDtkHandler(conf)
 	authMiddlewareGroup := authmiddleware.NewAuthMiddlewareGroup(db)
 	menuHandler := handler.NewMenuHandler(db, authMiddlewareGroup)
@@ -45,6 +46,6 @@ func NewApp(conf *viper.Viper, db *driver.DB) httpserver.HttpServer {
 	commonApp := common.NewCommonApp(conf, db, notFoundRecordHandler, systemConfigHandler)
 	viewsApp := views.NewViewApp(db, conf)
 	doc := NewDoc()
-	httpServer := NewHttpServer(conf, defaultApp, authApp, postApp, commonApp, viewsApp, notFoundRecordService, doc)
+	httpServer := NewHttpServer(conf, defaultApp, authApp, postApp, commonApp, viewsApp, notFoundRecordService, doc, setHTMLTemplate)
 	return httpServer
 }

@@ -34,10 +34,12 @@ func NewHttpServer(
 	noufoundRecordService *commonservice.NotFoundRecordService,
 
 	doc *core.Doc,
+	setHTMLTemplate func(*gin.Engine) *gin.Engine,
 ) httpserver.HttpServer {
 	engine := gin.Default()
 
 	setup(engine)
+	engine = setHTMLTemplate(engine)
 
 	engine.Use(static.Serve("/", static.LocalFile("public", false)))
 
