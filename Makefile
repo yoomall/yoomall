@@ -42,4 +42,5 @@ prod:
 vercel:
 	make wire
 	cp -r ./templates ./api/templates
+	cp ./public/manifest.json ./api/manifest.json
 	vercel --prod

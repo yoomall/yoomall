@@ -1,15 +1,14 @@
 {
     "routes": [
         {
-            "src":"/assets/(.*)",
-            "dest":"/assets/$1"
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
             "dest": "api/router.go"
         }
     ],
-    "build":{
+    "build": {
         "env": {
             "GO111MODULE": "on"
         }
