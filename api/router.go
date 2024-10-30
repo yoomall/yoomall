@@ -32,7 +32,7 @@ func init() {
 
 	// 设置模板
 	temp := template.New("main").Funcs(_template.Funcs)
-	html := template.Must(_template.ParseGlobEmbedFS(temp, templateFs, "templates", "*.html"))
+	html := template.Must(_template.ParseGlobEmbedFS(temp, templateFs, ".", "*.html"))
 	server.Engine.SetHTMLTemplate(html)
 }
 
