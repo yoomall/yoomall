@@ -43,6 +43,6 @@ func init() {
 
 }
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+func Handler_api_router_go(w http.ResponseWriter, r *http.Request) {
 	server.Engine.ServeHTTP(w, r)
 }
