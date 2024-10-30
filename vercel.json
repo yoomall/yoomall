@@ -3,6 +3,10 @@
         {
             "src": "/(.*)",
             "dest": "api/router.go"
+        },
+        {
+            "src":"assets/(.*)",
+            "dest":"assets/$1"
         }
     ],
     "build":{

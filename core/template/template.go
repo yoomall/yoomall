@@ -1,6 +1,7 @@
 package template
 
 import (
+	"embed"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -34,11 +35,17 @@ type (
 	}
 )
 
-// ParseGlob 自定义模版解析，扫描子目录
 func ParseGlob(tpl *template.Template, dir string, pattern string) (t *template.Template, err error) {
+	return ParseGlobWithFiles(tpl, filesToTplFiles(dir, pattern, getOsDir())...)
+}
+
+func ParseGlobEmbedFS(tpl *template.Template, fs embed.FS, dir string, pattern string) (t *template.Template, err error) {
+	return ParseGlobWithFiles(tpl, filesToTplFiles(dir, pattern, getEmbedDir(fs))...)
+}
+
+// ParseGlob 自定义模版解析，扫描子目录
+func ParseGlobWithFiles(tpl *template.Template, files ...*tplFile) (t *template.Template, err error) {
 	t = tpl
-	fmt.Println("扫描模版目录：" + dir)
-	files := allFiles(dir, pattern)
 	for _, file := range files {
 		fmt.Printf("挂载模板：%s\n", file.Path)
 		b, err := os.ReadFile(file.Path)
@@ -64,18 +71,37 @@ func ParseGlob(tpl *template.Template, dir string, pattern string) (t *template.
 	return t, nil
 }
 
-// 目录下的所有文件
-func allFiles(dir string, suffix string) (arr []*tplFile) {
+func getOsDir() func(string, string) (files []os.DirEntry, err error) {
+	return func(dir string, suffix string) (files []os.DirEntry, err error) {
+		files, err = os.ReadDir(dir)
+		if err != nil {
+			return
+		}
+		return
+	}
+}
 
-	files, err := os.ReadDir(dir)
+func getEmbedDir(fs embed.FS) func(string, string) (files []os.DirEntry, err error) {
+	return func(dir string, suffix string) (files []os.DirEntry, err error) {
+		files, err = fs.ReadDir(dir)
+		if err != nil {
+			return
+		}
+		return
+	}
+}
+
+// 目录下的所有文件
+func filesToTplFiles(dir string, suffix string, getDirs func(string, string) (files []os.DirEntry, err error)) (arr []*tplFile) {
+
+	files, err := getDirs(dir, suffix)
 	if err != nil {
 		return
 	}
-
 	for _, file := range files {
 		if file.IsDir() {
 			fmt.Println("扫描子目录：" + file.Name())
-			arr = append(arr, allFiles(path.Join(dir, file.Name()), suffix)...)
+			arr = append(arr, filesToTplFiles(path.Join(dir, file.Name()), suffix, getDirs)...)
 		} else {
 			ok, _ := filepath.Match(suffix, file.Name())
 			if ok {

@@ -1,7 +1,6 @@
 package api
 
 import (
-	"html/template"
 	"net/http"
 
 	"yoomall/apps/app"
@@ -21,8 +20,6 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
-
-	_template "yoomall/core/template"
 )
 
 func NewHttpServer(
@@ -94,11 +91,6 @@ func setup(engine *gin.Engine) {
 	engine.SetTrustedProxies(nil)               //设置允许请求的域名
 	engine.Use(coremiddleware.CORSMiddleware()) // 跨域
 	engine.Use(gin.Recovery())                  // 错误恢复
-
-	// 设置模板
-	temp := template.New("main").Funcs(_template.Funcs)
-	html := template.Must(_template.ParseGlob(temp, "templates", "*.html"))
-	engine.SetHTMLTemplate(html)
 
 	// 设置 debug mode
 	if config.Config.DEBUG {
