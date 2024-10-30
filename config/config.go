@@ -64,13 +64,6 @@ var VITE_URL string
 var VITE_DEBUG bool
 var VITE_BUILD_DIR string
 
-func init() {
-	isVercel := os.Getenv("VERCEL") == "1"
-	if !isVercel {
-		Init(false, NewConfig())
-	}
-}
-
 func Init(isVercel bool, config *viper.Viper) {
 
 	_viper = config
