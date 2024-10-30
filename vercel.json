@@ -1,12 +1,12 @@
 {
     "routes": [
         {
-            "src": "/(.*)",
-            "dest": "api/router.go"
-        },
-        {
             "src":"assets/(.*)",
             "dest":"assets/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "api/router.go"
         }
     ],
     "build":{
