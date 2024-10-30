@@ -29,10 +29,11 @@ var server httpserver.HttpServer
 
 func init() {
 	conf = config.NewConfigFromBytes(configBytes)
+
 	server = api.NewApp(conf, driver.NewPostgresDB(conf.GetString("postgres.dsn")), func(e *gin.Engine) *gin.Engine {
 		// 设置模板
 		temp := template.New("main").Funcs(_template.Funcs)
-		html := template.Must(_template.ParseGlobEmbedFS(temp, templateFs, ".", "*.html"))
+		html := template.Must(_template.ParseGlobEmbedFS(temp, templateFs, "templates", "*.html"))
 		e.SetHTMLTemplate(html)
 		return e
 	})
