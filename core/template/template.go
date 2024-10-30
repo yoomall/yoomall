@@ -143,7 +143,6 @@ func Funcs(manifestJSON []byte) template.FuncMap {
 
 // vite 使用 vite 组织 js 和 css 文件
 func vite(_path string, manifestJSON []byte) template.HTML {
-	fmt.Println(_path, manifestJSON)
 	ext := path.Ext(_path)
 	if config.VITE_DEBUG {
 		if ext == ".js" {

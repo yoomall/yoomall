@@ -22,7 +22,7 @@ var (
 	//go:embed templates/**
 	templateFs embed.FS
 
-	// go:embed manifest.json
+	//go:embed manifest.json
 	viteManifestJSON []byte
 )
 
