@@ -38,6 +38,9 @@ export default (({mode})=>{
     },
     server:{
       port:env.VITE_PORT || 12391,
+    },
+    build:{
+      outDir: '../../public/admin',
     }
   }) 
 })
