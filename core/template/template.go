@@ -131,16 +131,19 @@ func filesToTplFiles(dir string, suffix string, getDirs func(string, string) (fi
 	return
 }
 
-var Funcs = template.FuncMap{
-	"hello": func() string {
-		return "hello world by template funcs!"
-	},
-	"vite":        vite,
-	"isActiveUrl": isActiveUrl,
+func Funcs(manifestJSON []byte) template.FuncMap {
+	return template.FuncMap{
+		"hello": func() string {
+			return "hello world by template funcs!"
+		},
+		"vite":        func(path string) template.HTML { return vite(path, manifestJSON) },
+		"isActiveUrl": isActiveUrl,
+	}
 }
 
 // vite 使用 vite 组织 js 和 css 文件
-func vite(_path string) template.HTML {
+func vite(_path string, manifestJSON []byte) template.HTML {
+	fmt.Println(_path, manifestJSON)
 	ext := path.Ext(_path)
 	if config.VITE_DEBUG {
 		if ext == ".js" {
@@ -152,17 +155,25 @@ func vite(_path string) template.HTML {
 		return template.HTML(`unknown ext: ` + ext)
 
 	}
-	manifestPath := path.Join(config.VITE_BUILD_DIR, "manifest.json")
-	manifestFile, err := os.Open(manifestPath)
-	if err != nil {
-		log.Error("open manifest error: " + err.Error())
-		return template.HTML("open manifest error: " + err.Error())
-	}
-	defer manifestFile.Close()
 	manifestData := make(map[string]map[string]any)
-	if err := json.NewDecoder(manifestFile).Decode(&manifestData); err != nil {
-		log.Error("parse manifest error: " + err.Error())
-		return template.HTML("parse manifest error: " + err.Error())
+
+	if len(manifestJSON) >= 0 {
+		if err := json.Unmarshal(manifestJSON, &manifestData); err != nil {
+			log.Error("embed fs parse manifest error: " + err.Error())
+			return template.HTML("parse manifest error: " + err.Error())
+		}
+	} else {
+		manifestPath := path.Join(config.VITE_BUILD_DIR, "manifest.json")
+		manifestFile, err := os.Open(manifestPath)
+		if err != nil {
+			log.Error("open manifest error: " + err.Error())
+			return template.HTML("open manifest error: " + err.Error())
+		}
+		defer manifestFile.Close()
+		if err := json.NewDecoder(manifestFile).Decode(&manifestData); err != nil {
+			log.Error("parse manifest error: " + err.Error())
+			return template.HTML("parse manifest error: " + err.Error())
+		}
 	}
 
 	if _, ok := manifestData[_path]; !ok {

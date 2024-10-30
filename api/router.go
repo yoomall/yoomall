@@ -21,6 +21,9 @@ var (
 
 	//go:embed templates/**
 	templateFs embed.FS
+
+	// go:embed manifest.json
+	viteManifestJSON []byte
 )
 
 var conf *viper.Viper
@@ -32,7 +35,7 @@ func init() {
 
 	server = api.NewApp(conf, driver.NewPostgresDB(conf.GetString("postgres.dsn")), func(e *gin.Engine) *gin.Engine {
 		// 设置模板
-		temp := template.New("main").Funcs(_template.Funcs)
+		temp := template.New("main").Funcs(_template.Funcs(viteManifestJSON))
 		html := template.Must(_template.ParseGlobEmbedFS(temp, templateFs, "templates", "*.html"))
 		e.SetHTMLTemplate(html)
 		return e
