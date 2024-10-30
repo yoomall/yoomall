@@ -36,19 +36,19 @@ type (
 )
 
 func ParseGlob(tpl *template.Template, dir string, pattern string) (t *template.Template, err error) {
-	return ParseGlobWithFiles(tpl, filesToTplFiles(dir, pattern, getOsDir())...)
+	return ParseGlobWithFiles(tpl, readOsFile, filesToTplFiles(dir, pattern, getOsDir())...)
 }
 
 func ParseGlobEmbedFS(tpl *template.Template, fs embed.FS, dir string, pattern string) (t *template.Template, err error) {
-	return ParseGlobWithFiles(tpl, filesToTplFiles(dir, pattern, getEmbedDir(fs))...)
+	return ParseGlobWithFiles(tpl, readEmbedFile(fs), filesToTplFiles(dir, pattern, getEmbedDir(fs))...)
 }
 
 // ParseGlob 自定义模版解析，扫描子目录
-func ParseGlobWithFiles(tpl *template.Template, files ...*tplFile) (t *template.Template, err error) {
+func ParseGlobWithFiles(tpl *template.Template, readFile func(string) ([]byte, error), files ...*tplFile) (t *template.Template, err error) {
 	t = tpl
 	for _, file := range files {
 		fmt.Printf("挂载模板：%s\n", file.Path)
-		b, err := os.ReadFile(file.Path)
+		b, err := readFile(file.Path)
 		if err != nil {
 			return t, err
 		}
@@ -69,6 +69,17 @@ func ParseGlobWithFiles(tpl *template.Template, files ...*tplFile) (t *template.
 		}
 	}
 	return t, nil
+}
+
+func readOsFile(path string) (b []byte, err error) {
+	return os.ReadFile(path)
+}
+
+func readEmbedFile(fs embed.FS) func(string) ([]byte, error) {
+	return func(path string) (b []byte, err error) {
+		b, err = fs.ReadFile(path)
+		return
+	}
 }
 
 func getOsDir() func(string, string) (files []os.DirEntry, err error) {
