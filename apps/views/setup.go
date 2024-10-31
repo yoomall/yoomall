@@ -1,6 +1,7 @@
 package views
 
 import (
+	"net/http"
 	"yoomall/apps/views/render"
 	"yoomall/core"
 	"yoomall/core/driver"
@@ -37,4 +38,12 @@ func (v *ViewsApp) Register(router *core.RouterGroup) {
 	router.GET("/about.html", func(ctx *gin.Context) {
 		render.Html(ctx, "about.html", nil)
 	})
+}
+
+func (v *ViewsApp) NotFoundHandler(ctx *gin.Context) {
+	if ctx.Request.Header.Get("Accept") == "application/json" {
+		ctx.JSON(http.StatusNotFound, gin.H{"message": "不存在的路由"})
+		return
+	}
+	render.Html(ctx, "404.html", nil)
 }

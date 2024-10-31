@@ -26,7 +26,7 @@ import (
 
 // Injectors from wire.go:
 
-func NewApp(conf *viper.Viper, db *driver.DB, setHTMLTemplate func(*gin.Engine) *gin.Engine) httpserver.HttpServer {
+func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin.Engine) httpserver.HttpServer {
 	dtkHandler := handler.NewDtkHandler(conf)
 	authMiddlewareGroup := authmiddleware.NewAuthMiddlewareGroup(db)
 	menuHandler := handler.NewMenuHandler(db, authMiddlewareGroup)
@@ -46,6 +46,6 @@ func NewApp(conf *viper.Viper, db *driver.DB, setHTMLTemplate func(*gin.Engine) 
 	commonApp := common.NewCommonApp(conf, db, notFoundRecordHandler, systemConfigHandler)
 	viewsApp := views.NewViewApp(db, conf)
 	doc := NewDoc()
-	httpServer := NewHttpServer(conf, defaultApp, authApp, postApp, commonApp, viewsApp, notFoundRecordService, doc, setHTMLTemplate)
+	httpServer := NewHttpServer(conf, defaultApp, authApp, postApp, commonApp, viewsApp, notFoundRecordService, doc, setupEngine)
 	return httpServer
 }

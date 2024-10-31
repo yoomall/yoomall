@@ -1,19 +1,15 @@
 package api
 
 import (
-	"net/http"
-
 	"yoomall/apps/app"
 	"yoomall/apps/auth"
 	"yoomall/apps/common"
 	commonservice "yoomall/apps/common/service"
 	"yoomall/apps/post"
 	"yoomall/apps/views"
-	"yoomall/config"
 	"yoomall/core"
 	"yoomall/core/constants"
 	"yoomall/core/driver"
-	"yoomall/core/helper/response"
 	httpserver "yoomall/core/http"
 	coremiddleware "yoomall/core/middleware"
 
@@ -34,24 +30,26 @@ func NewHttpServer(
 	noufoundRecordService *commonservice.NotFoundRecordService,
 
 	doc *core.Doc,
-	setHTMLTemplate func(*gin.Engine) *gin.Engine,
+	setupEngine func(*gin.Engine) *gin.Engine,
 ) httpserver.HttpServer {
 	engine := gin.Default()
 
-	setup(engine)
-	engine = setHTMLTemplate(engine)
+	engine.SetTrustedProxies(nil)               //设置允许请求的域名
+	engine.Use(coremiddleware.CORSMiddleware()) // 跨域
+	engine.Use(gin.Recovery())                  // 错误恢复
+
+	// 设置 debug mode
+	if config.GetBool(constants.DEBUG) {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
+	engine = setupEngine(engine)
 
 	engine.Use(static.Serve("/", static.LocalFile("public", false)))
 
-	engine.NoRoute(func(ctx *gin.Context) {
-		noufoundRecordService.Add(ctx.Request.URL.Path, ctx.Request)
-
-		if ctx.Request.Header.Get("Accept") == "application/json" {
-			ctx.JSON(http.StatusNotFound, gin.H{"message": "不存在的路由"})
-			return
-		}
-		response.Html(http.StatusOK, "", nil, "404.html", http.StatusNotFound).Done(ctx)
-	})
+	engine.NoRoute(viewsApp.NotFoundHandler)
 
 	root := &core.RouterGroup{
 		RouterGroup: engine.Group("/"),
@@ -90,15 +88,5 @@ func NewDB(config *viper.Viper) *driver.DB {
 }
 
 func setup(engine *gin.Engine) {
-	engine.SetTrustedProxies(nil)               //设置允许请求的域名
-	engine.Use(coremiddleware.CORSMiddleware()) // 跨域
-	engine.Use(gin.Recovery())                  // 错误恢复
-
-	// 设置 debug mode
-	if config.Config.DEBUG {
-		gin.SetMode(gin.DebugMode)
-	} else {
-		gin.SetMode(gin.ReleaseMode)
-	}
 
 }
