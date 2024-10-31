@@ -1,11 +1,11 @@
 package app
 
 import (
+	"api/core/plugins/upload"
 	"yoomall/apps/app/handler"
 	authmiddleware "yoomall/apps/auth/middleware"
 	"yoomall/core"
 	"yoomall/core/driver"
-	"yoomall/plugins/upload"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
