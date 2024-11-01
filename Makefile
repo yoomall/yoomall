@@ -33,7 +33,7 @@ test:
 
 prod:
 	make wire
-	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/linux/ ./cmd/http && upx -9 ./dist/linux/http
+	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -tags=jsoniter  -o ./dist/linux/ ./cmd/http && upx -9 ./dist/linux/http
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/linux/ ./cmd/tools && upx -9 ./dist/linux/tools
 	GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o ./dist/linux/ ./cmd/jobs && upx -9 ./dist/linux/jobs
 	cp -r ./templates ./dist/linux/templates

@@ -1,8 +1,6 @@
 package core
 
 import (
-	"fmt"
-
 	"yoomall/config"
 	"yoomall/core/driver"
 
@@ -88,12 +86,12 @@ type RegisterApp struct {
 }
 
 func (instance *RegisterApp) Register() {
-	log.Info("====App:【" + instance.App.GetName() + "】 register Start====================================")
-	log.Info("注册app", "app", instance.App.GetName())
+	log.Debug("====App:【" + instance.App.GetName() + "】 register Start====================================")
+	log.Debug("注册app", "app", instance.App.GetName())
 	if config.Config.DEBUG {
-		log.Info("迁移中")
+		log.Debug("迁移中")
 		instance.App.Migrate()
-		log.Info("迁移成功 success")
+		log.Debug("迁移成功 success")
 	}
 	router := instance.Router.Group("")
 	router.Use(instance.App.GetMiddlewares()...)
@@ -107,7 +105,7 @@ func (instance *RegisterApp) Register() {
 		plugin.RegisterRouter(router.Group(""))
 	}
 
-	log.Info("注册成功", "app", instance.App.GetName())
-	log.Info("====App:【" + instance.App.GetName() + "】 register End====================================")
-	fmt.Printf("\n\n")
+	log.Debug("注册成功", "app", instance.App.GetName())
+	log.Debug("====App:【" + instance.App.GetName() + "】 register End====================================")
+	log.Debug("\n")
 }

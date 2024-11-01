@@ -17,7 +17,7 @@ func (h *HttpServer) Start(port string) *gin.Engine {
 	if port == "0" {
 		port = "8900"
 	}
-	log.Info(fmt.Sprintf("start http server on port: http://127.1:%s", port))
+	log.Debug(fmt.Sprintf("start http server on port: http://127.1:%s", port))
 	h.Engine.Run(fmt.Sprintf(":%s", port))
 	return h.Engine
 }

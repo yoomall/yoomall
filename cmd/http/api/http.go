@@ -13,6 +13,7 @@ import (
 	httpserver "yoomall/core/http"
 	coremiddleware "yoomall/core/middleware"
 
+	"github.com/charmbracelet/log"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -32,18 +33,28 @@ func NewHttpServer(
 	doc *core.Doc,
 	setupEngine func(*gin.Engine) *gin.Engine,
 ) httpserver.HttpServer {
-	engine := gin.Default()
+	// logger setup
+	logLevel := log.InfoLevel
+	if config.GetBool(constants.DEBUG) {
+		logLevel = log.DebugLevel
+	}
+	log.SetLevel(logLevel)
+	// logger setup
 
-	engine.SetTrustedProxies(nil)               //设置允许请求的域名
-	engine.Use(coremiddleware.CORSMiddleware()) // 跨域
-	engine.Use(gin.Recovery())                  // 错误恢复
-
+	log.Info("Start http server.", "debug mode: ", config.GetBool(constants.DEBUG))
 	// 设置 debug mode
 	if config.GetBool(constants.DEBUG) {
 		gin.SetMode(gin.DebugMode)
 	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
+
+	engine := gin.Default()
+	engine.Use(gin.Logger())
+
+	engine.SetTrustedProxies(nil)               //设置允许请求的域名
+	engine.Use(coremiddleware.CORSMiddleware()) // 跨域
+	engine.Use(gin.Recovery())                  // 错误恢复
 
 	engine = setupEngine(engine)
 
@@ -85,8 +96,4 @@ func NewDoc() *core.Doc {
 
 func NewDB(config *viper.Viper) *driver.DB {
 	return driver.NewDB(config.GetString(constants.MYSQL_DSN))
-}
-
-func setup(engine *gin.Engine) {
-
 }
