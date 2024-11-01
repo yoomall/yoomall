@@ -15,7 +15,7 @@ export default defineConfig({
         accent: '#F59E0B',
         background: '#F9F9F9',
         "base-text":"#333",
-        
+        "reverse-primary":"#ff8c00",
     }
   },
   shortcuts:{
