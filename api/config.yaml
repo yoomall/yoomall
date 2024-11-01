@@ -1,5 +1,5 @@
 DEBUG: false
-theme: default
+theme: ai
 
 mysql:
     dsn: yoomall:yoomall@tcp(127.0.0.1:3306)/yoomall?charset=utf8mb4&parseTime=True&loc=Local

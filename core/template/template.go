@@ -3,6 +3,7 @@ package template
 import (
 	"embed"
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -46,7 +47,7 @@ func ParseGlobEmbedFS(tpl *template.Template, fs embed.FS, dir string, pattern s
 func ParseGlobWithFiles(tpl *template.Template, readFile func(string) ([]byte, error), files ...*tplFile) (t *template.Template, err error) {
 	t = tpl
 	for _, file := range files {
-		log.Debug("挂载模板：%s\n", file.Path)
+		log.Debug(fmt.Sprintf("挂载模板：%s", file.Path))
 		b, err := readFile(file.Path)
 		if err != nil {
 			return t, err
