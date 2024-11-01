@@ -5,16 +5,55 @@
 <main class="p-0 m-0 flex-1 flex flex-col min-h-480px">
 
 
+    <div id="book" class="h-500px flex flex-row">
+        <div class="flex flex-col items-center justify-center h-full w-50%">
+            <h1>Make your design to production Now.</h1>
+            <a class="btn btn-primary large-btn bg-primary text-white hover:bg-primary hover:text-white">Book Now.</a>
+        </div>
+        <div class="w-50% h-full bg-gray-400"></div>
+    </div>
 
-    <div class="flex flex-row mt-1 mb-1 flex-1">
-        {{template "default/layout/sidebar" .}}
-        
-        <div class="app">
-            <span>path:{{.Extra.path}}</span>
 
+    <div id="services" class="h-500px pt-50px px-20px">
+        <div>
+            <h1>Services</h1>
+            <p> our services</p>
+        </div>
+
+
+        <div class="flex flex-row flex-wrap gap-2 ">
+            <a href="">Food</a>
+            <a href="">Drinks</a>
+            <a href="">Snacks</a>
+            <a href="">Beverages</a>
+            <a href="">Fruits</a>
+            <a href="">Vegetables</a>
         </div>
     </div>
 
+    <div id="price" class="h-500px bg-gray-100 pt-50px px-20px">
+
+        <div>
+            <h1>Packages</h1>
+            <p> our services</p>
+        </div>
+
+        <div>
+            {{range .Data.packages}}
+
+            <span>¥{{.price}}</span>
+
+            {{end}}
+        </div>
+    </div>
+
+    <div id="book">
+        book
+    </div>
+
+    <div id="contact">
+        contact
+    </div>
 </main>
 
 {{template "default/layout/footer" .}}
