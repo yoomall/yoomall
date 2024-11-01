@@ -5,14 +5,14 @@ import (
 	"html/template"
 	"net/http"
 	"yoomall/cmd/http/api"
-	"yoomall/src/config"
-	"yoomall/src/core/driver"
-	httpserver "yoomall/src/core/http"
+	"yoomall/config"
+	"yoomall/core/driver"
+	httpserver "yoomall/core/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 
-	_template "yoomall/src/core/template"
+	_template "yoomall/core/template"
 )
 
 var (

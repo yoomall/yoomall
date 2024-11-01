@@ -4,7 +4,7 @@
 package main
 
 import (
-	"yoomall/src/apps/jobs"
+	"yoomall/apps/jobs"
 
 	"github.com/google/wire"
 )

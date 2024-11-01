@@ -1,17 +1,17 @@
 package api
 
 import (
-	"yoomall/src/apps/app"
-	"yoomall/src/apps/auth"
-	"yoomall/src/apps/common"
-	commonservice "yoomall/src/apps/common/service"
-	"yoomall/src/apps/post"
-	"yoomall/src/apps/views"
-	"yoomall/src/core"
-	"yoomall/src/core/constants"
-	"yoomall/src/core/driver"
-	httpserver "yoomall/src/core/http"
-	coremiddleware "yoomall/src/core/middleware"
+	"yoomall/apps/app"
+	"yoomall/apps/auth"
+	"yoomall/apps/common"
+	commonservice "yoomall/apps/common/service"
+	"yoomall/apps/post"
+	"yoomall/apps/views"
+	"yoomall/core"
+	"yoomall/core/constants"
+	"yoomall/core/driver"
+	httpserver "yoomall/core/http"
+	coremiddleware "yoomall/core/middleware"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-contrib/static"

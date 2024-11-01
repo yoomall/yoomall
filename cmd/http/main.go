@@ -3,13 +3,13 @@ package main
 import (
 	"html/template"
 	"os"
-	"yoomall/src/cmd/http/api"
-	"yoomall/src/config"
-	"yoomall/src/core/driver"
+	"yoomall/cmd/http/api"
+	"yoomall/config"
+	"yoomall/core/driver"
 
 	"github.com/gin-gonic/gin"
 
-	_template "yoomall/src/core/template"
+	_template "yoomall/core/template"
 )
 
 func main() {

@@ -4,13 +4,13 @@
 package api
 
 import (
-	"yoomall/src/apps/app"
-	"yoomall/src/apps/auth"
-	"yoomall/src/apps/common"
-	"yoomall/src/apps/post"
-	"yoomall/src/apps/views"
-	"yoomall/src/core/driver"
-	httpserver "yoomall/src/core/http"
+	"yoomall/apps/app"
+	"yoomall/apps/auth"
+	"yoomall/apps/common"
+	"yoomall/apps/post"
+	"yoomall/apps/views"
+	"yoomall/core/driver"
+	httpserver "yoomall/core/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
