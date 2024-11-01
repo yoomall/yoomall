@@ -4,15 +4,13 @@ import (
 	"net/http"
 	"yoomall/config"
 	"yoomall/core/helper/response"
-
-	"github.com/gin-gonic/gin"
 )
 
 type Render struct {
 	*response.HtmlTemplateResponse
 }
 
-func Html(ctx *gin.Context, template string, data interface{}) {
+func Html(template string, data interface{}) *Render {
 	a := &Render{
 		HtmlTemplateResponse: &response.HtmlTemplateResponse{
 			HttpCode: http.StatusOK,
@@ -43,5 +41,17 @@ func Html(ctx *gin.Context, template string, data interface{}) {
 		},
 	})
 
-	a.Done(ctx)
+	return a
+}
+
+func (r *Render) SEO(title string, description string, keywords string) *Render {
+	r.WithExtra(map[string]any{
+		"page": map[string]any{
+			"title":       title,
+			"description": description,
+			"keywords":    keywords,
+		},
+	})
+
+	return r
 }
