@@ -4,7 +4,7 @@ import (
 	"embed"
 	"html/template"
 	"net/http"
-	"yoomall/src/cmd/http/api"
+	"yoomall/cmd/http/api"
 	"yoomall/src/config"
 	"yoomall/src/core/driver"
 	httpserver "yoomall/src/core/http"

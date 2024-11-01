@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"yoomall/src/api"
+	"yoomall/api"
 )
 
 func main() {
