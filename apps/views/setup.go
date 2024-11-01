@@ -44,11 +44,6 @@ func (v *ViewsApp) Register(router *core.RouterGroup) {
 					"price": 1980,
 				},
 			},
-		}).SEO("easyly make your design to production.", "yoomall", "yoomall").Done(ctx)
-	})
-
-	router.GET("/articles.html", func(ctx *gin.Context) {
-		render.Html("articles.html", map[string]any{
 			"products": []any{
 				map[string]any{
 					"name": "yoomall",
@@ -72,7 +67,7 @@ func (v *ViewsApp) Register(router *core.RouterGroup) {
 					"name": "yoomall-admin-ui",
 				},
 			},
-		}).Done(ctx)
+		}).SEO("easyly make your design to production.", "yoomall", "yoomall").Done(ctx)
 	})
 
 	router.GET("/about.html", func(ctx *gin.Context) {
