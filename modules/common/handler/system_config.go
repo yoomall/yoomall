@@ -4,13 +4,13 @@ import (
 	"net/http"
 	"strconv"
 
-	authmiddleware "yoomall/apps/auth/middleware"
-	"yoomall/apps/common/model"
-	commonservice "yoomall/apps/common/service"
 	"yoomall/core"
 	"yoomall/core/driver"
 	"yoomall/core/helper/curd"
 	"yoomall/core/helper/response"
+	authmiddleware "yoomall/modules/auth/middleware"
+	"yoomall/modules/common/model"
+	commonservice "yoomall/modules/common/service"
 
 	"github.com/gin-gonic/gin"
 )

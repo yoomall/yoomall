@@ -3,9 +3,9 @@ package authmiddleware
 import (
 	"time"
 
-	"yoomall/apps/auth/model"
 	"yoomall/core/driver"
 	"yoomall/core/helper/response"
+	"yoomall/modules/auth/model"
 
 	"github.com/gin-gonic/gin"
 )

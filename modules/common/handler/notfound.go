@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/apps/common/model"
-	commonservice "yoomall/apps/common/service"
 	"yoomall/core"
 	"yoomall/core/driver"
 	"yoomall/core/helper/curd"
+	"yoomall/modules/common/model"
+	commonservice "yoomall/modules/common/service"
 )
 
 type NotFoundRecordHandler struct {

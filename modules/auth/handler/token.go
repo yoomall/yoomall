@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	authmiddleware "yoomall/apps/auth/middleware"
-	"yoomall/apps/auth/model"
 	"yoomall/core"
 	"yoomall/core/driver"
 	"yoomall/core/helper/curd"
+	authmiddleware "yoomall/modules/auth/middleware"
+	"yoomall/modules/auth/model"
 
 	"gorm.io/gorm"
 )

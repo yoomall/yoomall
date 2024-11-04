@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	authmiddleware "yoomall/apps/auth/middleware"
 	"yoomall/core"
 	"yoomall/core/driver"
 	"yoomall/core/helper/response"
 	"yoomall/core/ui"
+	authmiddleware "yoomall/modules/auth/middleware"
 
 	"github.com/gin-gonic/gin"
 )

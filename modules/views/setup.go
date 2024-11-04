@@ -2,9 +2,9 @@ package views
 
 import (
 	"net/http"
-	"yoomall/apps/views/render"
 	"yoomall/core"
 	"yoomall/core/driver"
+	"yoomall/modules/views/render"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"

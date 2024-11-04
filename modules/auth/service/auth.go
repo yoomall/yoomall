@@ -6,12 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"yoomall/apps/auth/model"
-	authresponse "yoomall/apps/auth/response"
 	"yoomall/core"
 	"yoomall/core/driver"
 	"yoomall/core/helper/response"
 	"yoomall/core/result"
+	"yoomall/modules/auth/model"
+	authresponse "yoomall/modules/auth/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

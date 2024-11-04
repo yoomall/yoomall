@@ -7,7 +7,7 @@
 package main
 
 import (
-	"yoomall/apps/jobs"
+	"yoomall/modules/jobs"
 )
 
 // Injectors from wire.go:

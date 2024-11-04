@@ -1,11 +1,11 @@
 package common
 
 import (
-	"yoomall/apps/common/handler"
-	"yoomall/apps/common/model"
-	commonservice "yoomall/apps/common/service"
 	"yoomall/core"
 	"yoomall/core/driver"
+	"yoomall/modules/common/handler"
+	"yoomall/modules/common/model"
+	commonservice "yoomall/modules/common/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
