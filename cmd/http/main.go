@@ -5,7 +5,6 @@ import (
 	"os"
 	"yoomall/cmd/http/api"
 	"yoomall/config"
-	"yoomall/core/driver"
 
 	"github.com/gin-gonic/gin"
 
@@ -14,7 +13,7 @@ import (
 
 func main() {
 	conf := config.NewConfig()
-	server := api.NewApp(conf, driver.NewPostgresDB(conf.GetString("postgres.dsn")), func(e *gin.Engine) *gin.Engine {
+	server := api.NewApp(conf, api.NewDB(conf), func(e *gin.Engine) *gin.Engine {
 		// 设置模板
 		temp := template.New("main").Funcs(_template.Funcs(nil))
 		html := template.Must(_template.ParseGlob(temp, "templates", "*.html"))
