@@ -1,10 +1,10 @@
 package main
 
 import (
+	"api/cmd/server"
 	"api/yoo/global"
 	"html/template"
 	"os"
-	"yoomall/cmd/http/api"
 	"yoomall/yoo/config"
 	"yoomall/yoo/constants"
 
@@ -15,7 +15,7 @@ import (
 
 func main() {
 	conf := config.NewConfig()
-	server := api.NewApp(conf, api.NewDB(conf), func(e *gin.Engine) *gin.Engine {
+	server := server.NewApp(conf, server.NewDB(conf), func(e *gin.Engine) *gin.Engine {
 		// 设置模板
 		temp := template.New("main").Funcs(_template.Funcs(nil))
 		html := template.Must(_template.ParseGlob(temp, "templates", "*.html"))
