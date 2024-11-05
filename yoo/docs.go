@@ -52,11 +52,13 @@ func NewDoc() *Doc {
 }
 
 func (d *Doc) Add(item *DocItem) {
-	mutex.Lock()
+	mutex.Lock() // i`m not sure
 	defer mutex.Unlock()
 	d.Items = append(d.Items, item)
 }
 
 func (d *Doc) Handler(ctx *gin.Context) {
+	mutex.RLock()
+	defer mutex.RUnlock()
 	ctx.JSON(http.StatusOK, d)
 }
