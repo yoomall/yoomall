@@ -3,9 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/helper/response"
 	"yoomall/libs/jutuike"
+	"yoomall/yoo"
+	"yoomall/yoo/helper/response"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
@@ -26,14 +26,14 @@ func NewJtkHandler(config *viper.Viper) *JtkHandler {
 	}
 }
 
-var _ core.Handler = (*JtkHandler)(nil)
+var _ yoo.Handler = (*JtkHandler)(nil)
 
 func (j *JtkHandler) GetRouterGroupName() string {
 	return "jtk"
 }
 
-func (j *JtkHandler) Register(router *core.RouterGroup) {
-	router.WithDoc(&core.DocItem{
+func (j *JtkHandler) Register(router *yoo.RouterGroup) {
+	router.WithDoc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
 	}).GET("", j.jtk)

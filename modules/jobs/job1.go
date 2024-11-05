@@ -1,6 +1,7 @@
 package jobs
 
 import (
+	"api/yoo"
 	"fmt"
 	"time"
 )
@@ -8,7 +9,7 @@ import (
 type Job1 struct {
 }
 
-var _ IJob = (*Job1)(nil)
+var _ yoo.IJob = (*Job1)(nil)
 
 func NewJob1() *Job1 {
 	return &Job1{}

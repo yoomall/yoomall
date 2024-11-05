@@ -2,12 +2,11 @@ package model
 
 import (
 	"time"
-
-	"yoomall/core"
+	"yoomall/yoo"
 )
 
 type UserToken struct {
-	*core.Model
+	*yoo.Model
 	UserId     uint      `gorm:"index" json:"user_id"`
 	User       *User     `json:"user" gorm:"foreignKey:user_id;references:ID;delete:SET NULL;default:null"`
 	Token      string    `json:"token"`

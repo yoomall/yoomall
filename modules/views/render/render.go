@@ -2,8 +2,8 @@ package render
 
 import (
 	"net/http"
-	"yoomall/config"
-	"yoomall/core/helper/response"
+	"yoomall/yoo/config"
+	"yoomall/yoo/helper/response"
 )
 
 type Render struct {

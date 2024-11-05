@@ -5,11 +5,12 @@ package main
 
 import (
 	"yoomall/modules/jobs"
+	"yoomall/yoo"
 
 	"github.com/google/wire"
 )
 
 func NewCron() *jobs.JobServer {
-	wire.Build(jobs.NewCorn, jobs.NewJob1, jobs.NewJobServer)
+	wire.Build(yoo.NewCorn, jobs.NewJobServer, jobs.NewJob1)
 	return &jobs.JobServer{}
 }

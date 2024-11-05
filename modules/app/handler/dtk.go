@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/helper/response"
-	"yoomall/core/helper/utils"
-	"yoomall/core/helper/validate"
 	"yoomall/libs/dtk"
+	"yoomall/yoo"
+	"yoomall/yoo/helper/response"
+	"yoomall/yoo/helper/utils"
+	"yoomall/yoo/helper/validate"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
@@ -28,8 +28,8 @@ func NewDtkHandler(config *viper.Viper) *DtkHandler {
 	}
 }
 
-func (d *DtkHandler) Register(router *core.RouterGroup) {
-	router.WithDoc(&core.DocItem{
+func (d *DtkHandler) Register(router *yoo.RouterGroup) {
+	router.WithDoc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Tag:    "dtk",
 		Path:   "",

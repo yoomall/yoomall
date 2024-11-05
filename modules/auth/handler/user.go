@@ -3,14 +3,14 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/driver"
-	"yoomall/core/helper/curd"
-	"yoomall/core/helper/response"
 	authmiddleware "yoomall/modules/auth/middleware"
 	"yoomall/modules/auth/model"
 	"yoomall/modules/auth/request"
 	authservice "yoomall/modules/auth/service"
+	"yoomall/yoo"
+	"yoomall/yoo/driver"
+	"yoomall/yoo/helper/curd"
+	"yoomall/yoo/helper/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -23,7 +23,7 @@ type UserHandler struct {
 	authMidds *authmiddleware.AuthMiddlewareGroup
 }
 
-var _ core.Handler = (*UserHandler)(nil)
+var _ yoo.Handler = (*UserHandler)(nil)
 
 func NewUserHandler(db *driver.DB, config *viper.Viper, service *authservice.AuthService, authMiddlewareGroup *authmiddleware.AuthMiddlewareGroup) *UserHandler {
 	return &UserHandler{
@@ -36,9 +36,9 @@ func NewUserHandler(db *driver.DB, config *viper.Viper, service *authservice.Aut
 	}
 }
 
-func (u *UserHandler) Register(router *core.RouterGroup) {
+func (u *UserHandler) Register(router *yoo.RouterGroup) {
 	// 登录接口
-	router.WithDoc(&core.DocItem{
+	router.WithDoc(&yoo.DocItem{
 		Method: http.MethodPost,
 		Path:   "/login",
 		Body:   request.UserUserNameAndPasswordLoginRequest{},
@@ -47,7 +47,7 @@ func (u *UserHandler) Register(router *core.RouterGroup) {
 	// 用户列表
 	auth := router.Group("").Use(u.authMidds.MustAuthMiddleware)
 	{
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodGet,
 			Path:   "/user-list",
 		}).GET("/user-list", u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {

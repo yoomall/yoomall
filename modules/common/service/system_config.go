@@ -1,8 +1,8 @@
 package commonservice
 
 import (
-	"yoomall/core/driver"
 	"yoomall/modules/common/model"
+	"yoomall/yoo/driver"
 )
 
 type SystemConfigService struct {

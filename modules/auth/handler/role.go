@@ -3,12 +3,12 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/driver"
-	"yoomall/core/helper/curd"
-	"yoomall/core/helper/response"
 	authmiddleware "yoomall/modules/auth/middleware"
 	"yoomall/modules/auth/model"
+	"yoomall/yoo"
+	"yoomall/yoo/driver"
+	"yoomall/yoo/helper/curd"
+	"yoomall/yoo/helper/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,12 +19,12 @@ type UserRoleHandler struct {
 	authMidds *authmiddleware.AuthMiddlewareGroup
 }
 
-// GetRouterGroupName implements core.Handler.
+// GetRouterGroupName implements yoo.Handler.
 func (u *UserRoleHandler) GetRouterGroupName() string {
 	return "user-roles"
 }
 
-var _ core.Handler = (*UserRoleHandler)(nil)
+var _ yoo.Handler = (*UserRoleHandler)(nil)
 
 func NewUserRoleHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewareGroup) *UserRoleHandler {
 	return &UserRoleHandler{
@@ -34,25 +34,25 @@ func NewUserRoleHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewareG
 	}
 }
 
-func (u *UserRoleHandler) Register(router *core.RouterGroup) {
+func (u *UserRoleHandler) Register(router *yoo.RouterGroup) {
 	auth := router.Group("").Use(u.authMidds.MustAuthMiddleware)
 	{
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodGet,
 			Path:   "/role-list",
 		}).GET("/role-list", u.CRUD.GetListHandler(&[]model.UserRole{}))
 
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/create-role",
 		}).POST("/create-role", u.create)
 
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/update-role",
 		}).POST("/update-role", u.update)
 
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/delete-role",
 		}).POST("/delete-role", u.delete)

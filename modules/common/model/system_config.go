@@ -1,8 +1,8 @@
 package model
 
 import (
-	"yoomall/core"
-	"yoomall/core/helper/execl"
+	core "yoomall/yoo"
+	"yoomall/yoo/helper/execl"
 )
 
 type SystemConfig struct {

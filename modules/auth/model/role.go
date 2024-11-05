@@ -1,9 +1,9 @@
 package model
 
-import "yoomall/core"
+import "yoomall/yoo"
 
 type UserRole struct {
-	*core.Model
+	*yoo.Model
 	RoleName string `json:"role_name" gorm:"column:role_name"`
 	RoleCode string `json:"role_code" gorm:"column:role_code;unique;index:role_code;default:''"`
 	RoleDesc string `json:"role_desc" gorm:"column:role_desc;default:''"`
@@ -14,7 +14,7 @@ func (u *UserRole) TableName() string {
 }
 
 type UserRoleRef struct {
-	*core.Model
+	*yoo.Model
 	UserId string    `json:"user_id" gorm:"column:user_id"`
 	User   *User     `json:"user" gorm:"foreignKey:user_id;references:ID;delete:SET NULL;default:null"`
 	RoleId string    `json:"role_id" gorm:"column:role_id"`

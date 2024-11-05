@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/driver"
-	"yoomall/core/helper/response"
-	"yoomall/core/ui"
 	authmiddleware "yoomall/modules/auth/middleware"
+	"yoomall/yoo"
+	"yoomall/yoo/driver"
+	"yoomall/yoo/helper/response"
+	"yoomall/yoo/ui"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +17,7 @@ type MenuHandler struct {
 	authMidds *authmiddleware.AuthMiddlewareGroup
 }
 
-var _ core.Handler = (*MenuHandler)(nil)
+var _ yoo.Handler = (*MenuHandler)(nil)
 
 func NewMenuHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewareGroup) *MenuHandler {
 	return &MenuHandler{
@@ -26,9 +26,9 @@ func NewMenuHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewareGroup
 	}
 }
 
-func (m *MenuHandler) Register(router *core.RouterGroup) {
+func (m *MenuHandler) Register(router *yoo.RouterGroup) {
 	router.Use(m.authMidds.MustAuthMiddleware)
-	router.WithDoc(&core.DocItem{
+	router.WithDoc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
 	}).GET("", func(ctx *gin.Context) {

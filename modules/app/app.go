@@ -3,9 +3,9 @@ package app
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/helper/utils"
-	coremiddleware "yoomall/core/middleware"
+	core "yoomall/yoo"
+	"yoomall/yoo/helper/utils"
+	coremiddleware "yoomall/yoo/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"

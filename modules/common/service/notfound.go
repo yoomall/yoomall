@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"yoomall/core/driver"
 	"yoomall/modules/common/model"
+	"yoomall/yoo/driver"
 )
 
 type NotFoundRecordService struct {

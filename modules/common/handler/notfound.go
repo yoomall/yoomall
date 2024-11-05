@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/driver"
-	"yoomall/core/helper/curd"
 	"yoomall/modules/common/model"
 	commonservice "yoomall/modules/common/service"
+	"yoomall/yoo"
+	"yoomall/yoo/driver"
+	"yoomall/yoo/helper/curd"
 )
 
 type NotFoundRecordHandler struct {
@@ -16,20 +16,20 @@ type NotFoundRecordHandler struct {
 	curd    *curd.CRUD
 }
 
-// GetRouterGroupName implements core.Handler.
+// GetRouterGroupName implements yoo.Handler.
 func (n *NotFoundRecordHandler) GetRouterGroupName() string {
 	return "notfound"
 }
 
-// Register implements core.Handler.
-func (n *NotFoundRecordHandler) Register(router *core.RouterGroup) {
-	router.WithDoc(&core.DocItem{
+// Register implements yoo.Handler.
+func (n *NotFoundRecordHandler) Register(router *yoo.RouterGroup) {
+	router.WithDoc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
 	}).GET("", n.curd.GetListHandler(&[]model.NotFoundRecord{}))
 }
 
-var _ core.Handler = (*NotFoundRecordHandler)(nil)
+var _ yoo.Handler = (*NotFoundRecordHandler)(nil)
 
 func NewNotFoundRecordHandler(db *driver.DB, service *commonservice.NotFoundRecordService) *NotFoundRecordHandler {
 	return &NotFoundRecordHandler{

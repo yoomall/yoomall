@@ -4,13 +4,13 @@ import (
 	"net/http"
 	"strconv"
 
-	"yoomall/core"
-	"yoomall/core/driver"
-	"yoomall/core/helper/curd"
-	"yoomall/core/helper/response"
 	authmiddleware "yoomall/modules/auth/middleware"
 	"yoomall/modules/common/model"
 	commonservice "yoomall/modules/common/service"
+	"yoomall/yoo"
+	"yoomall/yoo/driver"
+	"yoomall/yoo/helper/curd"
+	"yoomall/yoo/helper/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,17 +34,17 @@ func NewSystemConfigHandler(db *driver.DB, service *commonservice.SystemConfigSe
 }
 
 // 检查 handler 是否实现
-var _ core.Handler = (*SystemConfigHandler)(nil)
+var _ yoo.Handler = (*SystemConfigHandler)(nil)
 
-// GetRouterGroupName implements core.Handler.
+// GetRouterGroupName implements yoo.Handler.
 func (s *SystemConfigHandler) GetRouterGroupName() string {
 	return "system-configs"
 }
 
-// Register implements core.Handler.
-func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
+// Register implements yoo.Handler.
+func (s *SystemConfigHandler) Register(router *yoo.RouterGroup) {
 
-	router.WithDoc(&core.DocItem{
+	router.WithDoc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "/get/:groupId",
 	}).GET("/get/:groupId", func(ctx *gin.Context) {
@@ -58,13 +58,13 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 	auth := router.Group("").Use(s.authMidds.MustAuthMiddleware)
 	{
 		// 系统配置
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodGet,
 			Path:   "/list",
 		}).GET("/list", s.curd.GetListHandler(&[]model.SystemConfig{}))
 
 		// 创建
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/create",
 		}).POST("/create", func(ctx *gin.Context) {
@@ -74,7 +74,7 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 		})
 
 		// 更新
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/update",
 		}).POST("/update", func(ctx *gin.Context) {
@@ -84,7 +84,7 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 		})
 
 		// 删除
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/delete",
 		}).POST("/delete", func(ctx *gin.Context) {
@@ -92,7 +92,7 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 		})
 
 		// 导出
-		auth.WithDoc(&core.DocItem{
+		auth.WithDoc(&yoo.DocItem{
 			Method: http.MethodGet,
 			Path:   "/export",
 		}).GET("/export", s.curd.ExportHanderWithWhere(&[]model.SystemConfig{}, nil))
@@ -103,12 +103,12 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 	groups := router.Group("/groups")
 	auth_groups := groups.Group("").Use(s.authMidds.MustAuthMiddleware)
 	{
-		auth_groups.WithDoc(&core.DocItem{
+		auth_groups.WithDoc(&yoo.DocItem{
 			Method: http.MethodGet,
 			Path:   "/list",
 		}).GET("/list", s.groupCurd.GetListHandler(&[]model.SystemConfigGroup{}))
 
-		auth_groups.WithDoc(&core.DocItem{
+		auth_groups.WithDoc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/create",
 		}).POST("/create", func(ctx *gin.Context) {
@@ -117,7 +117,7 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 			})
 		})
 
-		auth_groups.WithDoc(&core.DocItem{
+		auth_groups.WithDoc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/update",
 		}).POST("/update", func(ctx *gin.Context) {
@@ -126,7 +126,7 @@ func (s *SystemConfigHandler) Register(router *core.RouterGroup) {
 			})
 		})
 
-		auth_groups.WithDoc(&core.DocItem{
+		auth_groups.WithDoc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/delete",
 		}).POST("/delete", func(ctx *gin.Context) {

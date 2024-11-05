@@ -5,14 +5,14 @@ import (
 	"html/template"
 	"net/http"
 	"yoomall/cmd/http/api"
-	"yoomall/config"
-	"yoomall/core/driver"
-	httpserver "yoomall/core/http"
+	"yoomall/yoo"
+	"yoomall/yoo/config"
+	"yoomall/yoo/driver"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 
-	_template "yoomall/core/template"
+	_template "yoomall/yoo/template"
 )
 
 var (
@@ -28,7 +28,7 @@ var (
 
 var conf *viper.Viper
 
-var server httpserver.HttpServer
+var server *yoo.HttpServer
 
 func init() {
 	conf = config.NewConfigFromBytes(configBytes)

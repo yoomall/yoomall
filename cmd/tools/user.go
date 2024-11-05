@@ -8,11 +8,11 @@ import (
 	"strings"
 	"time"
 
-	"yoomall/config"
-	"yoomall/core/driver"
-	"yoomall/core/helper/utils"
 	"yoomall/modules/auth/model"
 	authservice "yoomall/modules/auth/service"
+	"yoomall/yoo/config"
+	"yoomall/yoo/driver"
+	"yoomall/yoo/helper/utils"
 
 	"github.com/charmbracelet/log"
 	"github.com/spf13/cobra"

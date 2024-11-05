@@ -20,13 +20,13 @@ import (
 	"yoomall/modules/common/service"
 	"yoomall/modules/post"
 	"yoomall/modules/views"
-	"yoomall/core/driver"
-	"yoomall/core/http"
+	"yoomall/yoo"
+	"yoomall/yoo/driver"
 )
 
 // Injectors from wire.go:
 
-func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin.Engine) httpserver.HttpServer {
+func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin.Engine) *yoo.HttpServer {
 	dtkHandler := handler.NewDtkHandler(conf)
 	authMiddlewareGroup := authmiddleware.NewAuthMiddlewareGroup(db)
 	menuHandler := handler.NewMenuHandler(db, authMiddlewareGroup)

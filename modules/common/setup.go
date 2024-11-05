@@ -1,11 +1,11 @@
 package common
 
 import (
-	"yoomall/core"
-	"yoomall/core/driver"
 	"yoomall/modules/common/handler"
 	"yoomall/modules/common/model"
 	commonservice "yoomall/modules/common/service"
+	yoo "yoomall/yoo"
+	"yoomall/yoo/driver"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
@@ -13,23 +13,23 @@ import (
 )
 
 type CommonApp struct {
-	*core.App
+	*yoo.App
 }
 
-var _ core.IApp = (*CommonApp)(nil)
+var _ yoo.IApp = (*CommonApp)(nil)
 
-// GetName implements core.App.
+// GetName implements yoo.App.
 // Subtle: this method shadows the method (*AppImpl).GetName of CommonApp.AppImpl.
 func (c *CommonApp) GetName() string {
 	return "common"
 }
 
-// Middleware implements core.App.
+// Middleware implements yoo.App.
 func (c *CommonApp) Middleware() []gin.HandlerFunc {
 	return []gin.HandlerFunc{}
 }
 
-// Migrate implements core.App.
+// Migrate implements yoo.App.
 func (c *CommonApp) Migrate() {
 	c.GetDB().AutoMigrate(
 		&model.NotFoundRecord{},
@@ -38,8 +38,8 @@ func (c *CommonApp) Migrate() {
 	)
 }
 
-// Register implements core.App.
-func (c *CommonApp) Register(router *core.RouterGroup) {
+// Register implements yoo.App.
+func (c *CommonApp) Register(router *yoo.RouterGroup) {
 
 }
 
@@ -48,7 +48,7 @@ func NewCommonApp(config *viper.Viper, db *driver.DB,
 	systemConfigHandler *handler.SystemConfigHandler,
 ) *CommonApp {
 	return &CommonApp{
-		App: core.NewApp("common", config, db, []core.Handler{
+		App: yoo.NewApp("common", config, db, []yoo.Handler{
 			notfoundHandler,
 			systemConfigHandler,
 		}),

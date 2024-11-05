@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/driver"
-	"yoomall/core/helper/curd"
 	authmiddleware "yoomall/modules/auth/middleware"
 	"yoomall/modules/auth/model"
+	"yoomall/yoo"
+	"yoomall/yoo/driver"
+	"yoomall/yoo/helper/curd"
 
 	"gorm.io/gorm"
 )
@@ -18,7 +18,7 @@ type UserTokenHandler struct {
 	CRUD      *curd.CRUD
 }
 
-// GetRouterGroupName implements core.Handler.
+// GetRouterGroupName implements yoo.Handler.
 func (u *UserTokenHandler) GetRouterGroupName() string {
 	return "user-logs"
 }
@@ -31,11 +31,11 @@ func NewUserTokenHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddleware
 	}
 }
 
-var _ core.Handler = (*UserTokenHandler)(nil)
+var _ yoo.Handler = (*UserTokenHandler)(nil)
 
-func (u *UserTokenHandler) Register(router *core.RouterGroup) {
+func (u *UserTokenHandler) Register(router *yoo.RouterGroup) {
 	router.Use(u.authMidds.MustAuthMiddleware)
-	router.WithDoc(&core.DocItem{
+	router.WithDoc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "/logs",
 	}).GET("/logs", u.CRUD.GetListHandlerWithWhere(&[]model.UserToken{}, func(tx *gorm.DB) *gorm.DB {

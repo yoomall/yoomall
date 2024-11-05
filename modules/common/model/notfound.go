@@ -1,6 +1,6 @@
 package model
 
-import "yoomall/core"
+import core "yoomall/yoo"
 
 type NotFoundRecord struct {
 	*core.Model

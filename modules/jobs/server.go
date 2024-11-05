@@ -1,10 +1,12 @@
 package jobs
 
+import "yoomall/yoo"
+
 type JobServer struct {
-	Cron *Cron
+	Cron *yoo.Cron
 }
 
-func NewJobServer(cron *Cron, job1 *Job1) *JobServer {
+func NewJobServer(cron *yoo.Cron, job1 *Job1) *JobServer {
 	cron.AddJob(job1)
 	return &JobServer{
 		Cron: cron,

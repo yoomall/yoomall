@@ -1,14 +1,16 @@
 package main
 
 import (
+	"api/yoo/global"
 	"html/template"
 	"os"
 	"yoomall/cmd/http/api"
-	"yoomall/config"
+	"yoomall/yoo/config"
+	"yoomall/yoo/constants"
 
 	"github.com/gin-gonic/gin"
 
-	_template "yoomall/core/template"
+	_template "yoomall/yoo/template"
 )
 
 func main() {
@@ -22,6 +24,10 @@ func main() {
 	})
 	port := os.Getenv("PORT")
 	if port == "" {
+		port = global.Config.GetString(constants.PORT)
+	}
+
+	if port == "0" || port == "" {
 		port = "8900"
 	}
 

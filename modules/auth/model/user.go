@@ -3,12 +3,12 @@ package model
 import (
 	"encoding/json"
 
-	"yoomall/core"
-	"yoomall/core/helper/utils"
+	"yoomall/yoo"
+	"yoomall/yoo/helper/utils"
 )
 
 type User struct {
-	*core.Model
+	*yoo.Model
 	UserName string `gorm:"not null;unique;index;column:username" json:"username"`
 	Password string `gorm:"column:password" json:"-"`
 	Role     int    `gorm:"column:role" json:"role"`
@@ -18,10 +18,10 @@ type User struct {
 
 	Bio string `gorm:"column:bio" json:"bio"`
 
-	LastLoginAt core.LocalTime `gorm:"column:last_login_at" json:"last_login_at"`
+	LastLoginAt yoo.LocalTime `gorm:"column:last_login_at" json:"last_login_at"`
 }
 
-var _ core.MarshalJSON = (*User)(nil)
+var _ yoo.MarshalJSON = (*User)(nil)
 
 func (m *User) TableName() string {
 	return "users"

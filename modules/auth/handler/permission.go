@@ -3,11 +3,11 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/driver"
-	"yoomall/core/helper/curd"
 	authmiddleware "yoomall/modules/auth/middleware"
 	"yoomall/modules/auth/model"
+	"yoomall/yoo"
+	"yoomall/yoo/driver"
+	"yoomall/yoo/helper/curd"
 
 	"gorm.io/gorm"
 )
@@ -26,9 +26,9 @@ func NewPermissionHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewar
 	}
 }
 
-func (p *PermissionHandler) Register(router *core.RouterGroup) {
+func (p *PermissionHandler) Register(router *yoo.RouterGroup) {
 	router.Use(p.authMidds.MustAuthMiddleware)
-	router.WithDoc(&core.DocItem{
+	router.WithDoc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "/list",
 	}).GET("/list", p.CRUD.GetListHandlerWithWhere(&[]model.Permission{}, func(tx *gorm.DB) *gorm.DB {

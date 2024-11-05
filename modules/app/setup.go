@@ -1,11 +1,11 @@
 package app
 
 import (
-	"yoomall/core"
-	"yoomall/core/driver"
-	"yoomall/core/plugins/upload"
 	"yoomall/modules/app/handler"
 	authmiddleware "yoomall/modules/auth/middleware"
+	yoo "yoomall/yoo"
+	"yoomall/yoo/driver"
+	"yoomall/yoo/plugins/upload"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
@@ -19,11 +19,11 @@ func NewWireDefaultApp(config *viper.Viper, db *driver.DB,
 ) *DefaultApp {
 	return &DefaultApp{
 		Config: config,
-		App: core.NewApp("default", config, db, []core.Handler{
+		App: yoo.NewApp("default", config, db, []yoo.Handler{
 			menuHandler,
 			jtkHandler,
 			dtkHandler,
-		}).WithPlugins([]core.IPlugin{
+		}).WithPlugins([]yoo.IPlugin{
 			upload.NewUploadPlugin().WithMiddlewares([]gin.HandlerFunc{
 				authmiddleware.NewAuthMiddleware(db, true, false),
 			}),

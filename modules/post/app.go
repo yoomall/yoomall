@@ -3,8 +3,8 @@ package post
 import (
 	"net/http"
 
-	"yoomall/core"
-	"yoomall/core/driver"
+	core "yoomall/yoo"
+	"yoomall/yoo/driver"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
