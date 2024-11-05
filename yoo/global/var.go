@@ -3,7 +3,7 @@ package global
 import "github.com/spf13/viper"
 
 var (
-	// init by yoo.NewHttpServer
+	// init by yoo.config.Newxxx
 	Config *viper.Viper = viper.New()
 )
 

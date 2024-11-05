@@ -2,7 +2,7 @@ package render
 
 import (
 	"net/http"
-	"yoomall/yoo/config"
+	"yoomall/yoo/global"
 	"yoomall/yoo/helper/response"
 )
 
@@ -33,11 +33,11 @@ func Html(template string, data interface{}) *Render {
 			},
 		},
 		"site": map[string]any{
-			"title":       config.Config.GetString("site.title"),
-			"description": config.Config.GetString("site.description"),
-			"keywords":    config.Config.GetString("site.keywords"),
-			"author":      config.Config.GetString("site.author"),
-			"logo":        config.Config.GetString("site.logo"),
+			"title":       global.Config.GetString("site.title"),
+			"description": global.Config.GetString("site.description"),
+			"keywords":    global.Config.GetString("site.keywords"),
+			"author":      global.Config.GetString("site.author"),
+			"logo":        global.Config.GetString("site.logo"),
 		},
 	})
 
