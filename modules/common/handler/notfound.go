@@ -23,7 +23,7 @@ func (n *NotFoundRecordHandler) GetRouterGroupName() string {
 
 // Register implements yoo.Handler.
 func (n *NotFoundRecordHandler) Register(router *yoo.RouterGroup) {
-	router.WithDoc(&yoo.DocItem{
+	router.Doc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
 	}).GET("", n.curd.GetListHandler(&[]model.NotFoundRecord{}))

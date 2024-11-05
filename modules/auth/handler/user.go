@@ -38,21 +38,25 @@ func NewUserHandler(db *driver.DB, config *viper.Viper, service *authservice.Aut
 
 func (u *UserHandler) Register(router *yoo.RouterGroup) {
 	// 登录接口
-	router.WithDoc(&yoo.DocItem{
+	router.POST("/login", u.loginWithUsernameAndPassword).Doc(&yoo.DocItem{
 		Method: http.MethodPost,
 		Path:   "/login",
 		Body:   request.UserUserNameAndPasswordLoginRequest{},
-	}).POST("/login", u.LoginWithUsernameAndPassword)
+	})
 
 	// 用户列表
 	auth := router.Group("").Use(u.authMidds.MustAuthMiddleware)
 	{
-		auth.WithDoc(&yoo.DocItem{
-			Method: http.MethodGet,
-			Path:   "/user-list",
-		}).GET("/user-list", u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
-			return tx
-		}))
+		auth.GET("/user-list", u.userList).Doc(&yoo.DocItem{
+			Method:      http.MethodGet,
+			Path:        "/user-list",
+			Title:       "用户列表",
+			Tag:         "auth",
+			Description: "用户列表",
+			Params:      nil,
+			Success:     nil,
+			Failure:     nil,
+		})
 	}
 
 }
@@ -61,7 +65,13 @@ func (u *UserHandler) GetRouterGroupName() string {
 	return "users"
 }
 
-func (u *UserHandler) LoginWithUsernameAndPassword(ctx *gin.Context) {
+func (u *UserHandler) userList(ctx *gin.Context) {
+	u.CRUD.GetListHandlerWithWhere(&[]model.User{}, func(tx *gorm.DB) *gorm.DB {
+		return tx
+	})(ctx)
+}
+
+func (u *UserHandler) loginWithUsernameAndPassword(ctx *gin.Context) {
 	var data request.UserUserNameAndPasswordLoginRequest
 	ctx.ShouldBindBodyWithJSON(&data)
 	result := u.service.LoginWithUsernameAndPassword(data.UserName, data.Password, ctx)

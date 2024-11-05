@@ -37,25 +37,25 @@ func NewUserRoleHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewareG
 func (u *UserRoleHandler) Register(router *yoo.RouterGroup) {
 	auth := router.Group("").Use(u.authMidds.MustAuthMiddleware)
 	{
-		auth.WithDoc(&yoo.DocItem{
+		auth.GET("/role-list", u.CRUD.GetListHandler(&[]model.UserRole{})).Doc(&yoo.DocItem{
 			Method: http.MethodGet,
 			Path:   "/role-list",
-		}).GET("/role-list", u.CRUD.GetListHandler(&[]model.UserRole{}))
+		})
 
-		auth.WithDoc(&yoo.DocItem{
+		auth.POST("/create-role", u.create).Doc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/create-role",
-		}).POST("/create-role", u.create)
+		})
 
-		auth.WithDoc(&yoo.DocItem{
+		auth.POST("/update-role", u.update).Doc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/update-role",
-		}).POST("/update-role", u.update)
+		})
 
-		auth.WithDoc(&yoo.DocItem{
+		auth.POST("/delete-role", u.delete).Doc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/delete-role",
-		}).POST("/delete-role", u.delete)
+		})
 
 	}
 }

@@ -27,7 +27,7 @@ func NewUploadPlugin() *UploadPlugin {
 }
 
 func (p *UploadPlugin) RegisterRouter(router *yoo.RouterGroup) {
-	router.WithDoc(&yoo.DocItem{
+	router.Doc(&yoo.DocItem{
 		Method: http.MethodPost,
 		Path:   "/upload",
 	}).POST("/upload", p.upload)

@@ -11,7 +11,7 @@ type RouterGroup struct {
 	*gin.RouterGroup
 }
 
-func (r *RouterGroup) WithDoc(doc *DocItem) *RouterGroup {
+func (r *RouterGroup) Doc(doc *DocItem) *RouterGroup {
 	// register handler
 	// r.Use(middlewares...).Handle(doc.Method, doc.Path, func(ctx *gin.Context) {
 	// 	// 似乎还可以在这里添加验证和直接填参数 handler(ctx,page,limit,params...)

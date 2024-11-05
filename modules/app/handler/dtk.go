@@ -29,11 +29,11 @@ func NewDtkHandler(config *viper.Viper) *DtkHandler {
 }
 
 func (d *DtkHandler) Register(router *yoo.RouterGroup) {
-	router.WithDoc(&yoo.DocItem{
+	router.GET("", d.dtk).Doc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Tag:    "dtk",
 		Path:   "",
-	}).GET("", d.dtk)
+	})
 }
 
 func (d *DtkHandler) GetRouterGroupName() string {

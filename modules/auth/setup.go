@@ -71,14 +71,14 @@ func (a *AuthApp) Middleware() []gin.HandlerFunc {
 func (a *AuthApp) Register(router *core.RouterGroup) {
 	auth := router.Group("").Use(authmiddleware.NewMustAuthMiddlewareWithUser(a.GetDB()))
 	{
-		auth.WithDoc(&core.DocItem{
+		auth.Doc(&core.DocItem{
 			Method: http.MethodGet,
 			Path:   "/profile",
 		}).GET("/profile", func(ctx *gin.Context) {
 			response.Success(ctx.MustGet("user")).Done(ctx)
 		})
 
-		auth.WithDoc(&core.DocItem{
+		auth.Doc(&core.DocItem{
 			Method: http.MethodGet,
 			Path:   "/logout",
 		}).POST("/logout", func(ctx *gin.Context) {

@@ -28,12 +28,12 @@ func NewPermissionHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewar
 
 func (p *PermissionHandler) Register(router *yoo.RouterGroup) {
 	router.Use(p.authMidds.MustAuthMiddleware)
-	router.WithDoc(&yoo.DocItem{
+	router.GET("/list", p.CRUD.GetListHandlerWithWhere(&[]model.Permission{}, func(tx *gorm.DB) *gorm.DB {
+		return tx
+	})).Doc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "/list",
-	}).GET("/list", p.CRUD.GetListHandlerWithWhere(&[]model.Permission{}, func(tx *gorm.DB) *gorm.DB {
-		return tx
-	}))
+	})
 }
 
 func (p *PermissionHandler) GetRouterGroupName() string {

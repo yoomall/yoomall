@@ -44,7 +44,7 @@ func (s *SystemConfigHandler) GetRouterGroupName() string {
 // Register implements yoo.Handler.
 func (s *SystemConfigHandler) Register(router *yoo.RouterGroup) {
 
-	router.WithDoc(&yoo.DocItem{
+	router.Doc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "/get/:groupId",
 	}).GET("/get/:groupId", func(ctx *gin.Context) {
@@ -58,13 +58,13 @@ func (s *SystemConfigHandler) Register(router *yoo.RouterGroup) {
 	auth := router.Group("").Use(s.authMidds.MustAuthMiddleware)
 	{
 		// 系统配置
-		auth.WithDoc(&yoo.DocItem{
+		auth.Doc(&yoo.DocItem{
 			Method: http.MethodGet,
 			Path:   "/list",
 		}).GET("/list", s.curd.GetListHandler(&[]model.SystemConfig{}))
 
 		// 创建
-		auth.WithDoc(&yoo.DocItem{
+		auth.Doc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/create",
 		}).POST("/create", func(ctx *gin.Context) {
@@ -74,7 +74,7 @@ func (s *SystemConfigHandler) Register(router *yoo.RouterGroup) {
 		})
 
 		// 更新
-		auth.WithDoc(&yoo.DocItem{
+		auth.Doc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/update",
 		}).POST("/update", func(ctx *gin.Context) {
@@ -84,7 +84,7 @@ func (s *SystemConfigHandler) Register(router *yoo.RouterGroup) {
 		})
 
 		// 删除
-		auth.WithDoc(&yoo.DocItem{
+		auth.Doc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/delete",
 		}).POST("/delete", func(ctx *gin.Context) {
@@ -92,7 +92,7 @@ func (s *SystemConfigHandler) Register(router *yoo.RouterGroup) {
 		})
 
 		// 导出
-		auth.WithDoc(&yoo.DocItem{
+		auth.Doc(&yoo.DocItem{
 			Method: http.MethodGet,
 			Path:   "/export",
 		}).GET("/export", s.curd.ExportHanderWithWhere(&[]model.SystemConfig{}, nil))
@@ -103,12 +103,12 @@ func (s *SystemConfigHandler) Register(router *yoo.RouterGroup) {
 	groups := router.Group("/groups")
 	auth_groups := groups.Group("").Use(s.authMidds.MustAuthMiddleware)
 	{
-		auth_groups.WithDoc(&yoo.DocItem{
+		auth_groups.Doc(&yoo.DocItem{
 			Method: http.MethodGet,
 			Path:   "/list",
 		}).GET("/list", s.groupCurd.GetListHandler(&[]model.SystemConfigGroup{}))
 
-		auth_groups.WithDoc(&yoo.DocItem{
+		auth_groups.Doc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/create",
 		}).POST("/create", func(ctx *gin.Context) {
@@ -117,7 +117,7 @@ func (s *SystemConfigHandler) Register(router *yoo.RouterGroup) {
 			})
 		})
 
-		auth_groups.WithDoc(&yoo.DocItem{
+		auth_groups.Doc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/update",
 		}).POST("/update", func(ctx *gin.Context) {
@@ -126,7 +126,7 @@ func (s *SystemConfigHandler) Register(router *yoo.RouterGroup) {
 			})
 		})
 
-		auth_groups.WithDoc(&yoo.DocItem{
+		auth_groups.Doc(&yoo.DocItem{
 			Method: http.MethodPost,
 			Path:   "/delete",
 		}).POST("/delete", func(ctx *gin.Context) {

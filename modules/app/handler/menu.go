@@ -27,17 +27,22 @@ func NewMenuHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewareGroup
 }
 
 func (m *MenuHandler) Register(router *yoo.RouterGroup) {
-	router.Use(m.authMidds.MustAuthMiddleware)
-	router.WithDoc(&yoo.DocItem{
-		Method: http.MethodGet,
-		Path:   "",
-	}).GET("", func(ctx *gin.Context) {
-		response.Success([]any{
-			overviewUI(),
-			userManagementUI(),
-			systemConfigUI(),
-		}).Done(ctx)
-	})
+	auth := router.Use(m.authMidds.MustAuthMiddleware)
+	{
+		auth.GET("", m.menus).Doc(&yoo.DocItem{
+			Method: http.MethodGet,
+			Path:   "",
+		})
+	}
+
+}
+
+func (m *MenuHandler) menus(ctx *gin.Context) {
+	response.Success([]any{
+		overviewUI(),
+		userManagementUI(),
+		systemConfigUI(),
+	}).Done(ctx)
 }
 
 func (m *MenuHandler) GetRouterGroupName() string {

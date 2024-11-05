@@ -27,7 +27,7 @@ var WireSet = wire.NewSet(NewDefaultApp)
 var _ core.IApp = (*PostApp)(nil)
 
 func (d *PostApp) Register(router *core.RouterGroup) {
-	router.WithDoc(&core.DocItem{
+	router.Doc(&core.DocItem{
 		Method: http.MethodGet,
 		Tag:    "post",
 		Path:   "/list",

@@ -35,10 +35,10 @@ var _ yoo.Handler = (*UserTokenHandler)(nil)
 
 func (u *UserTokenHandler) Register(router *yoo.RouterGroup) {
 	router.Use(u.authMidds.MustAuthMiddleware)
-	router.WithDoc(&yoo.DocItem{
+	router.GET("/logs", u.CRUD.GetListHandlerWithWhere(&[]model.UserToken{}, func(tx *gorm.DB) *gorm.DB {
+		return tx.Preload("User")
+	})).Doc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "/logs",
-	}).GET("/logs", u.CRUD.GetListHandlerWithWhere(&[]model.UserToken{}, func(tx *gorm.DB) *gorm.DB {
-		return tx.Preload("User")
-	}))
+	})
 }

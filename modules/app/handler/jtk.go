@@ -33,10 +33,10 @@ func (j *JtkHandler) GetRouterGroupName() string {
 }
 
 func (j *JtkHandler) Register(router *yoo.RouterGroup) {
-	router.WithDoc(&yoo.DocItem{
+	router.GET("", j.jtk).Doc(&yoo.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
-	}).GET("", j.jtk)
+	})
 }
 
 func (j *JtkHandler) jtk(ctx *gin.Context) {

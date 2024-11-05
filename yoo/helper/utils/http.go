@@ -8,11 +8,21 @@ import (
 	"time"
 
 	"yoomall/yoo/helper/response"
+	"yoomall/yoo/helper/validate"
 
 	"github.com/gin-gonic/gin"
 )
 
 func ProxyRequest(ctx *gin.Context) {
+	var params map[string]string = make(map[string]string)
+	ctx.ShouldBindQuery(&params)
+
+	validator := validate.NewValidator()
+	validator.AddValidate(validate.NewStringValidate("url", false, "url is empty", 2, 300, nil))
+	if valid, msg := validator.Validate(StringMapToInterfaceMap(params)); !valid {
+		response.Error(response.ErrBadRequest, msg).Done(ctx)
+		return
+	}
 
 	url := ctx.Query("url")
 	req, err := http.NewRequest(ctx.Request.Method, url, nil)

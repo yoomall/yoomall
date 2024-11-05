@@ -37,11 +37,7 @@ func NewHttpServer(
 	setupEngine func(*gin.Engine) *gin.Engine,
 ) *yoo.HttpServer {
 	// logger setup
-	logLevel := log.InfoLevel
-	if config.GetBool(constants.DEBUG) {
-		logLevel = log.DebugLevel
-	}
-	log.SetLevel(logLevel)
+	setupLogger(config)
 	// logger setup
 
 	log.Info("Start http server.", "debug mode: ", config.GetBool(constants.DEBUG))
@@ -87,6 +83,14 @@ func NewHttpServer(
 	}
 
 	return server
+}
+
+func setupLogger(config *viper.Viper) {
+	logLevel := log.InfoLevel
+	if config.GetBool(constants.DEBUG) {
+		logLevel = log.DebugLevel
+	}
+	log.SetLevel(logLevel)
 }
 
 func NewDoc() *core.Doc {

@@ -70,9 +70,7 @@ func (v *ViewsApp) Register(router *core.RouterGroup) {
 		}).SEO("easyly make your design to production.", "yoomall", "yoomall").Done(ctx)
 	})
 
-	router.GET("/about.html", func(ctx *gin.Context) {
-		render.Html("about.html", nil).Done(ctx)
-	})
+	router.GET("/about.html", aboutView)
 }
 
 func (v *ViewsApp) NotFoundHandler(ctx *gin.Context) {
