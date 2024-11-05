@@ -24,6 +24,7 @@ func NewHttpServer(
 
 	// apps
 	app *app.DefaultApp,
+	appV2 *app.DefaultV2App,
 	auth *auth.AuthApp,
 	postApp *post.PostApp,
 	commonApp *common.CommonApp,
@@ -51,7 +52,6 @@ func NewHttpServer(
 	server := yoo.NewHttpServer(config, setupEngine(gin.Default()))
 
 	server.Engine.Use(gin.Logger())
-
 	server.Engine.SetTrustedProxies(nil)               //设置允许请求的域名
 	server.Engine.Use(coremiddleware.CORSMiddleware()) // 跨域
 	server.Engine.Use(gin.Recovery())                  // 错误恢复
@@ -60,27 +60,22 @@ func NewHttpServer(
 
 	server.Engine.NoRoute(viewsApp.NotFoundHandler)
 
-	root := &core.RouterGroup{
-		RouterGroup: server.Engine.Group("/"),
-	}
+	root := yoo.Group(server.Engine, "")
 
-	v1 := &core.RouterGroup{
-		RouterGroup: server.Engine.Group("/api/v1"),
-	}
+	// v1
+	v1 := yoo.Group(server.Engine, "/api/v1")
+	v2 := yoo.Group(server.Engine, "/api/v2")
+
 	v1.GET("/docs/api.json", doc.Handler)
-
-	var apps = []*core.RegisterApp{
+	yoo.RegisterApps([]*yoo.RegisterApp{
 		{App: viewsApp, Router: root.Group("")},
 
 		{App: app, Router: v1.Group("")},
 		{App: auth, Router: v1.Group("/auth")},
 		{App: postApp, Router: v1.Group("/post")},
 		{App: commonApp, Router: v1.Group("/common")},
-	}
-
-	for _, app := range apps {
-		app.Register()
-	}
+		{App: appV2, Router: v2.Group("")},
+	})
 
 	return server
 }

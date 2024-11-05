@@ -11,6 +11,7 @@ import (
 	"github.com/spf13/viper"
 	"yoomall/modules/app"
 	"yoomall/modules/app/handler"
+	"yoomall/modules/app/handler/v2"
 	"yoomall/modules/auth"
 	handler2 "yoomall/modules/auth/handler"
 	"yoomall/modules/auth/middleware"
@@ -32,6 +33,8 @@ func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin
 	menuHandler := handler.NewMenuHandler(db, authMiddlewareGroup)
 	jtkHandler := handler.NewJtkHandler(conf)
 	defaultApp := app.NewWireDefaultApp(conf, db, dtkHandler, menuHandler, jtkHandler)
+	baseHandlerV2 := appHandlerV2.NewBaseHandler()
+	defaultV2App := app.NewDefaultV2App(conf, db, baseHandlerV2)
 	authService := authservice.NewAuthService(db)
 	userHandler := handler2.NewUserHandler(db, conf, authService, authMiddlewareGroup)
 	userRoleHandler := handler2.NewUserRoleHandler(db, authMiddlewareGroup)
@@ -46,6 +49,6 @@ func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin
 	commonApp := common.NewCommonApp(conf, db, notFoundRecordHandler, systemConfigHandler)
 	viewsApp := views.NewViewApp(db, conf)
 	doc := NewDoc()
-	httpServer := NewHttpServer(conf, defaultApp, authApp, postApp, commonApp, viewsApp, notFoundRecordService, doc, setupEngine)
+	httpServer := NewHttpServer(conf, defaultApp, defaultV2App, authApp, postApp, commonApp, viewsApp, notFoundRecordService, doc, setupEngine)
 	return httpServer
 }

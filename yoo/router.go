@@ -11,6 +11,10 @@ type RouterGroup struct {
 	*gin.RouterGroup
 }
 
+func Group(router *gin.Engine, path string) *RouterGroup {
+	return &RouterGroup{RouterGroup: router.Group(path)}
+}
+
 func (r *RouterGroup) Doc(doc *DocItem) *RouterGroup {
 	// register handler
 	// r.Use(middlewares...).Handle(doc.Method, doc.Path, func(ctx *gin.Context) {

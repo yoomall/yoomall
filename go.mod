@@ -91,5 +91,3 @@ require (
 	golang.org/x/text v0.19.0 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 )
-require yoomall v0.0.0-unpublished
-replace yoomall => ./

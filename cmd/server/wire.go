@@ -18,6 +18,11 @@ import (
 )
 
 func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin.Engine) *yoo.HttpServer {
-	wire.Build(NewHttpServer, NewDoc, app.WireSet, post.WireSet, auth.WireSet, common.WireSet, views.WireSet)
+	wire.Build(NewHttpServer,
+		NewDoc,
+		app.WireSet,
+		app.V2WireSet,
+		post.WireSet, auth.WireSet, common.WireSet, views.WireSet,
+	)
 	return &yoo.HttpServer{}
 }

@@ -109,3 +109,9 @@ func (instance *RegisterApp) Register() {
 	log.Debug("====App:【" + instance.App.GetName() + "】 register End====================================")
 	log.Debug("\n")
 }
+
+func RegisterApps(apps []*RegisterApp) {
+	for _, app := range apps {
+		app.Register()
+	}
+}

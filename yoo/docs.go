@@ -3,6 +3,7 @@ package yoo
 import (
 	"encoding/json"
 	"net/http"
+	"sync"
 	"yoomall/yoo/types"
 
 	"github.com/gin-gonic/gin"
@@ -43,6 +44,7 @@ type DocItem struct {
 }
 
 var DocInstance *Doc = nil
+var mutex sync.RWMutex
 
 func NewDoc() *Doc {
 	DocInstance = &Doc{}
@@ -50,6 +52,8 @@ func NewDoc() *Doc {
 }
 
 func (d *Doc) Add(item *DocItem) {
+	mutex.Lock()
+	defer mutex.Unlock()
 	d.Items = append(d.Items, item)
 }
 

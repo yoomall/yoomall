@@ -2,6 +2,7 @@ package app
 
 import (
 	"yoomall/modules/app/handler"
+	appHandlerV2 "yoomall/modules/app/handler/v2"
 	authmiddleware "yoomall/modules/auth/middleware"
 	yoo "yoomall/yoo"
 	"yoomall/yoo/driver"
@@ -38,3 +39,5 @@ var handlerSet = wire.NewSet(
 )
 
 var WireSet = wire.NewSet(NewWireDefaultApp, handlerSet)
+
+var V2WireSet = wire.NewSet(NewDefaultV2App, appHandlerV2.NewBaseHandler)
