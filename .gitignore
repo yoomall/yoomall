@@ -21,3 +21,4 @@ public/assets
 public/manifest.json
 public/admin
 .vercel
+.DS_Store

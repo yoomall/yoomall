@@ -54,7 +54,7 @@ func (a *HtmlTemplateResponse) Done(ctx *gin.Context) {
 		"request": ctx.Request,
 	})
 
-	namespace := global.Config.GetString(constants.THEME)
+	namespace := global.GetConfig().GetString(constants.THEME)
 	if namespace == "" {
 		namespace = "default"
 	}

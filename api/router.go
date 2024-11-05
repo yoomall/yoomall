@@ -1,10 +1,10 @@
 package api
 
 import (
-	"api/cmd/server"
 	"embed"
 	"html/template"
 	"net/http"
+	"yoomall/cmd/server"
 	"yoomall/yoo"
 	"yoomall/yoo/config"
 	"yoomall/yoo/driver"

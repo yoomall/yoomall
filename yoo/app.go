@@ -3,7 +3,6 @@ package yoo
 import (
 	"yoomall/yoo/constants"
 	"yoomall/yoo/driver"
-	"yoomall/yoo/global"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
@@ -89,7 +88,7 @@ type RegisterApp struct {
 func (instance *RegisterApp) Register() {
 	log.Debug("====App:【" + instance.App.GetName() + "】 register Start====================================")
 	log.Debug("注册app", "app", instance.App.GetName())
-	if global.Config.GetBool(constants.DEBUG) {
+	if instance.App.GetConfig().GetBool(constants.DEBUG) {
 		log.Debug("迁移中")
 		instance.App.Migrate()
 		log.Debug("迁移成功 success")

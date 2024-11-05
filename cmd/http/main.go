@@ -1,10 +1,9 @@
 package main
 
 import (
-	"api/cmd/server"
-	"api/yoo/global"
 	"html/template"
 	"os"
+	"yoomall/cmd/server"
 	"yoomall/yoo/config"
 	"yoomall/yoo/constants"
 
@@ -24,7 +23,7 @@ func main() {
 	})
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = global.Config.GetString(constants.PORT)
+		port = conf.GetString(constants.PORT)
 	}
 
 	if port == "0" || port == "" {

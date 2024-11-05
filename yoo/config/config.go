@@ -1,11 +1,11 @@
 package config
 
 import (
-	"api/yoo/global"
 	"bytes"
 	"fmt"
 	"os"
 
+	"github.com/charmbracelet/log"
 	"github.com/spf13/viper"
 )
 
@@ -32,9 +32,10 @@ func NewConfigFromFile() *viper.Viper {
 
 	config := viper.New()
 	config.SetConfigType("yaml")
-	config.AddConfigPath("./")
-	config.AddConfigPath("./config/")
-	config.AddConfigPath("$HOME/.yoomall/")
+	config.AddConfigPath("./")              // current dir
+	config.AddConfigPath("./config/")       // config dir
+	config.AddConfigPath("../../")          //relative root
+	config.AddConfigPath("$HOME/.yoomall/") // home
 	config.SetConfigName("config")
 
 	config.SetEnvPrefix("yoomall")
@@ -43,13 +44,15 @@ func NewConfigFromFile() *viper.Viper {
 	if err := config.ReadInConfig(); err != nil {
 		fmt.Println("Failed to read config file, err: ", err)
 		// gen default config.yaml
-		config.WriteConfigAs("./config.yaml")
 		os.Exit(1)
 	}
 	setup(config)
 	return config
 }
 
+var Config *viper.Viper
+
 func setup(config *viper.Viper) {
-	global.Config = config
+	log.Info(fmt.Sprintf("config: %+v", config.AllSettings()))
+	Config = config
 }

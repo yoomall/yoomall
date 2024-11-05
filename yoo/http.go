@@ -1,7 +1,6 @@
 package yoo
 
 import (
-	"api/yoo/global"
 	"fmt"
 
 	"github.com/charmbracelet/log"
@@ -15,7 +14,7 @@ type HttpServer struct {
 }
 
 func NewHttpServer(config *viper.Viper, engine *gin.Engine) *HttpServer {
-	global.Init(config)
+
 	return &HttpServer{
 		Engine: engine,
 		Config: config,

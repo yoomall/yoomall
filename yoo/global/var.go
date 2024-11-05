@@ -1,12 +1,11 @@
 package global
 
-import "github.com/spf13/viper"
+import (
+	"yoomall/yoo/config"
 
-var (
-	// init by yoo.config.Newxxx
-	Config *viper.Viper = viper.New()
+	"github.com/spf13/viper"
 )
 
-func Init(config *viper.Viper) {
-	Config = config
+func GetConfig() *viper.Viper {
+	return config.Config
 }

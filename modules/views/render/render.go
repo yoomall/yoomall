@@ -33,11 +33,11 @@ func Html(template string, data interface{}) *Render {
 			},
 		},
 		"site": map[string]any{
-			"title":       global.Config.GetString("site.title"),
-			"description": global.Config.GetString("site.description"),
-			"keywords":    global.Config.GetString("site.keywords"),
-			"author":      global.Config.GetString("site.author"),
-			"logo":        global.Config.GetString("site.logo"),
+			"title":       global.GetConfig().GetString("site.title"),
+			"description": global.GetConfig().GetString("site.description"),
+			"keywords":    global.GetConfig().GetString("site.keywords"),
+			"author":      global.GetConfig().GetString("site.author"),
+			"logo":        global.GetConfig().GetString("site.logo"),
 		},
 	})
 

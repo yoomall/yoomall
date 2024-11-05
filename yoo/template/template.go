@@ -146,10 +146,11 @@ func Funcs(manifestJSON []byte) template.FuncMap {
 func vite(_path string, manifestJSON []byte) template.HTML {
 	ext := path.Ext(_path)
 
-	vite_url := global.Config.GetString(constants.VITE_URL)
-	vite_build_dir := global.Config.GetString(constants.VITE_BUILD_DIR)
+	vite_url := global.GetConfig().GetString(constants.VITE_URL)
+	vite_build_dir := global.GetConfig().GetString(constants.VITE_BUILD_DIR)
+	log.Info(fmt.Sprintf("vite url: %s, vite build dir: %s", vite_url, vite_build_dir))
 
-	if global.Config.GetBool(constants.VITE_DEBUG) {
+	if global.GetConfig().GetBool(constants.VITE_DEBUG) {
 		if ext == ".js" {
 			return template.HTML(`<script>/** Vite **/</script> <script type="module" src="` + (vite_url + _path) + `"></script> <script>/** Vite end **/</script>`)
 		}
@@ -161,16 +162,16 @@ func vite(_path string, manifestJSON []byte) template.HTML {
 	}
 	manifestData := make(map[string]map[string]any)
 
-	if len(manifestJSON) >= 0 {
+	if len(manifestJSON) > 0 {
 		if err := json.Unmarshal(manifestJSON, &manifestData); err != nil {
-			log.Error("embed fs parse manifest error: " + err.Error())
+			log.Error("embed fs parse manifest error: " + err.Error() + "\n" + string(manifestJSON))
 			return template.HTML("parse manifest error: " + err.Error())
 		}
 	} else {
 		manifestPath := path.Join(vite_build_dir, "manifest.json")
 		manifestFile, err := os.Open(manifestPath)
 		if err != nil {
-			log.Error("open manifest error: " + err.Error())
+			log.Error("open manifest error: " + err.Error() + "\n" + manifestPath)
 			return template.HTML("open manifest error: " + err.Error())
 		}
 		defer manifestFile.Close()
