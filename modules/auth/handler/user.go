@@ -27,10 +27,7 @@ var _ yoo.Handler = (*UserHandler)(nil)
 
 func NewUserHandler(db *driver.DB, config *viper.Viper, service *authservice.AuthService, authMiddlewareGroup *authmiddleware.AuthMiddlewareGroup) *UserHandler {
 	return &UserHandler{
-		CRUD: &curd.CRUD{
-			DB:    db,
-			Model: &model.User{},
-		},
+		CRUD:      curd.New(db, &model.User{}),
 		service:   service,
 		authMidds: authMiddlewareGroup,
 	}
@@ -56,6 +53,23 @@ func (u *UserHandler) Register(router *yoo.RouterGroup) {
 			Params:      nil,
 			Success:     nil,
 			Failure:     nil,
+		})
+	}
+
+	authWithUser := router.Group("").Use(u.authMidds.MustAuthMiddlewareWithUser)
+	{
+		authWithUser.Doc(&yoo.DocItem{
+			Method: http.MethodGet,
+			Path:   "/profile",
+		}).GET("/profile", func(ctx *gin.Context) {
+			response.Success(ctx.MustGet("user")).Done(ctx)
+		})
+
+		authWithUser.Doc(&yoo.DocItem{
+			Method: http.MethodGet,
+			Path:   "/logout",
+		}).POST("/logout", func(ctx *gin.Context) {
+			u.service.Logout(ctx)
 		})
 	}
 

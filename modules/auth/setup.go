@@ -1,15 +1,12 @@
 package auth
 
 import (
-	"net/http"
-
 	"yoomall/modules/auth/handler"
 	authmiddleware "yoomall/modules/auth/middleware"
 	"yoomall/modules/auth/model"
 	authservice "yoomall/modules/auth/service"
 	core "yoomall/yoo"
 	"yoomall/yoo/driver"
-	"yoomall/yoo/helper/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
@@ -69,20 +66,5 @@ func (a *AuthApp) Middleware() []gin.HandlerFunc {
 }
 
 func (a *AuthApp) Register(router *core.RouterGroup) {
-	auth := router.Group("").Use(authmiddleware.NewMustAuthMiddlewareWithUser(a.GetDB()))
-	{
-		auth.Doc(&core.DocItem{
-			Method: http.MethodGet,
-			Path:   "/profile",
-		}).GET("/profile", func(ctx *gin.Context) {
-			response.Success(ctx.MustGet("user")).Done(ctx)
-		})
 
-		auth.Doc(&core.DocItem{
-			Method: http.MethodGet,
-			Path:   "/logout",
-		}).POST("/logout", func(ctx *gin.Context) {
-			a.service.Logout(ctx)
-		})
-	}
 }
