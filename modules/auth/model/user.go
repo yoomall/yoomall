@@ -5,6 +5,7 @@ import (
 
 	"yoomall/yoo"
 	"yoomall/yoo/helper/utils"
+	"yoomall/yoo/types"
 )
 
 type User struct {
@@ -18,10 +19,10 @@ type User struct {
 
 	Bio string `gorm:"column:bio" json:"bio"`
 
-	LastLoginAt yoo.LocalTime `gorm:"column:last_login_at" json:"last_login_at"`
+	LastLoginAt types.LocalTime `gorm:"column:last_login_at" json:"last_login_at"`
 }
 
-var _ yoo.MarshalJSON = (*User)(nil)
+var _ types.MarshalJSON = (*User)(nil)
 
 func (m *User) TableName() string {
 	return "users"

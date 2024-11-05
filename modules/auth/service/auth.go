@@ -8,10 +8,10 @@ import (
 
 	"yoomall/modules/auth/model"
 	authresponse "yoomall/modules/auth/response"
-	core "yoomall/yoo"
 	"yoomall/yoo/driver"
 	"yoomall/yoo/helper/response"
 	"yoomall/yoo/result"
+	"yoomall/yoo/types"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -121,7 +121,7 @@ func (s *AuthService) LoginWithUsernameAndPassword(username string, password str
 		return result.Err[*authresponse.LoginResult](fmt.Errorf("用户不存在"))
 	}
 
-	user.LastLoginAt = (core.LocalTime)(time.Now())
+	user.LastLoginAt = (types.LocalTime)(time.Now())
 
 	if err := s.DB.Save(&user).Error; err != nil {
 		return result.Err[*authresponse.LoginResult](fmt.Errorf("更新用户信息失败"))

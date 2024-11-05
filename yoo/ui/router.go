@@ -3,7 +3,7 @@ package ui
 import (
 	"encoding/json"
 
-	core "yoomall/yoo"
+	"yoomall/yoo/types"
 )
 
 type IRouter interface {
@@ -25,7 +25,7 @@ type Router struct {
 }
 
 var _ IRouter = (*Router)(nil)
-var _ core.MarshalJSON = (*Router)(nil)
+var _ types.MarshalJSON = (*Router)(nil)
 
 func (r *Router) GetPath() string {
 	return r.Path

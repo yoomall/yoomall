@@ -1,4 +1,4 @@
-package yoo
+package types
 
 import "database/sql/driver"
 

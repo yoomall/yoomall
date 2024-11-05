@@ -3,6 +3,7 @@ package yoo
 import (
 	"encoding/json"
 	"net/http"
+	"yoomall/yoo/types"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +27,7 @@ func (d *Doc) MarshalJSON() ([]byte, error) {
 	return json.Marshal(a)
 }
 
-var _ MarshalJSON = (*Doc)(nil)
+var _ types.MarshalJSON = (*Doc)(nil)
 
 type DocItem struct {
 	Title       string
