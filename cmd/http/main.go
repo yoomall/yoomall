@@ -14,9 +14,14 @@ import (
 
 func main() {
 	conf := config.NewConfig()
-	server := server.NewApp(conf, server.NewDB(conf), func(e *gin.Engine) *gin.Engine {
+	db := server.NewDB(conf)
+	server := server.NewApp(conf, db, func(e *gin.Engine) *gin.Engine {
 		// 设置模板
-		temp := template.New("main").Funcs(_template.Funcs(nil))
+		temp := template.New("main").Funcs(_template.Funcs(nil)).Funcs(template.FuncMap{
+			"hello": func() string {
+				return "hello world by template funcs!"
+			},
+		})
 		html := template.Must(_template.ParseGlob(temp, "templates", "*.html"))
 		e.SetHTMLTemplate(html)
 		return e

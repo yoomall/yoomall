@@ -148,7 +148,7 @@ func vite(_path string, manifestJSON []byte) template.HTML {
 
 	vite_url := global.GetConfig().GetString(constants.VITE_URL)
 	vite_build_dir := global.GetConfig().GetString(constants.VITE_BUILD_DIR)
-	log.Info(fmt.Sprintf("vite url: %s, vite build dir: %s", vite_url, vite_build_dir))
+	// log.Info(fmt.Sprintf("vite url: %s, vite build dir: %s", vite_url, vite_build_dir))
 
 	if global.GetConfig().GetBool(constants.VITE_DEBUG) {
 		if ext == ".js" {
