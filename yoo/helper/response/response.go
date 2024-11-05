@@ -1,11 +1,11 @@
 package response
 
 import (
-	"api/yoo/global"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"yoomall/yoo/constants"
+	"yoomall/yoo/global"
 
 	"github.com/gin-gonic/gin"
 )

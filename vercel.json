@@ -5,7 +5,7 @@
         },
         {
             "src": "/(.*)",
-            "dest": "api/router.go"
+            "dest": "vercel/router.go"
         }
     ],
     "build": {

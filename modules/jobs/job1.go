@@ -1,9 +1,9 @@
 package jobs
 
 import (
-	"api/yoo"
 	"fmt"
 	"time"
+	"yoomall/yoo"
 )
 
 type Job1 struct {

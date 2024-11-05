@@ -1,4 +1,4 @@
-module api
+module yoomall
 
 go 1.23.0
 

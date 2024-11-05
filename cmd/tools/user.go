@@ -1,13 +1,13 @@
 package main
 
 import (
-	"api/yoo/global"
 	"bufio"
 	"fmt"
 	"math/rand/v2"
 	"os"
 	"strings"
 	"time"
+	"yoomall/yoo/global"
 
 	"yoomall/modules/auth/model"
 	authservice "yoomall/modules/auth/service"
