@@ -2,6 +2,7 @@ package authservice
 
 import (
 	"fmt"
+	"math/rand"
 	"regexp"
 	"strings"
 	"time"
@@ -171,16 +172,42 @@ func (s *AuthService) CheckPasswordStrength(password string) error {
 	return nil
 }
 
+// gen uid by a-zA-Z0-9
+func (s *AuthService) GenUniID() string {
+	seed := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	randStr := make([]byte, 8)
+	for i := range randStr {
+		randStr[i] = seed[rand.Intn(len(seed))]
+	}
+	return string(randStr)
+}
+
 func (s *AuthService) CreateUser(user *model.User) error {
 	if err := s.CheckPasswordStrength(user.Password); err != nil {
 		return err
 	}
+
+	var uid string = s.GenUniID()
 
 	find := s.DB.Where("username = ?", user.UserName).Where("email = ?", user.Email).Where("phone = ?", user.Phone).First(&model.User{}).Error
 	if find == nil {
 		return fmt.Errorf("用户已存在")
 	}
 
+	var tryUIDCount int = 0
+	for {
+		if tryUIDCount > 10 {
+			return fmt.Errorf("生成 uid 失败")
+		}
+		tryUIDCount++
+		findUID := s.DB.Where("uni_id = ?", uid).First(&model.User{}).Error
+		if findUID == nil {
+			uid = s.GenUniID()
+		} else {
+			break
+		}
+	}
+	user.UniID = uid
 	user.Password, _ = s.HashedPassword(user.Password)
 	return s.DB.Create(user).Error
 }

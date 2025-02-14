@@ -1,0 +1,18 @@
+package main
+
+import (
+	"strings"
+	"yoomall/cmd/server"
+	"yoomall/yoo/config"
+	"yoomall/yoo/driver"
+)
+
+var appConfig = config.NewConfig()
+
+func getDB() *driver.DB {
+	return server.NewDB(appConfig)
+}
+
+func trimShellInputString(input string) string {
+	return strings.TrimSuffix(strings.TrimSuffix(input, "\n"), "\r")
+}

@@ -103,7 +103,7 @@ const logout = () => {
             </div>
             <div class="flex flex-row flex-1 light:bg-gray-100 h-screen"
                 style="padding-top: var(--header-bar-height);box-sizing: border-box;">
-                <div class="w-64px dark:bg-dark-800 light:bg-dark light:text-white overflow-y-auto hidden-scroll-bar border-0 border-solid border-r-1px light:border-gray-200 dark:border-dark"
+                <div class="w-85px dark:bg-dark-800 light:bg-dark light:text-white overflow-y-auto hidden-scroll-bar border-0 border-solid border-r-1px light:border-gray-200 dark:border-dark"
                     :style="subMenuStore.hasSubMenu ? `z-index: 9;box-shadow: 6px 0 36px #00000010;` : ''">
                     <!-- <Menu :menus="menus" ></Menu> -->
                     <div>
@@ -114,7 +114,7 @@ const logout = () => {
                         'bg-dark-100 dark:bg-dark-600 on': currentPath.startsWith(m.path)
                     }" v-for="m in menus"
                             class="flex flex-col items-center p-2 py-3 text-center cursor-pointer hover:bg-dark-100 dark:hover:bg-dark-600 hover:text-gray-300">
-                            <Icon :icon="m.icon" />
+                            <Icon :icon="m.icon" class="text-2xl" />
                             <span class="text-sm">{{ m.title }}</span>
                         </div>
                     </div>

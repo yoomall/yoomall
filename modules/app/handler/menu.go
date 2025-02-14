@@ -94,6 +94,14 @@ func userManagementUI() ui.IRouter {
 					},
 				},
 				{
+					Prop:  "uni_id",
+					Label: "UniID",
+					Width: "160px",
+					Props: map[string]any{
+						"class": "line-clamp-1 font-bold",
+					},
+				},
+				{
 					Prop:  "phone",
 					Label: "手机",
 					Width: "125px",

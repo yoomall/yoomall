@@ -15,7 +15,7 @@ export const useProfileStore = defineStore({
             this.profile = profile
         },
         refreshProfile() {
-            request.get("/auth/profile").then(res=>{
+            request.get("/auth/users/profile").then(res=>{
                 this.profile = res.data?.data || {}
             })
         }

@@ -10,6 +10,7 @@ import (
 
 type User struct {
 	*yoo.Model
+	UniID    string `gorm:"not null;unique;index;column:uni_id" json:"uni_id"`
 	UserName string `gorm:"not null;unique;index;column:username" json:"username"`
 	Password string `gorm:"column:password" json:"-"`
 	Role     int    `gorm:"column:role" json:"role"`
