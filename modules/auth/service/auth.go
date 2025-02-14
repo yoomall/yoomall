@@ -182,6 +182,7 @@ func (s *AuthService) GenUniID() string {
 	return string(randStr)
 }
 
+// create user
 func (s *AuthService) CreateUser(user *model.User) error {
 	if err := s.CheckPasswordStrength(user.Password); err != nil {
 		return err
