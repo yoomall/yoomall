@@ -5,14 +5,10 @@ import (
 	"fmt"
 	"math/rand/v2"
 	"os"
-	"strings"
 	"time"
-	"yoomall/yoo/global"
 
 	"yoomall/modules/auth/model"
 	authservice "yoomall/modules/auth/service"
-	"yoomall/yoo/constants"
-	"yoomall/yoo/driver"
 	"yoomall/yoo/helper/utils"
 
 	"github.com/charmbracelet/log"
@@ -25,7 +21,7 @@ func seedingUsers() *cobra.Command {
 		Use: "seeding:users",
 		Run: func(cmd *cobra.Command, args []string) {
 			startTime := time.Now()
-			service := authservice.NewAuthService(driver.NewDB(global.GetConfig().GetString(constants.MYSQL_DSN)))
+			service := authservice.NewAuthService(getDB())
 
 			for i := 0; i < count; i++ {
 				email := getRandomEmail()
@@ -87,29 +83,29 @@ func createSuperUser() *cobra.Command {
 			if username == "" {
 				fmt.Print("username: ")
 				username, _ = reader.ReadString('\n')
-				username = strings.Trim(username, "\n")
+				username = trimShellInputString(username)
 			}
 
 			if password == "" {
 				fmt.Print("password: ")
 				password, _ = reader.ReadString('\n')
-				password = strings.Trim(password, "\n")
+				password = trimShellInputString(password)
 			}
 
 			if email == "" {
 				fmt.Print("email: ")
 				email, _ = reader.ReadString('\n')
-				email = strings.Trim(email, "\n")
+				email = trimShellInputString(email)
 			}
 
 			if phone == "" {
 				fmt.Print("phone: ")
 				phone, _ = reader.ReadString('\n')
-				phone = strings.Trim(phone, "\n")
+				phone = trimShellInputString(phone)
 			}
 
 			log.Info("create-super-user", "username", username, "password", password)
-			service := authservice.NewAuthService(driver.NewDB(global.GetConfig().GetString(constants.MYSQL_DSN)))
+			service := authservice.NewAuthService(getDB())
 
 			if err := service.CheckPasswordStrength(password); err != nil {
 				log.Error("create-super-user", "err", err)
