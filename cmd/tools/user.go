@@ -9,9 +9,9 @@ import (
 
 	"yoomall/modules/auth/model"
 	authservice "yoomall/modules/auth/service"
-	"yoomall/yoo/helper/utils"
 
 	"github.com/charmbracelet/log"
+	"github.com/lazyfury/pulse/helper/utils"
 	"github.com/spf13/cobra"
 )
 

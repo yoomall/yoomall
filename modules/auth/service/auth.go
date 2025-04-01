@@ -9,13 +9,13 @@ import (
 
 	"yoomall/modules/auth/model"
 	authresponse "yoomall/modules/auth/response"
-	"yoomall/yoo/driver"
-	"yoomall/yoo/helper/response"
-	"yoomall/yoo/result"
-	"yoomall/yoo/types"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/lazyfury/pulse/framework/driver"
+	"github.com/lazyfury/pulse/framework/types"
+	"github.com/lazyfury/pulse/helper/response"
+	"github.com/lazyfury/pulse/helper/result"
 	"golang.org/x/crypto/bcrypt"
 )
 

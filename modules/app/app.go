@@ -3,37 +3,36 @@ package app
 import (
 	"net/http"
 
-	core "yoomall/yoo"
-	"yoomall/yoo/helper/utils"
-	coremiddleware "yoomall/yoo/middleware"
-
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/middleware"
+	"github.com/lazyfury/pulse/helper/utils"
 	"github.com/spf13/viper"
 )
 
 type DefaultApp struct {
-	*core.App
+	*framework.App
 	Config *viper.Viper
 }
 
-var _ core.IApp = (*DefaultApp)(nil)
+var _ framework.IApp = (*DefaultApp)(nil)
 
 func (d *DefaultApp) Migrate() {
 }
 
 func (d *DefaultApp) Middleware() []gin.HandlerFunc {
 	return []gin.HandlerFunc{
-		coremiddleware.RecoverHandlerFunc,
+		middleware.RecoverHandlerFunc,
 	}
 }
 
-func (d *DefaultApp) Register(router *core.RouterGroup) {
+func (d *DefaultApp) Register(router *framework.RouterGroup) {
 
 	// health check
 	router.GET("/health", func(ctx *gin.Context) {
 		// TODO:collect other info if need
 		ctx.JSON(200, map[string]any{"ok": true})
-	}).Doc(&core.DocItem{
+	}).Doc(&framework.DocItem{
 		Method: http.MethodGet,
 		Tag:    "app",
 		Path:   "/health",
@@ -43,7 +42,7 @@ func (d *DefaultApp) Register(router *core.RouterGroup) {
 	// 用例 2，服务器本地的 api 调用, 爬虫数据收集任务，无头浏览器，深度学习，想要了解一下，可能使用 python 或者 js 实现，提供局域网 api 调用
 	router.GET("/proxy", func(ctx *gin.Context) {
 		utils.ProxyRequest(ctx)
-	}).Doc(&core.DocItem{
+	}).Doc(&framework.DocItem{
 		Method: http.MethodGet,
 		Tag:    "app",
 		Path:   "/proxy",

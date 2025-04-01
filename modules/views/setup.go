@@ -1,22 +1,21 @@
 package views
 
 import (
-	core "yoomall/yoo"
-	"yoomall/yoo/driver"
-
 	"github.com/google/wire"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
 	"github.com/spf13/viper"
 )
 
 type ViewsApp struct {
-	*core.App
+	*framework.App
 }
 
-var _ core.IApp = (*ViewsApp)(nil)
+var _ framework.IApp = (*ViewsApp)(nil)
 
 func NewViewApp(db *driver.DB, config *viper.Viper) *ViewsApp {
 	return &ViewsApp{
-		App: core.NewApp("view", config, db, []core.Handler{}).WithPlugins(nil),
+		App: framework.NewApp("view", config, db, []framework.Handler{}).WithPlugins(nil),
 	}
 }
 
@@ -27,7 +26,7 @@ func (v *ViewsApp) Migrate() {
 }
 
 // Register implements core.IApp.
-func (v *ViewsApp) Register(router *core.RouterGroup) {
+func (v *ViewsApp) Register(router *framework.RouterGroup) {
 	router.GET("", homeView)             // 首页
 	router.GET("/about.html", aboutView) // 关于
 }

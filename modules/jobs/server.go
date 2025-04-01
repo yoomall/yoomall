@@ -1,12 +1,12 @@
 package jobs
 
-import "yoomall/yoo"
+import "github.com/lazyfury/pulse/framework"
 
 type JobServer struct {
-	Cron *yoo.Cron
+	Cron *framework.Cron
 }
 
-func NewJobServer(cron *yoo.Cron, job1 *Job1) *JobServer {
+func NewJobServer(cron *framework.Cron, job1 *Job1) *JobServer {
 	cron.AddJob(job1)
 	return &JobServer{
 		Cron: cron,

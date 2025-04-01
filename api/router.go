@@ -5,14 +5,14 @@ import (
 	"html/template"
 	"net/http"
 	"yoomall/cmd/server"
-	"yoomall/yoo"
-	"yoomall/yoo/config"
-	"yoomall/yoo/driver"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/config"
+	"github.com/lazyfury/pulse/framework/driver"
 	"github.com/spf13/viper"
 
-	_template "yoomall/yoo/template"
+	_template "github.com/lazyfury/pulse/plugins/template"
 )
 
 var (
@@ -28,7 +28,7 @@ var (
 
 var conf *viper.Viper
 
-var _server *yoo.HttpServer
+var _server *framework.HttpServer
 
 func init() {
 	conf = config.NewConfigFromBytes(configBytes)

@@ -5,21 +5,21 @@ import (
 	authmiddleware "yoomall/modules/auth/middleware"
 	"yoomall/modules/auth/model"
 	authservice "yoomall/modules/auth/service"
-	core "yoomall/yoo"
-	"yoomall/yoo/driver"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
 	"github.com/spf13/viper"
 )
 
 type AuthApp struct {
-	*core.App
+	*framework.App
 
 	service *authservice.AuthService
 }
 
-var _ core.IApp = (*AuthApp)(nil)
+var _ framework.IApp = (*AuthApp)(nil)
 
 var handlerSet = wire.NewSet(
 	handler.NewUserHandler,
@@ -42,7 +42,7 @@ func NewAuthApp(
 	permissionHandler *handler.PermissionHandler,
 ) *AuthApp {
 	return &AuthApp{
-		App: core.NewApp("auth", config, db, []core.Handler{
+		App: framework.NewApp("auth", config, db, []framework.Handler{
 			userHandler,
 			roleHandler,
 			tokenHandler,
@@ -65,6 +65,6 @@ func (a *AuthApp) Middleware() []gin.HandlerFunc {
 	return nil
 }
 
-func (a *AuthApp) Register(router *core.RouterGroup) {
+func (a *AuthApp) Register(router *framework.RouterGroup) {
 
 }

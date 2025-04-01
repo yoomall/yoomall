@@ -4,12 +4,12 @@ import (
 	"yoomall/modules/app/handler"
 	appHandlerV2 "yoomall/modules/app/handler/v2"
 	authmiddleware "yoomall/modules/auth/middleware"
-	yoo "yoomall/yoo"
-	"yoomall/yoo/driver"
-	"yoomall/yoo/plugins/upload"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
+	"github.com/lazyfury/pulse/plugins/upload"
 	"github.com/spf13/viper"
 )
 
@@ -20,11 +20,11 @@ func NewWireDefaultApp(config *viper.Viper, db *driver.DB,
 ) *DefaultApp {
 	return &DefaultApp{
 		Config: config,
-		App: yoo.NewApp("default", config, db, []yoo.Handler{
+		App: framework.NewApp("default", config, db, []framework.Handler{
 			menuHandler,
 			jtkHandler,
 			dtkHandler,
-		}).WithPlugins([]yoo.IPlugin{
+		}).WithPlugins([]framework.IPlugin{
 			upload.NewUploadPlugin().WithMiddlewares([]gin.HandlerFunc{
 				authmiddleware.NewAuthMiddleware(db, true, false),
 			}),

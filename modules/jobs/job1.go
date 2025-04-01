@@ -3,13 +3,14 @@ package jobs
 import (
 	"fmt"
 	"time"
-	"yoomall/yoo"
+
+	"github.com/lazyfury/pulse/framework"
 )
 
 type Job1 struct {
 }
 
-var _ yoo.IJob = (*Job1)(nil)
+var _ framework.IJob = (*Job1)(nil)
 
 func NewJob1() *Job1 {
 	return &Job1{}

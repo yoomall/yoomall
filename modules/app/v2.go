@@ -2,23 +2,23 @@ package app
 
 import (
 	appHandlerV2 "yoomall/modules/app/handler/v2"
-	"yoomall/yoo"
-	"yoomall/yoo/driver"
 
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
 	"github.com/spf13/viper"
 )
 
 type DefaultV2App struct {
-	*yoo.App
+	*framework.App
 }
 
-var _ yoo.IApp = (*DefaultV2App)(nil)
+var _ framework.IApp = (*DefaultV2App)(nil)
 
 func NewDefaultV2App(config *viper.Viper, db *driver.DB,
 	baseV2Handler *appHandlerV2.BaseHandlerV2,
 ) *DefaultV2App {
 	return &DefaultV2App{
-		App: yoo.NewApp("defaultV2", config, db, []yoo.Handler{
+		App: framework.NewApp("defaultV2", config, db, []framework.Handler{
 			baseV2Handler,
 		}),
 	}
@@ -30,6 +30,6 @@ func (d *DefaultV2App) Migrate() {
 }
 
 // Register implements yoo.IApp.
-func (d *DefaultV2App) Register(router *yoo.RouterGroup) {
+func (d *DefaultV2App) Register(router *framework.RouterGroup) {
 
 }

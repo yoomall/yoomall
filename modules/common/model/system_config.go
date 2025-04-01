@@ -1,12 +1,12 @@
 package model
 
 import (
-	core "yoomall/yoo"
-	"yoomall/yoo/helper/execl"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/helper/execl"
 )
 
 type SystemConfig struct {
-	*core.Model
+	*framework.Model
 	Key     string `gorm:"column:key;type:varchar(255)" json:"key"`
 	Value   string `gorm:"column:value;type:text" json:"value"`
 	Group   string `gorm:"column:group;type:varchar(255)" json:"group"`
@@ -19,7 +19,7 @@ func (s *SystemConfig) TableName() string {
 }
 
 type SystemConfigGroup struct {
-	*core.Model
+	*framework.Model
 	Name        string `gorm:"column:name;type:varchar(255)" json:"name"`
 	Description string `gorm:"column:description;type:text" json:"description"`
 	Key         string `gorm:"column:key;type:varchar(255)" json:"key"`
@@ -30,9 +30,9 @@ func (s *SystemConfigGroup) TableName() string {
 	return "system_config_group"
 }
 
-var _ core.IModel = (*SystemConfig)(nil)
+var _ framework.IModel = (*SystemConfig)(nil)
 
-var _ core.IModel = (*SystemConfigGroup)(nil)
+var _ framework.IModel = (*SystemConfigGroup)(nil)
 
 var SystemConfigExeclConfig = &execl.Export{
 	Fields: []execl.ExportAttr{

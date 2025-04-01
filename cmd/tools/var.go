@@ -3,8 +3,9 @@ package main
 import (
 	"strings"
 	"yoomall/cmd/server"
-	"yoomall/yoo/config"
-	"yoomall/yoo/driver"
+
+	"github.com/lazyfury/pulse/framework/config"
+	"github.com/lazyfury/pulse/framework/driver"
 )
 
 var appConfig = config.NewConfig()

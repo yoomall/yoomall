@@ -1,10 +1,9 @@
 package appHandlerV2
 
 import (
-	"yoomall/yoo"
-	"yoomall/yoo/helper/response"
-
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/helper/response"
 )
 
 type BaseHandlerV2 struct {
@@ -20,10 +19,10 @@ func (b *BaseHandlerV2) GetRouterGroupName() string {
 }
 
 // Register implements yoo.Handler.
-func (b *BaseHandlerV2) Register(router *yoo.RouterGroup) {
+func (b *BaseHandlerV2) Register(router *framework.RouterGroup) {
 	router.GET("/test", func(ctx *gin.Context) {
 		response.Success(nil).Done(ctx)
 	})
 }
 
-var _ yoo.Handler = (*BaseHandlerV2)(nil)
+var _ framework.Handler = (*BaseHandlerV2)(nil)

@@ -5,10 +5,10 @@ import (
 
 	authmiddleware "yoomall/modules/auth/middleware"
 	"yoomall/modules/auth/model"
-	"yoomall/yoo"
-	"yoomall/yoo/driver"
-	"yoomall/yoo/helper/curd"
 
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
+	"github.com/lazyfury/pulse/helper/curd"
 	"gorm.io/gorm"
 )
 
@@ -31,13 +31,13 @@ func NewUserTokenHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddleware
 	}
 }
 
-var _ yoo.Handler = (*UserTokenHandler)(nil)
+var _ framework.Handler = (*UserTokenHandler)(nil)
 
-func (u *UserTokenHandler) Register(router *yoo.RouterGroup) {
+func (u *UserTokenHandler) Register(router *framework.RouterGroup) {
 	router.Use(u.authMidds.MustAuthMiddleware)
 	router.GET("/logs", u.CRUD.GetListHandlerWithWhere(&[]model.UserToken{}, func(tx *gorm.DB) *gorm.DB {
 		return tx.Preload("User")
-	})).Doc(&yoo.DocItem{
+	})).Doc(&framework.DocItem{
 		Method: http.MethodGet,
 		Path:   "/logs",
 	})

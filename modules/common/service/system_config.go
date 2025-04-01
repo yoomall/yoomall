@@ -2,7 +2,8 @@ package commonservice
 
 import (
 	"yoomall/modules/common/model"
-	"yoomall/yoo/driver"
+
+	"github.com/lazyfury/pulse/framework/driver"
 )
 
 type SystemConfigService struct {

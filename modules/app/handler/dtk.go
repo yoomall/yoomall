@@ -4,13 +4,13 @@ import (
 	"net/http"
 
 	"yoomall/libs/dtk"
-	"yoomall/yoo"
-	"yoomall/yoo/helper/response"
-	"yoomall/yoo/helper/utils"
-	"yoomall/yoo/helper/validate"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/helper/response"
+	"github.com/lazyfury/pulse/helper/utils"
+	"github.com/lazyfury/pulse/helper/validate"
 	"github.com/spf13/viper"
 )
 
@@ -28,8 +28,8 @@ func NewDtkHandler(config *viper.Viper) *DtkHandler {
 	}
 }
 
-func (d *DtkHandler) Register(router *yoo.RouterGroup) {
-	router.GET("", d.dtk).Doc(&yoo.DocItem{
+func (d *DtkHandler) Register(router *framework.RouterGroup) {
+	router.GET("", d.dtk).Doc(&framework.DocItem{
 		Method: http.MethodGet,
 		Tag:    "dtk",
 		Path:   "",

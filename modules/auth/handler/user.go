@@ -7,12 +7,12 @@ import (
 	"yoomall/modules/auth/model"
 	"yoomall/modules/auth/request"
 	authservice "yoomall/modules/auth/service"
-	"yoomall/yoo"
-	"yoomall/yoo/driver"
-	"yoomall/yoo/helper/curd"
-	"yoomall/yoo/helper/response"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
+	"github.com/lazyfury/pulse/helper/curd"
+	"github.com/lazyfury/pulse/helper/response"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
 )
@@ -23,7 +23,7 @@ type UserHandler struct {
 	authMidds *authmiddleware.AuthMiddlewareGroup
 }
 
-var _ yoo.Handler = (*UserHandler)(nil)
+var _ framework.Handler = (*UserHandler)(nil)
 
 func NewUserHandler(db *driver.DB, config *viper.Viper, service *authservice.AuthService, authMiddlewareGroup *authmiddleware.AuthMiddlewareGroup) *UserHandler {
 	return &UserHandler{
@@ -33,9 +33,9 @@ func NewUserHandler(db *driver.DB, config *viper.Viper, service *authservice.Aut
 	}
 }
 
-func (u *UserHandler) Register(router *yoo.RouterGroup) {
+func (u *UserHandler) Register(router *framework.RouterGroup) {
 	// 登录接口
-	router.POST("/login", u.loginWithUsernameAndPassword).Doc(&yoo.DocItem{
+	router.POST("/login", u.loginWithUsernameAndPassword).Doc(&framework.DocItem{
 		Method: http.MethodPost,
 		Path:   "/login",
 		Body:   request.UserUserNameAndPasswordLoginRequest{},
@@ -44,7 +44,7 @@ func (u *UserHandler) Register(router *yoo.RouterGroup) {
 	// 用户列表
 	auth := router.Group("").Use(u.authMidds.MustAuthMiddleware)
 	{
-		auth.GET("/user-list", u.userList).Doc(&yoo.DocItem{
+		auth.GET("/user-list", u.userList).Doc(&framework.DocItem{
 			Method:      http.MethodGet,
 			Path:        "/user-list",
 			Title:       "用户列表",
@@ -58,14 +58,14 @@ func (u *UserHandler) Register(router *yoo.RouterGroup) {
 
 	authWithUser := router.Group("").Use(u.authMidds.MustAuthMiddlewareWithUser)
 	{
-		authWithUser.Doc(&yoo.DocItem{
+		authWithUser.Doc(&framework.DocItem{
 			Method: http.MethodGet,
 			Path:   "/profile",
 		}).GET("/profile", func(ctx *gin.Context) {
 			response.Success(ctx.MustGet("user")).Done(ctx)
 		})
 
-		authWithUser.Doc(&yoo.DocItem{
+		authWithUser.Doc(&framework.DocItem{
 			Method: http.MethodGet,
 			Path:   "/logout",
 		}).POST("/logout", func(ctx *gin.Context) {

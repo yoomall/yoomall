@@ -8,13 +8,14 @@ package main
 
 import (
 	"yoomall/modules/jobs"
-	"yoomall/yoo"
+
+	"github.com/lazyfury/pulse/framework"
 )
 
 // Injectors from wire.go:
 
 func NewCron() *jobs.JobServer {
-	cron := yoo.NewCorn()
+	cron := framework.NewCorn()
 	job1 := jobs.NewJob1()
 	jobServer := jobs.NewJobServer(cron, job1)
 	return jobServer

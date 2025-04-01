@@ -4,12 +4,12 @@ import (
 	"net/http"
 
 	authmiddleware "yoomall/modules/auth/middleware"
-	"yoomall/yoo"
-	"yoomall/yoo/driver"
-	"yoomall/yoo/helper/response"
-	"yoomall/yoo/ui"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
+	"github.com/lazyfury/pulse/helper/response"
+	"github.com/lazyfury/pulse/helper/ui"
 )
 
 type MenuHandler struct {
@@ -17,7 +17,7 @@ type MenuHandler struct {
 	authMidds *authmiddleware.AuthMiddlewareGroup
 }
 
-var _ yoo.Handler = (*MenuHandler)(nil)
+var _ framework.Handler = (*MenuHandler)(nil)
 
 func NewMenuHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewareGroup) *MenuHandler {
 	return &MenuHandler{
@@ -26,10 +26,10 @@ func NewMenuHandler(db *driver.DB, authMidds *authmiddleware.AuthMiddlewareGroup
 	}
 }
 
-func (m *MenuHandler) Register(router *yoo.RouterGroup) {
+func (m *MenuHandler) Register(router *framework.RouterGroup) {
 	auth := router.Use(m.authMidds.MustAuthMiddleware)
 	{
-		auth.GET("", m.menus).Doc(&yoo.DocItem{
+		auth.GET("", m.menus).Doc(&framework.DocItem{
 			Method: http.MethodGet,
 			Path:   "",
 		})

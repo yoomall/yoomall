@@ -3,13 +3,13 @@ package model
 import (
 	"encoding/json"
 
-	"yoomall/yoo"
-	"yoomall/yoo/helper/utils"
-	"yoomall/yoo/types"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/types"
+	"github.com/lazyfury/pulse/helper/utils"
 )
 
 type User struct {
-	*yoo.Model
+	*framework.Model
 	UniID    string `gorm:"not null;unique;index;column:uni_id" json:"uni_id"`
 	UserName string `gorm:"not null;unique;index;column:username" json:"username"`
 	Password string `gorm:"column:password" json:"-"`

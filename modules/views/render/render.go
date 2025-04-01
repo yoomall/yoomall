@@ -2,8 +2,9 @@ package render
 
 import (
 	"net/http"
-	"yoomall/yoo/global"
-	"yoomall/yoo/helper/response"
+
+	"github.com/lazyfury/pulse/framework/global"
+	"github.com/lazyfury/pulse/helper/response"
 )
 
 type Render struct {

@@ -1,9 +1,9 @@
 package model
 
-import core "yoomall/yoo"
+import "github.com/lazyfury/pulse/framework"
 
 type NotFoundRecord struct {
-	*core.Model
+	*framework.Model
 	Path    string `json:"path"`
 	Request string `json:"request"`
 }

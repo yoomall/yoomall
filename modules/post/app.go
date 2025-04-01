@@ -3,31 +3,30 @@ package post
 import (
 	"net/http"
 
-	core "yoomall/yoo"
-	"yoomall/yoo/driver"
-
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
 	"github.com/spf13/viper"
 )
 
 type PostApp struct {
-	*core.App
+	*framework.App
 	Config *viper.Viper
 }
 
 func NewDefaultApp(config *viper.Viper, db *driver.DB) *PostApp {
 	return &PostApp{
 		Config: config,
-		App:    core.NewApp("post", config, db, []core.Handler{}),
+		App:    framework.NewApp("post", config, db, []framework.Handler{}),
 	}
 }
 
 var WireSet = wire.NewSet(NewDefaultApp)
-var _ core.IApp = (*PostApp)(nil)
+var _ framework.IApp = (*PostApp)(nil)
 
-func (d *PostApp) Register(router *core.RouterGroup) {
-	router.Doc(&core.DocItem{
+func (d *PostApp) Register(router *framework.RouterGroup) {
+	router.Doc(&framework.DocItem{
 		Method: http.MethodGet,
 		Tag:    "post",
 		Path:   "/list",

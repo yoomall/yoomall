@@ -4,12 +4,12 @@ import (
 	"html/template"
 	"os"
 	"yoomall/cmd/server"
-	"yoomall/yoo/config"
-	"yoomall/yoo/constants"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework/config"
+	"github.com/lazyfury/pulse/framework/constants"
 
-	_template "yoomall/yoo/template"
+	_template "github.com/lazyfury/pulse/plugins/template"
 )
 
 func main() {

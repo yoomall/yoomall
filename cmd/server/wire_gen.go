@@ -7,8 +7,6 @@
 package server
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 	"yoomall/modules/app"
 	"yoomall/modules/app/handler"
 	"yoomall/modules/app/handler/v2"
@@ -21,13 +19,16 @@ import (
 	"yoomall/modules/common/service"
 	"yoomall/modules/post"
 	"yoomall/modules/views"
-	"yoomall/yoo"
-	"yoomall/yoo/driver"
+
+	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
+	"github.com/spf13/viper"
 )
 
 // Injectors from wire.go:
 
-func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin.Engine) *yoo.HttpServer {
+func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin.Engine) *framework.HttpServer {
 	dtkHandler := handler.NewDtkHandler(conf)
 	authMiddlewareGroup := authmiddleware.NewAuthMiddlewareGroup(db)
 	menuHandler := handler.NewMenuHandler(db, authMiddlewareGroup)

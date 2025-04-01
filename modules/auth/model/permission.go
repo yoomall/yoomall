@@ -1,9 +1,11 @@
 package model
 
-import "yoomall/yoo"
+import (
+	"github.com/lazyfury/pulse/framework"
+)
 
 type Permission struct {
-	yoo.Model
+	framework.Model
 	Name string `gorm:"column:name;type:varchar(255)" json:"name"`
 	Code string `gorm:"column:code;type:varchar(255)" json:"code"`
 }
@@ -13,7 +15,7 @@ func (p *Permission) TableName() string {
 }
 
 type RolePermissionRef struct {
-	*yoo.Model
+	*framework.Model
 	PermissionId string      `json:"permission_id" gorm:"column:permission_id"`
 	Permission   *Permission `json:"permission" gorm:"foreignKey:permission_id;references:ID;delete:SET NULL;default:null"`
 	RoleId       string      `json:"role_id" gorm:"column:role_id"`
@@ -25,7 +27,7 @@ func (p *RolePermissionRef) TableName() string {
 }
 
 type UserPermissionRef struct {
-	*yoo.Model
+	*framework.Model
 	UserId       string      `json:"user_id" gorm:"column:user_id"`
 	User         *User       `json:"user" gorm:"foreignKey:user_id;references:ID;delete:SET NULL;default:null"`
 	PermissionId string      `json:"permission_id" gorm:"column:permission_id"`

@@ -5,9 +5,10 @@ import (
 
 	"yoomall/modules/common/model"
 	commonservice "yoomall/modules/common/service"
-	"yoomall/yoo"
-	"yoomall/yoo/driver"
-	"yoomall/yoo/helper/curd"
+
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
+	"github.com/lazyfury/pulse/helper/curd"
 )
 
 type NotFoundRecordHandler struct {
@@ -22,14 +23,14 @@ func (n *NotFoundRecordHandler) GetRouterGroupName() string {
 }
 
 // Register implements yoo.Handler.
-func (n *NotFoundRecordHandler) Register(router *yoo.RouterGroup) {
-	router.Doc(&yoo.DocItem{
+func (n *NotFoundRecordHandler) Register(router *framework.RouterGroup) {
+	router.Doc(&framework.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
 	}).GET("", n.curd.GetListHandler(&[]model.NotFoundRecord{}))
 }
 
-var _ yoo.Handler = (*NotFoundRecordHandler)(nil)
+var _ framework.Handler = (*NotFoundRecordHandler)(nil)
 
 func NewNotFoundRecordHandler(db *driver.DB, service *commonservice.NotFoundRecordService) *NotFoundRecordHandler {
 	return &NotFoundRecordHandler{

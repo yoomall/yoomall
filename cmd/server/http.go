@@ -7,16 +7,16 @@ import (
 	commonservice "yoomall/modules/common/service"
 	"yoomall/modules/post"
 	"yoomall/modules/views"
-	"yoomall/yoo"
-	core "yoomall/yoo"
-	"yoomall/yoo/constants"
-	"yoomall/yoo/driver"
-	coremiddleware "yoomall/yoo/middleware"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/constants"
+	"github.com/lazyfury/pulse/framework/driver"
 	"github.com/spf13/viper"
+
+	"github.com/lazyfury/pulse/framework/middleware"
 )
 
 func NewHttpServer(
@@ -34,9 +34,9 @@ func NewHttpServer(
 	noufoundRecordService *commonservice.NotFoundRecordService,
 
 	//other
-	doc *core.Doc,
+	doc *framework.Doc,
 	setupEngine func(*gin.Engine) *gin.Engine,
-) *yoo.HttpServer {
+) *framework.HttpServer {
 	// logger setup
 	setupLogger(config)
 	// logger setup
@@ -49,25 +49,25 @@ func NewHttpServer(
 		gin.SetMode(gin.ReleaseMode)
 	}
 
-	server := yoo.NewHttpServer(config, setupEngine(gin.Default()))
+	server := framework.NewHttpServer(config, setupEngine(gin.Default()))
 
 	server.Engine.Use(gin.Logger())
-	server.Engine.SetTrustedProxies(nil)               //设置允许请求的域名
-	server.Engine.Use(coremiddleware.CORSMiddleware()) // 跨域
-	server.Engine.Use(gin.Recovery())                  // 错误恢复
+	server.Engine.SetTrustedProxies(nil)           //设置允许请求的域名
+	server.Engine.Use(middleware.CORSMiddleware()) // 跨域
+	server.Engine.Use(gin.Recovery())              // 错误恢复
 
 	server.Engine.Use(static.Serve("/", static.LocalFile("public", false)))
 
 	server.Engine.NoRoute(viewsApp.NotFoundHandler)
 
-	root := yoo.Group(server.Engine, "")
+	root := framework.Group(server.Engine, "")
 
 	// v1
-	v1 := yoo.Group(server.Engine, "/api/v1")
-	v2 := yoo.Group(server.Engine, "/api/v2")
+	v1 := framework.Group(server.Engine, "/api/v1")
+	v2 := framework.Group(server.Engine, "/api/v2")
 
 	v1.GET("/docs/api.json", doc.Handler)
-	yoo.RegisterApps([]*yoo.RegisterApp{
+	framework.RegisterApps([]*framework.RegisterApp{
 		{App: viewsApp, Router: root.Group("")},
 
 		{App: app, Router: v1.Group("")},
@@ -88,8 +88,8 @@ func setupLogger(config *viper.Viper) {
 	log.SetLevel(logLevel)
 }
 
-func NewDoc() *core.Doc {
-	return core.NewDoc()
+func NewDoc() *framework.Doc {
+	return framework.NewDoc()
 }
 
 func NewDB(config *viper.Viper) *driver.DB {

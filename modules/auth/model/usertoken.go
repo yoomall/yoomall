@@ -2,11 +2,12 @@ package model
 
 import (
 	"time"
-	"yoomall/yoo"
+
+	"github.com/lazyfury/pulse/framework"
 )
 
 type UserToken struct {
-	*yoo.Model
+	*framework.Model
 	UserId     uint      `gorm:"index" json:"user_id"`
 	User       *User     `json:"user" gorm:"foreignKey:user_id;references:ID;delete:SET NULL;default:null"`
 	Token      string    `json:"token"`

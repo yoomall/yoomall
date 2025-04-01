@@ -4,11 +4,11 @@ import (
 	"net/http"
 
 	"yoomall/libs/jutuike"
-	"yoomall/yoo"
-	"yoomall/yoo/helper/response"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/helper/response"
 	"github.com/spf13/viper"
 )
 
@@ -26,14 +26,14 @@ func NewJtkHandler(config *viper.Viper) *JtkHandler {
 	}
 }
 
-var _ yoo.Handler = (*JtkHandler)(nil)
+var _ framework.Handler = (*JtkHandler)(nil)
 
 func (j *JtkHandler) GetRouterGroupName() string {
 	return "jtk"
 }
 
-func (j *JtkHandler) Register(router *yoo.RouterGroup) {
-	router.GET("", j.jtk).Doc(&yoo.DocItem{
+func (j *JtkHandler) Register(router *framework.RouterGroup) {
+	router.GET("", j.jtk).Doc(&framework.DocItem{
 		Method: http.MethodGet,
 		Path:   "",
 	})

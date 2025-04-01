@@ -4,10 +4,10 @@ import (
 	"time"
 
 	"yoomall/modules/auth/model"
-	"yoomall/yoo/driver"
-	"yoomall/yoo/helper/response"
 
 	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework/driver"
+	"github.com/lazyfury/pulse/helper/response"
 )
 
 type AuthMiddlewareGroup struct {
