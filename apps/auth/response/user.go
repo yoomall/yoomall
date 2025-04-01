@@ -1,6 +1,6 @@
 package authresponse
 
-import "yoomall/modules/auth/model"
+import "yoomall/apps/auth/model"
 
 type LoginResult struct {
 	User  *model.User      `json:"user"`

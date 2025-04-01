@@ -1,7 +1,7 @@
 package app
 
 import (
-	appHandlerV2 "yoomall/modules/app/handler/v2"
+	appHandlerV2 "yoomall/apps/app/handler/v2"
 
 	"github.com/lazyfury/pulse/framework"
 	"github.com/lazyfury/pulse/framework/driver"

@@ -1,12 +1,12 @@
 package server
 
 import (
-	"yoomall/modules/app"
-	"yoomall/modules/auth"
-	"yoomall/modules/common"
-	commonservice "yoomall/modules/common/service"
-	"yoomall/modules/post"
-	"yoomall/modules/views"
+	"yoomall/apps/app"
+	"yoomall/apps/auth"
+	"yoomall/apps/common"
+	commonservice "yoomall/apps/common/service"
+	"yoomall/apps/post"
+	"yoomall/apps/views"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-contrib/static"

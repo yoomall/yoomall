@@ -1,10 +1,10 @@
 package auth
 
 import (
-	"yoomall/modules/auth/handler"
-	authmiddleware "yoomall/modules/auth/middleware"
-	"yoomall/modules/auth/model"
-	authservice "yoomall/modules/auth/service"
+	"yoomall/apps/auth/handler"
+	authmiddleware "yoomall/apps/auth/middleware"
+	"yoomall/apps/auth/model"
+	authservice "yoomall/apps/auth/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"

@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	authmiddleware "yoomall/modules/auth/middleware"
+	authmiddleware "yoomall/apps/auth/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lazyfury/pulse/framework"

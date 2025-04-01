@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	authmiddleware "yoomall/modules/auth/middleware"
-	"yoomall/modules/auth/model"
+	authmiddleware "yoomall/apps/auth/middleware"
+	"yoomall/apps/auth/model"
 
 	"github.com/lazyfury/pulse/framework"
 	"github.com/lazyfury/pulse/framework/driver"

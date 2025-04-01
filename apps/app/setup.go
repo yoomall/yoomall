@@ -1,9 +1,9 @@
 package app
 
 import (
-	"yoomall/modules/app/handler"
-	appHandlerV2 "yoomall/modules/app/handler/v2"
-	authmiddleware "yoomall/modules/auth/middleware"
+	"yoomall/apps/app/handler"
+	appHandlerV2 "yoomall/apps/app/handler/v2"
+	authmiddleware "yoomall/apps/auth/middleware"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"

@@ -1,7 +1,7 @@
 package views
 
 import (
-	"yoomall/modules/views/render"
+	"yoomall/apps/views/render"
 
 	"github.com/gin-gonic/gin"
 )
