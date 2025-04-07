@@ -31,7 +31,7 @@ func (d *DefaultApp) Register(router *framework.RouterGroup) {
 	// health check
 	router.GET("/health", func(ctx *gin.Context) {
 		// TODO:collect other info if need
-		ctx.JSON(200, map[string]any{"ok": true})
+		ctx.JSON(http.StatusOK, map[string]any{"ok": true})
 	}).Doc(&framework.DocItem{
 		Method: http.MethodGet,
 		Tag:    "app",
