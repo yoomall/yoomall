@@ -62,6 +62,7 @@ func NewHttpServer(
 
 	root := framework.Group(server.Engine, "")
 
+	//seo 短url测试
 	root.GET(":match", func(ctx *gin.Context) {
 		match := ctx.Param("match")
 		if match == "some-article-title" {
