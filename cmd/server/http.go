@@ -61,16 +61,6 @@ func NewHttpServer(
 	server.Engine.NoRoute(viewsApp.NotFoundHandler)
 
 	root := framework.Group(server.Engine, "")
-
-	//seo 短url测试
-	root.GET(":match", func(ctx *gin.Context) {
-		match := ctx.Param("match")
-		if match == "some-article-title" {
-			ctx.String(200, "here is the article")
-			return
-		}
-	})
-
 	// v1
 	v1 := framework.Group(server.Engine, "/api/v1")
 	v2 := framework.Group(server.Engine, "/api/v2")
