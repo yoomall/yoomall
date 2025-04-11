@@ -1,4 +1,4 @@
-package server
+package projConfig
 
 import (
 	"github.com/lazyfury/pulse/framework/driver"
@@ -7,7 +7,7 @@ import (
 
 func writeDefaultConfig(configs ...map[string]interface{}) error {
 	config := viper.New()
-	config.SetConfigFile("preview-config.yaml")
+	config.SetConfigFile("./config/preview-config.yaml")
 	for _, m := range configs {
 		for k, v := range m {
 			config.Set(k, v)
@@ -16,7 +16,7 @@ func writeDefaultConfig(configs ...map[string]interface{}) error {
 	return config.WriteConfig()
 }
 
-func previewDefaultConfig() error {
+func PreviewDefaultConfig() error {
 	return writeDefaultConfig(map[string]interface{}{
 		"mysql": driver.MysqlConfig{},
 		"DEBUG": true,

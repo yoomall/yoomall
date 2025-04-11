@@ -7,6 +7,7 @@ import (
 	commonservice "yoomall/apps/common/service"
 	"yoomall/apps/post"
 	"yoomall/apps/views"
+	projConfig "yoomall/config"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-contrib/static"
@@ -38,7 +39,7 @@ func NewHttpServer(
 	setupEngine func(*gin.Engine) *gin.Engine,
 ) *framework.HttpServer {
 
-	previewDefaultConfig() // 生成空配置文件
+	projConfig.PreviewDefaultConfig() // 生成空配置文件
 
 	// logger setup
 	setupLogger(config)
