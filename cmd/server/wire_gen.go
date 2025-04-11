@@ -7,6 +7,10 @@
 package server
 
 import (
+	"github.com/gin-gonic/gin"
+	"github.com/lazyfury/pulse/framework"
+	"github.com/lazyfury/pulse/framework/driver"
+	"github.com/spf13/viper"
 	"yoomall/apps/app"
 	"yoomall/apps/app/handler"
 	"yoomall/apps/app/handler/v2"
@@ -19,11 +23,6 @@ import (
 	"yoomall/apps/common/service"
 	"yoomall/apps/post"
 	"yoomall/apps/views"
-
-	"github.com/gin-gonic/gin"
-	"github.com/lazyfury/pulse/framework"
-	"github.com/lazyfury/pulse/framework/driver"
-	"github.com/spf13/viper"
 )
 
 // Injectors from wire.go:

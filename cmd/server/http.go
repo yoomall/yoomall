@@ -37,6 +37,9 @@ func NewHttpServer(
 	doc *framework.Doc,
 	setupEngine func(*gin.Engine) *gin.Engine,
 ) *framework.HttpServer {
+
+	previewDefaultConfig() // 生成空配置文件
+
 	// logger setup
 	setupLogger(config)
 	// logger setup
@@ -92,5 +95,5 @@ func NewDoc() *framework.Doc {
 }
 
 func NewDB(config *viper.Viper) *driver.DB {
-	return driver.NewDB(config.GetString(constants.MYSQL_DSN))
+	return driver.NewDB(driver.NewMysqlConfig(config).GetDSN())
 }

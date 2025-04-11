@@ -1,0 +1,9 @@
+debug: true
+mysql:
+    host: ""
+    port: ""
+    user: ""
+    password: ""
+    dbname: ""
+    charset: ""
+    timezone: ""
