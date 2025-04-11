@@ -1,4 +1,12 @@
 debug: true
+dtk:
+    app_key: ""
+    app_secret: ""
+    app_url: ""
+jtl:
+    pub_id: ""
+    api_key: ""
+    jtk_url: ""
 mysql:
     host: ""
     port: ""
@@ -7,3 +15,15 @@ mysql:
     dbname: ""
     charset: ""
     timezone: ""
+site:
+    author: ""
+    description: ""
+    favicon: ""
+    keywords: ""
+    logo: ""
+    title: ""
+storage_path: ./storage
+vite:
+    debug: true
+    public_dir: ""
+    url: ""

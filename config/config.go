@@ -1,6 +1,9 @@
 package projConfig
 
 import (
+	"yoomall/libs/dtk"
+	"yoomall/libs/jutuike"
+
 	"github.com/lazyfury/pulse/framework/driver"
 	"github.com/spf13/viper"
 )
@@ -18,7 +21,23 @@ func writeDefaultConfig(configs ...map[string]interface{}) error {
 
 func PreviewDefaultConfig() error {
 	return writeDefaultConfig(map[string]interface{}{
-		"mysql": driver.MysqlConfig{},
-		"DEBUG": true,
+		"mysql":        driver.MysqlConfig{},
+		"DEBUG":        true,
+		"dtk":          dtk.DtkConfig{},
+		"jtl":          jutuike.JtkConfig{},
+		"storage_path": "./storage",
+		"vite": map[string]interface{}{
+			"url":        "",
+			"public_dir": "",
+			"debug":      true,
+		},
+		"site": map[string]interface{}{
+			"title":       "",
+			"description": "",
+			"keywords":    "",
+			"logo":        "",
+			"author":      "",
+			"favicon":     "",
+		},
 	})
 }
