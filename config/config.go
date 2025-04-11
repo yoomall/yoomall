@@ -7,7 +7,7 @@ import (
 
 func writeDefaultConfig(configs ...map[string]interface{}) error {
 	config := viper.New()
-	config.SetConfigFile("./config/preview-config.yaml")
+	config.SetConfigFile("./config/preview.config.yaml")
 	for _, m := range configs {
 		for k, v := range m {
 			config.Set(k, v)
