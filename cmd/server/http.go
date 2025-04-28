@@ -1,10 +1,10 @@
 package server
 
 import (
-	"yoomall/apps/app"
 	"yoomall/apps/auth"
 	"yoomall/apps/common"
 	commonservice "yoomall/apps/common/service"
+	"yoomall/apps/example"
 	"yoomall/apps/post"
 	"yoomall/apps/views"
 	projConfig "yoomall/config"
@@ -24,8 +24,8 @@ func NewHttpServer(
 	config *viper.Viper,
 
 	// apps
-	app *app.DefaultApp,
-	appV2 *app.DefaultV2App,
+	app *example.DefaultApp,
+	appV2 *example.DefaultV2App,
 	auth *auth.AuthApp,
 	postApp *post.PostApp,
 	commonApp *common.CommonApp,

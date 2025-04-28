@@ -4,8 +4,8 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  bin = "./tmp/main"
-  cmd = "go build -o ./tmp/main ./cmd/http"
+  bin = "./tmp/main.exe"
+  cmd = "go build -o ./tmp/main.exe ./cmd/http"
   delay = 1000
   exclude_dir = ["assets", "tmp", "vendor", "testdata","docker","dist","web"]
   exclude_file = []
@@ -16,7 +16,7 @@ tmp_dir = "tmp"
   include_dir = ["templates","modules","core","cmd","libs","plugins","jobs","config","yoo"]
   include_ext = ["go", "tpl", "tmpl", "html"]
   include_file = ["./config.yaml",".air.toml"]
-  kill_delay = "0s"
+  kill_delay = "1s"
   log = "build-errors.log"
   poll = false
   poll_interval = 0

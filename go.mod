@@ -2,15 +2,12 @@ module yoomall
 
 go 1.24.1
 
-require github.com/lazyfury/pulse v1.0.0
-
-replace github.com/lazyfury/pulse => ../pulse
-
 require (
 	github.com/gin-contrib/static v1.1.2
 	github.com/gin-gonic/gin v1.10.0
 	github.com/google/uuid v1.6.0
 	github.com/google/wire v0.6.0
+	github.com/lazyfury/pulse v0.0.0-20250411103420-06b83d8de3f4
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.20.1

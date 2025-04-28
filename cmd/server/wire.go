@@ -4,9 +4,9 @@
 package server
 
 import (
-	"yoomall/apps/app"
 	"yoomall/apps/auth"
 	"yoomall/apps/common"
+	"yoomall/apps/example"
 	"yoomall/apps/post"
 	"yoomall/apps/views"
 
@@ -20,8 +20,8 @@ import (
 func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin.Engine) *framework.HttpServer {
 	wire.Build(NewHttpServer,
 		NewDoc,
-		app.WireSet,
-		app.V2WireSet,
+		example.WireSet,
+		example.V2WireSet,
 		post.WireSet, auth.WireSet, common.WireSet, views.WireSet,
 	)
 	return &framework.HttpServer{}

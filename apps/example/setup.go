@@ -1,9 +1,9 @@
-package app
+package example
 
 import (
-	"yoomall/apps/app/handler"
-	appHandlerV2 "yoomall/apps/app/handler/v2"
 	authmiddleware "yoomall/apps/auth/middleware"
+	"yoomall/apps/example/handler"
+	appHandlerV2 "yoomall/apps/example/handler/v2"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"

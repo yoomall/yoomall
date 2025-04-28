@@ -11,9 +11,6 @@ import (
 	"github.com/lazyfury/pulse/framework"
 	"github.com/lazyfury/pulse/framework/driver"
 	"github.com/spf13/viper"
-	"yoomall/apps/app"
-	"yoomall/apps/app/handler"
-	"yoomall/apps/app/handler/v2"
 	"yoomall/apps/auth"
 	handler2 "yoomall/apps/auth/handler"
 	"yoomall/apps/auth/middleware"
@@ -21,6 +18,9 @@ import (
 	"yoomall/apps/common"
 	handler3 "yoomall/apps/common/handler"
 	"yoomall/apps/common/service"
+	"yoomall/apps/example"
+	"yoomall/apps/example/handler"
+	"yoomall/apps/example/handler/v2"
 	"yoomall/apps/post"
 	"yoomall/apps/views"
 )
@@ -32,9 +32,9 @@ func NewApp(conf *viper.Viper, db *driver.DB, setupEngine func(*gin.Engine) *gin
 	authMiddlewareGroup := authmiddleware.NewAuthMiddlewareGroup(db)
 	menuHandler := handler.NewMenuHandler(db, authMiddlewareGroup)
 	jtkHandler := handler.NewJtkHandler(conf)
-	defaultApp := app.NewWireDefaultApp(conf, db, dtkHandler, menuHandler, jtkHandler)
+	defaultApp := example.NewWireDefaultApp(conf, db, dtkHandler, menuHandler, jtkHandler)
 	baseHandlerV2 := appHandlerV2.NewBaseHandler()
-	defaultV2App := app.NewDefaultV2App(conf, db, baseHandlerV2)
+	defaultV2App := example.NewDefaultV2App(conf, db, baseHandlerV2)
 	authService := authservice.NewAuthService(db)
 	userHandler := handler2.NewUserHandler(db, conf, authService, authMiddlewareGroup)
 	userRoleHandler := handler2.NewUserRoleHandler(db, authMiddlewareGroup)
