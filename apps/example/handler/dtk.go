@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/libs/dtk"
+	"github.com/yoomall/yoomall/libs/dtk"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"

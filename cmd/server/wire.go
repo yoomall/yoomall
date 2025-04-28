@@ -4,11 +4,11 @@
 package server
 
 import (
-	"yoomall/apps/auth"
-	"yoomall/apps/common"
-	"yoomall/apps/example"
-	"yoomall/apps/post"
-	"yoomall/apps/views"
+	"github.com/yoomall/yoomall/apps/auth"
+	"github.com/yoomall/yoomall/apps/common"
+	"github.com/yoomall/yoomall/apps/example"
+	"github.com/yoomall/yoomall/apps/post"
+	"github.com/yoomall/yoomall/apps/views"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/wire"

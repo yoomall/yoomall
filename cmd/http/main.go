@@ -3,7 +3,8 @@ package main
 import (
 	"html/template"
 	"os"
-	"yoomall/cmd/server"
+
+	"github.com/yoomall/yoomall/cmd/server"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lazyfury/pulse/framework/config"

@@ -3,10 +3,10 @@ package handler
 import (
 	"net/http"
 
-	authmiddleware "yoomall/apps/auth/middleware"
-	"yoomall/apps/auth/model"
-	"yoomall/apps/auth/request"
-	authservice "yoomall/apps/auth/service"
+	authmiddleware "github.com/yoomall/yoomall/apps/auth/middleware"
+	"github.com/yoomall/yoomall/apps/auth/model"
+	"github.com/yoomall/yoomall/apps/auth/request"
+	authservice "github.com/yoomall/yoomall/apps/auth/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lazyfury/pulse/framework"

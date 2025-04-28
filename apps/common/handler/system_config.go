@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
-	authmiddleware "yoomall/apps/auth/middleware"
-	"yoomall/apps/common/model"
-	commonservice "yoomall/apps/common/service"
+	authmiddleware "github.com/yoomall/yoomall/apps/auth/middleware"
+	"github.com/yoomall/yoomall/apps/common/model"
+	commonservice "github.com/yoomall/yoomall/apps/common/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lazyfury/pulse/framework"

@@ -3,7 +3,7 @@ package dtk_test
 import (
 	"testing"
 
-	"yoomall/libs/dtk"
+	"github.com/yoomall/yoomall/libs/dtk"
 )
 
 // TestNewDtkWithoutAppKey tests that calling NewDtkClient with an empty

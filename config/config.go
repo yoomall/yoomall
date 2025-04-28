@@ -1,8 +1,8 @@
 package projConfig
 
 import (
-	"yoomall/libs/dtk"
-	"yoomall/libs/jutuike"
+	"github.com/yoomall/yoomall/libs/dtk"
+	"github.com/yoomall/yoomall/libs/jutuike"
 
 	"github.com/lazyfury/pulse/framework/driver"
 	"github.com/spf13/viper"

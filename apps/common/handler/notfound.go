@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"yoomall/apps/common/model"
-	commonservice "yoomall/apps/common/service"
+	"github.com/yoomall/yoomall/apps/common/model"
+	commonservice "github.com/yoomall/yoomall/apps/common/service"
 
 	"github.com/lazyfury/pulse/framework"
 	"github.com/lazyfury/pulse/framework/driver"

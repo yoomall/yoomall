@@ -3,7 +3,7 @@ package authmiddleware
 import (
 	"time"
 
-	"yoomall/apps/auth/model"
+	"github.com/yoomall/yoomall/apps/auth/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/lazyfury/pulse/framework/driver"

@@ -2,7 +2,8 @@ package main
 
 import (
 	"strings"
-	"yoomall/cmd/server"
+
+	"github.com/yoomall/yoomall/cmd/server"
 
 	"github.com/lazyfury/pulse/framework/config"
 	"github.com/lazyfury/pulse/framework/driver"

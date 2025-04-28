@@ -2,7 +2,8 @@ package views
 
 import (
 	"net/http"
-	"yoomall/apps/views/render"
+
+	"github.com/yoomall/yoomall/apps/views/render"
 
 	"github.com/gin-gonic/gin"
 )

@@ -1,4 +1,4 @@
-module yoomall
+module github.com/yoomall/yoomall
 
 go 1.24.1
 

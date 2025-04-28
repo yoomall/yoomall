@@ -4,8 +4,8 @@
 package main
 
 import (
-	"yoomall/apps/jobs"
-	"yoomall/yoo"
+	"github.com/yoomall/yoomall/apps/jobs"
+	"github.com/yoomall/yoomall/yoo"
 
 	"github.com/google/wire"
 )

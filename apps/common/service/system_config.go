@@ -1,7 +1,7 @@
 package commonservice
 
 import (
-	"yoomall/apps/common/model"
+	"github.com/yoomall/yoomall/apps/common/model"
 
 	"github.com/lazyfury/pulse/framework/driver"
 )

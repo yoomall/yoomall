@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"yoomall/apps/auth/model"
-	authservice "yoomall/apps/auth/service"
+	"github.com/yoomall/yoomall/apps/auth/model"
+	authservice "github.com/yoomall/yoomall/apps/auth/service"
 
 	"github.com/charmbracelet/log"
 	"github.com/lazyfury/pulse/helper/utils"

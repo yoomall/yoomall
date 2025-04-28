@@ -3,7 +3,7 @@ package jutuike_test
 import (
 	"testing"
 
-	"yoomall/libs/jutuike"
+	"github.com/yoomall/yoomall/libs/jutuike"
 )
 
 func TestJutuike(t *testing.T) {

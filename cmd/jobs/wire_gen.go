@@ -7,7 +7,7 @@
 package main
 
 import (
-	"yoomall/apps/jobs"
+	"github.com/yoomall/yoomall/apps/jobs"
 
 	"github.com/lazyfury/pulse/framework"
 )

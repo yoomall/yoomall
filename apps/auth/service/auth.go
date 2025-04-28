@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"yoomall/apps/auth/model"
-	authresponse "yoomall/apps/auth/response"
+	"github.com/yoomall/yoomall/apps/auth/model"
+	authresponse "github.com/yoomall/yoomall/apps/auth/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"

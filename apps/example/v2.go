@@ -1,7 +1,7 @@
 package example
 
 import (
-	appHandlerV2 "yoomall/apps/example/handler/v2"
+	appHandlerV2 "github.com/yoomall/yoomall/apps/example/handler/v2"
 
 	"github.com/lazyfury/pulse/framework"
 	"github.com/lazyfury/pulse/framework/driver"
