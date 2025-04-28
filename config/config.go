@@ -27,9 +27,10 @@ func PreviewDefaultConfig() error {
 		"jtl":          jutuike.JtkConfig{},
 		"storage_path": "./storage",
 		"vite": map[string]interface{}{
-			"url":        "",
-			"public_dir": "",
-			"debug":      true,
+			"url":         "",
+			"public_dir":  "",
+			"debug":       true,
+			"assets_root": "/",
 		},
 		"site": map[string]interface{}{
 			"title":       "",

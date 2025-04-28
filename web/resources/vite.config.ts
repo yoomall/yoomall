@@ -22,6 +22,7 @@ export default defineConfig({
     emptyOutDir: true,
     sourcemap: true,
     minify: true,
+    assetsDir: "assets",
     target: ["es2020", "chrome100"],
     modulePreload: {
       polyfill: true,

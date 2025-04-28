@@ -24,6 +24,7 @@ site:
     title: ""
 storage_path: ./storage
 vite:
+    assets_root: /
     debug: true
     public_dir: ""
     url: ""
